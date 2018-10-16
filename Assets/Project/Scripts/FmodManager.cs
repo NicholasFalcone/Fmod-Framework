@@ -38,18 +38,7 @@ public class GenericEventMultipleParameter : GenericEvent
 public class FmodManager : StudioBankLoader
 {
     public static FmodManager instance;
-
-    #region Settings Variable
-    public Settings settings;
-    private Bus b_master;
-    private Bus b_sfx;
-    private Bus b_music;
-
-    private string m_busMusic = "Music";
-    private string m_busSFX = "Sound"; 
     
-    #endregion
-
     #region Unity Method
     void Awake()
     {
@@ -57,8 +46,6 @@ public class FmodManager : StudioBankLoader
         {
             DontDestroyOnLoad(this.gameObject);
             instance = this;
-            SetBus();
-            InitSoundSetting();
         }
         else
         {
@@ -171,11 +158,12 @@ public class FmodManager : StudioBankLoader
     }
    
     /// <summary>
-    /// Stop all events
+    /// Stop all event on the master bus
     /// </summary>
-    public void StopAllEvents()
+    /// <param name="_masterBus">master bus</param>
+    public void StopAllEvents(Bus _masterBus)
     {
-        b_master.stopAllEvents(STOP_MODE.IMMEDIATE);
+        _masterBus.stopAllEvents(STOP_MODE.IMMEDIATE);
     }
 
     /// <summary>
