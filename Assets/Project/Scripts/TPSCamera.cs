@@ -96,7 +96,7 @@ public class TPSCamera : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             //sets CHARACTERS x rotation to match cameras x rotation
-            //   CameraTarget.eulerAngles = new Vector3(cameraX, transform.eulerAngles.y, transform.eulerAngles.z);
+            CameraTarget.eulerAngles = new Vector3(cameraX, transform.eulerAngles.y, transform.eulerAngles.z);
         }
         //checks if middle mouse button is pushed down
         if (Input.GetMouseButtonDown(2))

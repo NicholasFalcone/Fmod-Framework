@@ -4,18 +4,9 @@ using FMODUnity;
 using System.Collections;
 
 #region Base Structure
-
-[System.Serializable]
-public class FmodEvent
-{
-    public string path;
-    public EventInstance eventInstance;
-    public ParameterInstance[] parameters;
-    public string[] parameterName;
-}
-
 /// <summary>
-/// Generic bank with all reference than you need to play a simple sound
+/// Generic event with all reference than you need to play a simple sound
+/// and mantain the reference
 /// </summary>
 [System.Serializable]
 public class GenericEvent
@@ -25,7 +16,7 @@ public class GenericEvent
     public EventInstance fmodEvent;
 }
 /// <summary>
-/// Generic bank with reference at parameter of the event
+/// Generic event with reference at parameter of the event
 /// </summary>
 [System.Serializable]
 public class GenericEventMonoParameter : GenericEvent
@@ -34,7 +25,7 @@ public class GenericEventMonoParameter : GenericEvent
     public string parameterName;
 }
 /// <summary>
-/// Generic bank with reference at parameter[] of the event
+/// Generic event with reference at parameter[] of the event
 /// </summary>
 [System.Serializable]
 public class GenericEventMultipleParameter : GenericEvent
@@ -66,7 +57,7 @@ public class FmodManager : StudioBankLoader
         {
             DontDestroyOnLoad(this.gameObject);
             instance = this;
-            GetBus();
+            SetBus();
             InitSoundSetting();
         }
         else
@@ -87,77 +78,77 @@ public class FmodManager : StudioBankLoader
 
     #region SoundMethod
     /// <summary>
-    /// Use to instance Generic bank in game
+    /// Use to instance Generic event in game
     /// </summary>
-    /// <param name="genericEvent"></param>
-    public void CreateGenericEnventInstance(ref GenericEvent genericEvent)
+    /// <param name="_genericEvent"></param>
+    public void CreateGenericEnventInstance(ref GenericEvent _genericEvent)
     {
-        genericEvent.fmodEvent = RuntimeManager.CreateInstance(genericEvent.eventPath);
+        _genericEvent.fmodEvent = RuntimeManager.CreateInstance(_genericEvent.eventPath);
     }
 
     /// <summary>
-    /// Use to instance Generic bank with parameter
+    /// Use to instance Generic event with parameter
     /// </summary>
-    /// <param name="bank"></param>
-    public void CreateGenericMonoBankParameterInstance(ref GenericEventMonoParameter bank)
+    /// <param name="_genericEventInstance"></param>
+    public void CreateGenericMonoBankParameterInstance(ref GenericEventMonoParameter _genericEventInstance)
     {
-        bank.fmodEvent = RuntimeManager.CreateInstance(bank.eventPath);
-        bank.fmodEvent.getParameter(bank.parameterName, out bank.eventParameter);
+        _genericEventInstance.fmodEvent = RuntimeManager.CreateInstance(_genericEventInstance.eventPath);
+        _genericEventInstance.fmodEvent.getParameter(_genericEventInstance.parameterName, out _genericEventInstance.eventParameter);
     }
 
     /// <summary>
-    /// Use to instance Generic bank with multiple parameter
+    /// Use to instance Generic event with multiple parameter
     /// </summary>
-    /// <param name="bank"></param>
-    public void CreateGenericBankMultipleParameter(ref GenericEventMultipleParameter bank)
+    /// <param name="_genericEventInstance"></param>
+    public void CreateGenericBankMultipleParameter(ref GenericEventMultipleParameter _genericEventInstance)
     {
-        bank.fmodEvent = RuntimeManager.CreateInstance(bank.eventPath);
+        _genericEventInstance.fmodEvent = RuntimeManager.CreateInstance(_genericEventInstance.eventPath);
         //Set number of parameter
-        bank.eventParameter = new ParameterInstance[bank.parameterName.Length];
+        _genericEventInstance.eventParameter = new ParameterInstance[_genericEventInstance.parameterName.Length];
 
-        for (int i = 0; i < bank.parameterName.Length; i++)
+        for (int i = 0; i < _genericEventInstance.parameterName.Length; i++)
         {
-            GetParameterByCount(ref bank, i);
+            GetParameterByCount(ref _genericEventInstance, i);
         }
     }
 
     /// <summary>
     /// Trigger a cue of event
     /// </summary>
-    /// <param name="eventCue"></param>
-    public void TriggerCue(GenericEvent eventCue)
+    /// <param name="_genericEvent"></param>
+    public void TriggerCue(GenericEvent _genericEvent)
     {
-        eventCue.fmodEvent.triggerCue();
+        _genericEvent.fmodEvent.triggerCue();
     }
 
     /// <summary>
     /// Get a parameter by index
     /// usefule for array of parameter
     /// </summary>
-    /// <param name="bank">paramete</param>
-    /// <param name="index">index of paramete</param>
-    public void GetParameterByCount(ref GenericEventMultipleParameter bank, int index )
+    /// <param name="_genericEvent">paramete</param>
+    /// <param name="_index">index of paramete</param>
+    public void GetParameterByCount(ref GenericEventMultipleParameter _genericEvent, int _index )
     {
-        bank.fmodEvent.getParameterByIndex(index, out bank.eventParameter[index]);
+        _genericEvent.fmodEvent.getParameterByIndex(_index, out _genericEvent.eventParameter[_index]);
     }
 
-    public void StartBankFade(GenericEvent bank, float speed)
+    public void StartBankFade(GenericEvent _genericEvent, float _speed)
     {
-        if (bank == null)
+        if (_genericEvent == null)
             return;
-        StartEvent(bank);
-        StartCoroutine(C_LerpOverTime(bank.fmodEvent, speed));
+        StartEvent(_genericEvent);
+        StartCoroutine(C_LerpOverTime(_genericEvent.fmodEvent, _speed));
     }
 
     /// <summary>
     /// Start the current event bank
     /// </summary>
-    /// <param name="bank"></param>
-    public void StartEvent(GenericEvent bank)
+    /// <param name="_genericEvent"></param>
+    public void StartEvent(GenericEvent _genericEvent)
     {
-        if (bank.eventPath != "")
+        if (_genericEvent.eventPath != "")
         {
-            bank.fmodEvent.start();
+            _genericEvent.fmodEvent.start();
         }
     }
 
@@ -171,20 +162,14 @@ public class FmodManager : StudioBankLoader
     }
 
     /// <summary>
-    /// Stop the current event bank without the fade
+    /// Stop the current event without the fade
     /// </summary>
     /// <param name="bank"></param>
     public void StopEvent(EventInstance _eventInstance)
     {
         _eventInstance.stop(STOP_MODE.IMMEDIATE);
     }
-
-    public static void QuickInit()
-    {
-        RuntimeManager.StudioSystem.flushCommands();
-        //RuntimeManager.StudioSystem.release();
-    }
-
+   
     /// <summary>
     /// Stop all events
     /// </summary>
@@ -193,6 +178,11 @@ public class FmodManager : StudioBankLoader
         b_master.stopAllEvents(STOP_MODE.IMMEDIATE);
     }
 
+    /// <summary>
+    /// Change the volume value of a event
+    /// </summary>
+    /// <param name="_eventInstance"></param>
+    /// <param name="_volume"></param>
     public void SetEventVolume(EventInstance _eventInstance, float _volume)
     {
         _eventInstance.setVolume(_volume);
@@ -201,9 +191,9 @@ public class FmodManager : StudioBankLoader
     /// <summary>
     /// Play a sound one shot on a current position
     /// </summary>
-    /// <param name="_path">bank path</param>
+    /// <param name="_path">event path</param>
     /// <param name="_pos"> position emitter</param>
-    public void PlaySoundOneShoot(string _path, Vector3 _pos)
+    public void PlaySoundOneShot(string _path, Vector3 _pos)
     {
         if (_path != "")
             RuntimeManager.PlayOneShot(_path, _pos);
@@ -211,8 +201,16 @@ public class FmodManager : StudioBankLoader
             Debug.LogWarning("Path dosen't found");
     }
 
+    public void PlaySoundOneShot(string _path, GameObject _gameObject)
+    {
+        if (_path != "")
+            RuntimeManager.PlayOneShotAttached(_path, _gameObject);
+        else
+            Debug.LogWarning("Path dosen't found");
+    }
+
     /// <summary>
-    /// Attach an event bank to current transform
+    /// Attach an event to current transform
     /// </summary>
     /// <param name="_eventInstance"></param>
     /// <param name="emitterTransform"></param>
@@ -222,7 +220,7 @@ public class FmodManager : StudioBankLoader
     }
     
     /// <summary>
-    /// Change the bank parameter with a new value
+    /// Change the event parameter with a new value
     /// </summary>
     /// <param name="_eventParameter"></param>
     /// <param name="value"></param>
@@ -254,57 +252,11 @@ public class FmodManager : StudioBankLoader
     }
 
     /// <summary>
-    /// Get all bus
+    /// Set Bus Value
     /// </summary>
-    public void GetBus()
+    public void SetBus(Bus _bus, string _path)
     {
-        b_master = RuntimeManager.GetBus("bus:/Master");
-        b_music = RuntimeManager.GetBus("bus:/Master/" + m_busMusic);
-        b_sfx = RuntimeManager.GetBus("bus:/Master/" + m_busSFX);
+        _bus = RuntimeManager.GetBus("bus:/" + _path);
     }
     #endregion
-
-    #region AudioSettings
-    /// <summary>
-    /// Set the value of the bus
-    /// </summary>
-    public void InitSoundSetting()
-    {
-    }
-
-    /// <summary>
-    /// Set the value of the settings music value
-    /// </summary>
-    /// <param name="curVolume"></param>
-    public void SetMusicVolume(float curVolume)
-    {
-        b_music.setVolume(curVolume);
-    }
-
-    /// <summary>
-    /// Set the value of the settings SFX value
-    /// </summary>
-    /// <param name="curVolume"></param>
-    public void SetSFXVolume(float curVolume)
-    {
-        b_sfx.setVolume(curVolume);
-    }
-
-    ///// <summary>
-    ///// Apply the change made and saved on the playerRef
-    ///// </summary>
-    //public void ApplyAudioSettings()
-    //{
-    //    InitSoundSetting();
-    //}
-
-    ///// <summary>
-    ///// Discard the last change
-    ///// </summary>
-    //public void DiscardSoundSetting()
-    //{
-    //    InitSoundSetting();
-    //}
-    #endregion
-
 }

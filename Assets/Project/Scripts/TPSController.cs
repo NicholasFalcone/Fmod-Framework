@@ -1,23 +1,25 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TPSController : MonoBehaviour {
+
     [SerializeField]
     private float m_rotationSpeed;
     [SerializeField]
     private float m_movementSpeed;
     private Animator m_animator;
-    private Rigidbody m_rigidbody;
-    Transform camera;
+
+    private Rigidbody m_rb;
+
+    private Weapon m_Weapon;
+
     private void Awake()
     {
-        camera = Camera.main.transform;
+        m_rb = GetComponent<Rigidbody>();
 
-        m_rigidbody = GetComponent<Rigidbody>();
+        m_Weapon = GetComponentInChildren<Weapon>();
     }
 
-	// Update is called once per frame
 	void Update ()
     {
         //Movemnt Input
@@ -26,15 +28,30 @@ public class TPSController : MonoBehaviour {
         Vector2 _velocity = new Vector2(h, v);
         float rotationX = Input.GetAxisRaw("Mouse X");
         float rotationY = Input.GetAxisRaw("Mouse Y");
-        Vector3 _rotation = new Vector3(rotationY, rotationX,0);
-        transform.rotation = Camera.main.transform.rotation;
         //Update Movement Rotation
+
         Movement(_velocity);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            m_Weapon.Fire();
+            //Add fireing animation
+        }
     }
 
     private void Movement(Vector3 _velocity)
     {
-        m_rigidbody.velocity = new Vector3(_velocity.x, m_rigidbody.velocity.y, _velocity.y);
+        float magnitude = _velocity.magnitude;
+        Debug.Log(magnitude);
+
+        if (magnitude == 0)
+            Debug.Log("Stopped");
+        else
+            Debug.Log("Moving");
+        
+
+
+        //Rooted movement?
     }
 
 }
