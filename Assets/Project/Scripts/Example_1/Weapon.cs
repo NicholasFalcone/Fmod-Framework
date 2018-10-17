@@ -29,6 +29,17 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public void Fire()
     {
-        GameObject currentBullet = Instantiate(m_bulletPrefab, m_muzzle.position, m_muzzle.rotation);
+        GameObject VFXMuzzle = PoolObject.GetObject(Globals.PoolKey.VFXMuzzle);
+        if(VFXMuzzle != null)
+            VFXMuzzle.transform.position = m_muzzle.transform.position;
+        GameObject currentBullet = PoolObject.GetObject(Globals.PoolKey.BulletGameObject)/*Instantiate(m_bulletPrefab, m_muzzle.position, m_muzzle.rotation)*/;
+
+        if(currentBullet == null)
+        {
+            Debug.LogError("Bullet Doesent Found");
+            return;
+        }
+        currentBullet.transform.position = m_muzzle.transform.position;
+        currentBullet.transform.rotation = m_muzzle.transform.rotation;
     }
 }

@@ -40,8 +40,6 @@ public class TriangleExplosion : MonoBehaviour
 
         for (int submesh = 0; submesh < M.subMeshCount; submesh++)
         {
-            Debug.Log(M.GetTriangles(submesh).Length);
-            
             int[] indices = M.GetTriangles(submesh);
 
             for (int i = 0; i < indices.Length; i += 3)
