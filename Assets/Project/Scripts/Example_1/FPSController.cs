@@ -7,18 +7,18 @@ public class FPSController : MonoBehaviour
     [SerializeField]
     private Weapon m_equippedWeapon;
     private Camera m_camera;
-
     [SerializeField]
     private float m_speedH = 2.0f;
     [SerializeField]
     private float m_speedV = 2.0f;
     [SerializeField]
-    private float m_maxYDegree = 45;
-
+    private float m_maxYDegree = 45f;
+    [SerializeField]
+    private float m_maxXDegree = 60f;
     private bool m_canUseWeapon;
 
-    private float yaw = 0.0f;
-    private float pitch = 0.0f;
+    private float m_yaw = 0.0f;
+    private float m_pitch = 0.0f;
 
     private int m_weaponIndex;
                                         //Worst stuff evenr done
@@ -31,8 +31,10 @@ public class FPSController : MonoBehaviour
 
     private void Start()
     {
+        //disable cursor and locked on the middle of the screen
         Cursor.visible = false;
         Cursor.lockState  = CursorLockMode.Locked;
+        //take a next weapon
         ChangeWeapon(1);
     }
 
@@ -55,6 +57,10 @@ public class FPSController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Change Weapon with a positve or negative index
+    /// </summary>
+    /// <param name="index"></param>
     private void ChangeWeapon(int index)
     {
         m_canUseWeapon = false;
@@ -69,11 +75,14 @@ public class FPSController : MonoBehaviour
 
     private void LateUpdate()
     {
-        yaw += m_speedH * Input.GetAxis("Mouse X");
-        pitch -= m_speedV * Input.GetAxis("Mouse Y");
-        transform.eulerAngles = new Vector3(pitch, yaw, 0);
-        m_camera.transform.eulerAngles = new Vector3(Mathf.Clamp(pitch, -m_maxYDegree, m_maxYDegree), transform.rotation.y, 0.0f);
-        m_camera.transform.localRotation = Quaternion.Euler(Mathf.Clamp(pitch, -m_maxYDegree, m_maxYDegree), transform.rotation.y, transform.rotation.z);
+        //Take input from mouse
+        m_yaw += m_speedH * Input.GetAxis("Mouse X");
+        m_pitch -= m_speedV * Input.GetAxis("Mouse Y");
+        //Rotate Player clamped for max X and max Y
+        transform.eulerAngles = new Vector3(Mathf.Clamp(m_pitch, -m_maxYDegree, m_maxYDegree),Mathf.Clamp(m_yaw,-m_maxXDegree,m_maxXDegree), 0.0f);
+        //Rotate camera
+        m_camera.transform.eulerAngles = new Vector3(Mathf.Clamp(m_pitch, -m_maxYDegree, m_maxYDegree), transform.rotation.y, 0.0f);
+        m_camera.transform.localRotation = Quaternion.Euler(Mathf.Clamp(m_pitch, -m_maxYDegree, m_maxYDegree), transform.rotation.y, transform.rotation.z);
     }
 
 }

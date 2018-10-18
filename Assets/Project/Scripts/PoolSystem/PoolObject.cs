@@ -41,7 +41,13 @@ public class PoolObject : MonoBehaviour
 
     }
     
-    public static GameObject GetObject(string poolName)
+    /// <summary>
+    /// Take a gameObject on a pool with the same key
+    /// </summary>
+    /// <param name="poolName"></param>
+    /// <param name="active">return gameobject active</param>
+    /// <returns></returns>
+    public static GameObject GetObject(string poolName, bool active = true)
     {
         PoolItem curPoolItem = FindPool(poolName);
 
@@ -49,7 +55,8 @@ public class PoolObject : MonoBehaviour
         {
             if (!curPoolItem.pool[i].activeSelf)
             {
-                curPoolItem.pool[i].SetActive(true);
+                if(active)
+                    curPoolItem.pool[i].SetActive(true);
                 return curPoolItem.pool[i];
             }
         }
