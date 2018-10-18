@@ -58,6 +58,27 @@ public class PoolObject : MonoBehaviour
                 if(active)
                     curPoolItem.pool[i].SetActive(true);
                 return curPoolItem.pool[i];
+
+            }
+        }
+        return null;
+        throw new System.Exception("Pool Out of range");
+    }
+
+    public static GameObject GetObject(string poolName,Vector3 position, Vector3 rotation, bool active = true)
+    {
+        PoolItem curPoolItem = FindPool(poolName);
+
+        for (int i = 0; i < curPoolItem.pool.Count; i++)
+        {
+            if (!curPoolItem.pool[i].activeSelf)
+            {
+                if (active)
+                    curPoolItem.pool[i].SetActive(true);
+
+                curPoolItem.pool[i].transform.position = position;
+                curPoolItem.pool[i].transform.eulerAngles = rotation;
+                return curPoolItem.pool[i];
             }
         }
         return null;

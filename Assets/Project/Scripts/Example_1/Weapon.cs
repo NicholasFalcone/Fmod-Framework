@@ -6,9 +6,19 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private Transform m_muzzle;
     [SerializeField]
+    private Transform m_ejection;
+    [SerializeField]
     private float m_rate = 0.3f;
     [SerializeField]
     private bool m_canShot = true;
+
+    [SerializeField]
+    private Animator m_aniamtor;
+
+    private void Awake()
+    {
+        m_aniamtor = GetComponent<Animator>();
+    }
 
     private void OnEnable()
     {
@@ -36,13 +46,9 @@ public class Weapon : MonoBehaviour
             return;
 
         m_canShot = false;
-        GameObject VFXMuzzle = PoolObject.GetObject(Globals.PoolKey.VFXMuzzle);
-        if(VFXMuzzle != null)
-            VFXMuzzle.transform.position = m_muzzle.transform.position;
-        GameObject VFXEjection = PoolObject.GetObject(Globals.PoolKey.VFXEjection, false);
 
         GameObject currentBullet = PoolObject.GetObject(Globals.PoolKey.BulletGameObject)/*Instantiate(m_bulletPrefab, m_muzzle.position, m_muzzle.rotation)*/;
-        if(currentBullet == null)
+        if (currentBullet == null)
         {
             Debug.LogError("Bullet Doesent Found");
             return;
@@ -50,8 +56,16 @@ public class Weapon : MonoBehaviour
         currentBullet.transform.position = m_muzzle.transform.position;
         currentBullet.transform.rotation = m_muzzle.transform.rotation;
 
-        VFXEjection.transform.position = transform.position;
-        VFXEjection.SetActive(true);
+        m_aniamtor.SetTrigger("Shot");
+        
+        //VFX
+        GameObject VFXMuzzle = PoolObject.GetObject(Globals.PoolKey.VFXMuzzle);
+        if(VFXMuzzle != null)
+            VFXMuzzle.transform.position = m_muzzle.transform.position;
+        GameObject VFXEjection = PoolObject.GetObject(Globals.PoolKey.VFXEjection, m_ejection.position, m_ejection.eulerAngles, false);
+        if (VFXEjection != null)
+            VFXEjection.SetActive(true);
+
         StartCoroutine(Reload());
     }
 
