@@ -87,7 +87,7 @@ public class FmodManager : StudioBankLoader
     /// Use to instance Generic event with multiple parameter
     /// </summary>
     /// <param name="_genericEventInstance"></param>
-    public void CreateGenericBankMultipleParameter(ref GenericEventMultipleParameter _genericEventInstance)
+    public void CreateGenericEventMultipleParameter(ref GenericEventMultipleParameter _genericEventInstance)
     {
         _genericEventInstance.fmodEvent = RuntimeManager.CreateInstance(_genericEventInstance.eventPath);
         //Set number of parameter

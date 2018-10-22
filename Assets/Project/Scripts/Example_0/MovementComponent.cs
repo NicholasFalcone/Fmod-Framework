@@ -8,7 +8,8 @@ public class MovementComponent : MonoBehaviour
     private float m_jumpForce = 10;
     [SerializeField]
     private LayerMask m_walkableLayer;
-
+    [SerializeField]
+    private GenericEventMonoParameter  m_footsteps;
     private Collider2D[] m_colliders;
     private Animator m_animator;
     private Rigidbody2D m_rigidbody;
@@ -21,7 +22,12 @@ public class MovementComponent : MonoBehaviour
         m_render = GetComponent<SpriteRenderer>();
         m_rigidbody = GetComponent<Rigidbody2D>();
     }
-
+    
+    private void Start()
+    {
+        FmodManager.instance.CreateGenericMonoBankParameterInstance(ref m_footsteps);
+    } 
+    
     //Called on InputController
     public void Jump()
     {
@@ -37,6 +43,7 @@ public class MovementComponent : MonoBehaviour
             m_render.flipX = true;
         else
             m_render.flipX = false;
+
         //Set the velocity x with a new value by inputController 
         m_rigidbody.velocity = new Vector2(_direction * m_speed, m_rigidbody.velocity.y);
 
@@ -59,7 +66,7 @@ public class MovementComponent : MonoBehaviour
         //Check if is grounded
         if(IsGrounded())
         {
-            //Do
+           FmodManager.instance.StartEvent(m_footsteps);
         }
     }
 }
