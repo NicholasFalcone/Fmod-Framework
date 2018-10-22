@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_muzzle: {fileID: 0}
-  m_bulletPrefab: {fileID: 0}
-  m_bullets: 0
+  m_ejection: {fileID: 0}
   m_rate: 0
+  m_canShot: 1
+  m_aniamtor: {fileID: 0}
