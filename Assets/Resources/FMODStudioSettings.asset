@@ -55,5 +55,5 @@ MonoBehaviour:
   Plugins: []
   MasterBank: Master Bank
   Banks:
-  - Platform
   - Shooter
+  - Platform
