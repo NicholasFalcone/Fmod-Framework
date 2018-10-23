@@ -17,7 +17,7 @@ namespace NetworkingExample
                 return;
             }
 
-            Instantiate(m_bullet, m_muzzle.position, Quaternion.identity);
+            Instantiate(m_bullet, m_muzzle.position, m_bullet.transform.rotation);
         }
 
     }

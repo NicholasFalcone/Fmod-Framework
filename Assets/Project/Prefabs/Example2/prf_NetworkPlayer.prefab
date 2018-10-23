@@ -22,7 +22,7 @@ GameObject:
   m_Layer: 0
   m_Name: muzzle
   m_TagString: Untagged
-  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -53,12 +53,10 @@ GameObject:
   - component: {fileID: 4120089977696200}
   - component: {fileID: 114105941742317754}
   - component: {fileID: 114080248275511342}
-  - component: {fileID: 114346026379648518}
-  - component: {fileID: 114031363102637980}
   - component: {fileID: 33851663628279894}
   - component: {fileID: 23306886508952484}
-  - component: {fileID: 54200659181303454}
   - component: {fileID: 114492931287071948}
+  - component: {fileID: 114576438466857914}
   m_Layer: 0
   m_Name: prf_NetworkPlayer
   m_TagString: Untagged
@@ -263,21 +261,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1864555918809604}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54200659181303454
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1856051371914716}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!65 &65799451861299912
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -297,18 +280,6 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1149676764323300}
   m_Enabled: 1
---- !u!114 &114031363102637980
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1856051371914716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa23a9aeaf363814fa8bc0b9258f89dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_speed: 2
 --- !u!114 &114080248275511342
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -340,7 +311,7 @@ MonoBehaviour:
     i14: 134
     i15: 137
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114105941742317754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -352,19 +323,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cffcb9634b2a2b4382fd00b4a931b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114346026379648518
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1856051371914716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa4712c324fe0f944b03c6f40b0317f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_bullet: {fileID: 1479430850649704, guid: 83d8c8a497762ff41b5d166ed9d06358, type: 2}
-  m_muzzle: {fileID: 4903136878620366}
+  bulletPrefab: {fileID: 1479430850649704, guid: 83d8c8a497762ff41b5d166ed9d06358,
+    type: 2}
+  bulletSpawn: {fileID: 4903136878620366}
 --- !u!114 &114492931287071948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -376,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TransformSyncMode: 3
+  m_TransformSyncMode: 1
   m_SendInterval: 0.1
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
@@ -386,3 +347,16 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114576438466857914
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1856051371914716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 377b0db5a3942db4aa11d8e67a124822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 100
+  healthBar: {fileID: 0}

@@ -5,34 +5,52 @@ namespace NetworkingExample
 {
     public class PlayerController : NetworkBehaviour
     {
-        private MovementComponent m_movementComponent;
-        private WeaponComponent m_weaponComponent;
+        public GameObject bulletPrefab;
+        public Transform bulletSpawn;
 
-        private void Awake()
-        {
-            m_movementComponent = GetComponent<MovementComponent>();
-            m_weaponComponent = GetComponent<WeaponComponent>();
-        }
-
-        // Update is called once per frame
         void Update()
         {
             if (!isLocalPlayer)
+            {
                 return;
-
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
-            Vector2 joyDirection = new Vector2(h, v);
-            if (m_movementComponent == null)
-            {
-                Debug.LogError("Missing Movement");
             }
-            m_movementComponent.Move(joyDirection);
 
-            if (Input.GetMouseButtonDown(0))
+            var x = Input.GetAxis("Horizontal") * Time.deltaTime * 150.0f;
+            var z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
+
+            transform.Rotate(0, x, 0);
+            transform.Translate(0, 0, z);
+
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                m_weaponComponent.Fire();
+                CmdFire();
             }
+        }
+
+        // This [Command] code is called on the Client …
+        // … but it is run on the Server!
+        [Command]
+        void CmdFire()
+        {
+            // Create the Bullet from the Bullet Prefab
+            var bullet = (GameObject)Instantiate(
+                bulletPrefab,
+                bulletSpawn.position,
+                bulletSpawn.rotation);
+
+            // Add velocity to the bullet
+            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 10;
+
+            // Spawn the bullet on the Clients
+            NetworkServer.Spawn(bullet);
+
+            // Destroy the bullet after 2 seconds
+            Destroy(bullet, 2.0f);
+        }
+
+        public override void OnStartLocalPlayer()
+        {
+            GetComponent<MeshRenderer>().material.color = Color.blue;
         }
     }
 }
