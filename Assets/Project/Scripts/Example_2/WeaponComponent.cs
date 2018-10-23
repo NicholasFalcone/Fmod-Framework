@@ -8,8 +8,7 @@ namespace NetworkingExample
         private GameObject m_bullet;
         [SerializeField]
         private Transform m_muzzle;
-
-
+        
         public void Fire()
         {
             if (m_bullet == null)

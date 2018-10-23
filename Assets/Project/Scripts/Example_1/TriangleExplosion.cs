@@ -62,14 +62,21 @@ public class TriangleExplosion : MonoBehaviour
 
                 GameObject GO = new GameObject("Triangle " + (i / 3));
                 GO.layer = LayerMask.NameToLayer("Default");
+                ///Set Position
                 GO.transform.position = transform.position;
-                GO.transform.localScale = transform.localScale;
+                ///Set Scale
+                GO.transform.localScale = transform.localScale/10;
+                ///Set Rotation
                 GO.transform.rotation = transform.rotation;
+                ///Give render material
                 GO.AddComponent<MeshRenderer>().material = materials[submesh];
+                ///Add mesh filter
                 GO.AddComponent<MeshFilter>().mesh = mesh;
-                //GO.AddComponent<BoxCollider>().isTrigger = true;
+                ///Calculate emission position
                 Vector3 explosionPos = new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(0f, 0.5f), transform.position.z + Random.Range(-0.5f, 0.5f));
+                ///Add rigidbody and apply explosive force
                 GO.AddComponent<Rigidbody>().AddExplosionForce(Random.Range(300, 500), explosionPos, 5);
+                ///Destroy this pices after time
                 Destroy(GO, 5 + Random.Range(0.0f, 5.0f));
             }
         }

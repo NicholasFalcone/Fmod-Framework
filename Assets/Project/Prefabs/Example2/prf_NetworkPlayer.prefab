@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 33851663628279894}
   - component: {fileID: 23306886508952484}
   - component: {fileID: 54200659181303454}
+  - component: {fileID: 114492931287071948}
   m_Layer: 0
   m_Name: prf_NetworkPlayer
   m_TagString: Untagged
@@ -364,3 +365,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 1479430850649704, guid: 83d8c8a497762ff41b5d166ed9d06358, type: 2}
   m_muzzle: {fileID: 4903136878620366}
+--- !u!114 &114492931287071948
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1856051371914716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
