@@ -52,10 +52,8 @@ public class Bullet : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Glass"))
         {
-            Debug.Log("Hitted Glass");
             TriangleExplosion explosion = collision.gameObject.GetComponent<TriangleExplosion>();
             explosion.StartCoroutine(explosion.SplitMesh(false));
-            
         }
         StopCoroutine(BulletLifeTime());
         gameObject.SetActive(false);

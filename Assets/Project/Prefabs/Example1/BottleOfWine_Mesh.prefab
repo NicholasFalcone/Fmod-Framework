@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 33584910281889792}
   - component: {fileID: 23498852220485638}
   - component: {fileID: 114086114253751756}
-  - component: {fileID: 65146330969297192}
   - component: {fileID: 54990091618590904}
+  - component: {fileID: 136397855120676466}
   m_Layer: 11
   m_Name: BottleOfWine_Mesh
   m_TagString: Glass
@@ -38,8 +38,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1319678432560972}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -44.29, y: 0.07499993, z: -2.9299927}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -45.89, y: 0.41999996, z: 0.62999725}
+  m_LocalScale: {x: 1.4999999, y: 1.4999999, z: 1.4999999}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -101,18 +101,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!65 &65146330969297192
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1319678432560972}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114086114253751756
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -124,3 +112,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89dba3b7d71e4644bbcd0acc3e4490fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_minForce: 200
+  m_maxForce: 500
+--- !u!136 &136397855120676466
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1319678432560972}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 2.5
+  m_Direction: 1
+  m_Center: {x: 0.000001013279, y: 0, z: -0.00000008940698}

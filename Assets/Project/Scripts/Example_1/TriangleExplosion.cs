@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class TriangleExplosion : MonoBehaviour
 {
+    [SerializeField]
+    private float m_minForce = 150;
+    [SerializeField]
+    private float m_maxForce = 300;
+
     public IEnumerator SplitMesh(bool destroy)
     {
         if (GetComponent<Collider>())
@@ -65,7 +70,7 @@ public class TriangleExplosion : MonoBehaviour
                 ///Set Position
                 GO.transform.position = transform.position;
                 ///Set Scale
-                GO.transform.localScale = transform.localScale/10;
+                GO.transform.localScale = new Vector3(transform.localScale.x/10, transform.localScale.y/10, transform.localScale.z / 10);
                 ///Set Rotation
                 GO.transform.rotation = transform.rotation;
                 ///Give render material
@@ -75,13 +80,15 @@ public class TriangleExplosion : MonoBehaviour
                 ///Calculate emission position
                 Vector3 explosionPos = new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(0f, 0.5f), transform.position.z + Random.Range(-0.5f, 0.5f));
                 ///Add rigidbody and apply explosive force
-                GO.AddComponent<Rigidbody>().AddExplosionForce(Random.Range(300, 500), explosionPos, 5);
+                GO.AddComponent<Rigidbody>().AddExplosionForce(Random.Range(m_minForce, m_maxForce), explosionPos, 5);
+
+                GO.AddComponent<BoxCollider>();
+
                 ///Destroy this pices after time
                 Destroy(GO, 5 + Random.Range(0.0f, 5.0f));
+
             }
         }
-        
-        GetComponent<Collider>().isTrigger = true;
         GetComponent<Renderer>().enabled = false;
 
         yield return new WaitForSeconds(0.3f);
