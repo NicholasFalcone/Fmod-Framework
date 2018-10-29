@@ -2,8 +2,9 @@
 
 public enum SurfaceType
 {
-    Ground,
-    Wather
+    Grass,
+    Wather,
+    Cave
 }
 
 public class MovementComponent : MonoBehaviour
@@ -18,12 +19,19 @@ public class MovementComponent : MonoBehaviour
     [Header("Sound")]
     [SerializeField]
     private GenericEventMonoParameter m_footsteps;
+    [SerializeField]
+    private GenericEvent m_watherMovementSound;
+    [SerializeField]
+    private GenericEventMonoParameter m_jumpStart;
+    [SerializeField]
+    private GenericEventMonoParameter m_jumpEnd;
     #endregion
     private Collider2D[] m_colliders;
     private Animator m_animator;
     private Rigidbody2D m_rigidbody;
     private SpriteRenderer m_render;
     private bool m_onAir = false;
+    [SerializeField]
     private SurfaceType m_surfaceType;
     public SurfaceType SurfaceType { get; set; }
 
@@ -38,11 +46,14 @@ public class MovementComponent : MonoBehaviour
     private void Start()
     {
         GenerateFmodEvents();
+        m_surfaceType = SurfaceType.Grass;
     } 
     
     private void GenerateFmodEvents()
     {
         FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_footsteps);
+        FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_jumpStart);
+        FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_jumpEnd);
     }
 
 
@@ -57,6 +68,8 @@ public class MovementComponent : MonoBehaviour
         //check if is grounded and add force
         if (IsGrounded())
         {
+            FmodManager.instance.StartEvent(m_jumpStart);
+            m_onAir = true;
             m_rigidbody.AddForce(Vector2.up * m_jumpForce, ForceMode2D.Impulse);
         }
     }
@@ -85,16 +98,32 @@ public class MovementComponent : MonoBehaviour
         return Physics2D.Raycast(transform.position, Vector2.down, 0.8f, m_walkableLayer);
     }
 
+    float _delta = 0;
     private void Landing()
     {
-        if (IsGrounded() && m_onAir)
-            m_onAir = false;
-        else
-            m_onAir = true;
-
-        if(IsGrounded() && m_onAir && m_surfaceType == SurfaceType.Ground)
+       
+        if (m_onAir)
         {
-            //Play Landing Sound
+            _delta += Time.deltaTime;
+        }
+
+        if ((IsGrounded() && m_onAir) && _delta > 0.1f)
+        {
+            m_onAir = false;
+            _delta = 0;
+            Debug.Log("Landing");
+            FmodManager.instance.StartEvent(m_jumpEnd);
+        }
+    }
+
+    public void CheckSurface(SurfaceType _surfaceType)
+    {
+        m_surfaceType = _surfaceType;
+        if (m_surfaceType != SurfaceType.Wather)
+        {
+            FmodManager.instance.ChangeParameter(ref m_footsteps.eventParameter, (float)m_surfaceType++);
+            FmodManager.instance.ChangeParameter(ref m_jumpStart.eventParameter, (float)m_surfaceType++);
+            FmodManager.instance.ChangeParameter(ref m_jumpEnd.eventParameter, (float)m_surfaceType++);
         }
     }
 
@@ -104,11 +133,14 @@ public class MovementComponent : MonoBehaviour
         //Check if is grounded
         if(IsGrounded())
         {
-            if(m_surfaceType == SurfaceType.Ground)
+            if (m_surfaceType == SurfaceType.Grass || m_surfaceType == SurfaceType.Cave)
+            {
                 FmodManager.instance.StartEvent(m_footsteps);
+            }
             else
             {
-                //Play WatherMovement sound
+                Debug.Log("Play Wather");
+                FmodManager.instance.PlaySoundOneShot(m_watherMovementSound.eventPath, transform.position);
             }
 
         }
