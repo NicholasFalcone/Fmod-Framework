@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 
+public enum SurfaceType
+{
+    Ground,
+    Wather
+}
+
 public class MovementComponent : MonoBehaviour
 {
     [SerializeField]
@@ -8,13 +14,19 @@ public class MovementComponent : MonoBehaviour
     private float m_jumpForce = 10;
     [SerializeField]
     private LayerMask m_walkableLayer;
+    #region Sfx
+    [Header("Sound")]
     [SerializeField]
-    private GenericEventMonoParameter  m_footsteps;
+    private GenericEventMonoParameter m_footsteps;
+    #endregion
     private Collider2D[] m_colliders;
     private Animator m_animator;
     private Rigidbody2D m_rigidbody;
     private SpriteRenderer m_render;
-    
+    private bool m_onAir = false;
+    private SurfaceType m_surfaceType;
+    public SurfaceType SurfaceType { get; set; }
+
     private void Awake()
     {
         //Get all component
@@ -25,15 +37,28 @@ public class MovementComponent : MonoBehaviour
     
     private void Start()
     {
-        FmodManager.instance.CreateGenericMonoBankParameterInstance(ref m_footsteps);
+        GenerateFmodEvents();
     } 
     
+    private void GenerateFmodEvents()
+    {
+        FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_footsteps);
+    }
+
+
+    private void Update()
+    {
+        Landing();
+    }
+
     //Called on InputController
     public void Jump()
     {
         //check if is grounded and add force
         if (IsGrounded())
+        {
             m_rigidbody.AddForce(Vector2.up * m_jumpForce, ForceMode2D.Impulse);
+        }
     }
 
     public void Movement(float _direction)
@@ -60,13 +85,32 @@ public class MovementComponent : MonoBehaviour
         return Physics2D.Raycast(transform.position, Vector2.down, 0.8f, m_walkableLayer);
     }
 
+    private void Landing()
+    {
+        if (IsGrounded() && m_onAir)
+            m_onAir = false;
+        else
+            m_onAir = true;
+
+        if(IsGrounded() && m_onAir && m_surfaceType == SurfaceType.Ground)
+        {
+            //Play Landing Sound
+        }
+    }
+
     //Called each step
     public void PlayFootStep()
     {
         //Check if is grounded
         if(IsGrounded())
         {
-           FmodManager.instance.StartEvent(m_footsteps);
+            if(m_surfaceType == SurfaceType.Ground)
+                FmodManager.instance.StartEvent(m_footsteps);
+            else
+            {
+                //Play WatherMovement sound
+            }
+
         }
     }
 }

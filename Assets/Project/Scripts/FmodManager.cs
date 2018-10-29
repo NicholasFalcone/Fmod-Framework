@@ -77,7 +77,7 @@ public class FmodManager : StudioBankLoader
     /// Use to instance Generic event with parameter
     /// </summary>
     /// <param name="_genericEventInstance"></param>
-    public void CreateGenericMonoBankParameterInstance(ref GenericEventMonoParameter _genericEventInstance)
+    public void CreateGenericMonoEventParameterInstance(ref GenericEventMonoParameter _genericEventInstance)
     {
         _genericEventInstance.fmodEvent = RuntimeManager.CreateInstance(_genericEventInstance.eventPath);
         _genericEventInstance.fmodEvent.getParameter(_genericEventInstance.parameterName, out _genericEventInstance.eventParameter);
@@ -119,7 +119,7 @@ public class FmodManager : StudioBankLoader
         _genericEvent.fmodEvent.getParameterByIndex(_index, out _genericEvent.eventParameter[_index]);
     }
 
-    public void StartBankFade(GenericEvent _genericEvent, float _speed)
+    public void StartEventFade(GenericEvent _genericEvent, float _speed)
     {
         if (_genericEvent == null)
             return;
