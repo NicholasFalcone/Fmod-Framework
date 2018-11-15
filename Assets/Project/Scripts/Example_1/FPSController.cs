@@ -47,10 +47,12 @@ public class FPSController : MonoBehaviour
         {
             m_equippedWeapon.Fire();
         }
+
         if(Input.GetAxisRaw("Mouse ScrollWheel") > 0)
         {
             ChangeWeapon(1);
         }
+
         if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
         {
             ChangeWeapon(-1);

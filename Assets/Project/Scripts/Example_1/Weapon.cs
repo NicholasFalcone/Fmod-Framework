@@ -11,9 +11,13 @@ public class Weapon : MonoBehaviour
     private float m_rate = 0.3f;
     [SerializeField]
     private bool m_canShot = true;
-
     [SerializeField]
     private Animator m_aniamtor;
+
+    #region Sfx
+    [SerializeField]
+    private GenericEvent m_weaponFireSound;
+    #endregion
 
     private void Awake()
     {
@@ -67,6 +71,12 @@ public class Weapon : MonoBehaviour
             VFXEjection.SetActive(true);
 
         StartCoroutine(Reload());
+    }
+    public void PlayFireSound(int i)
+    {
+        //Play Fire Sound
+        if (i == 1)
+            FmodManager.instance.PlaySoundOneShot(m_weaponFireSound.eventPath, transform.position);
     }
 
     private IEnumerator Reload()

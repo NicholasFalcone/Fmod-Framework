@@ -57,6 +57,7 @@ public class FmodManager : StudioBankLoader
     {
         if (instance == this)
         {
+            Unload();
             Debug.LogWarning("[FMOD Manager] All bank was Unloaded");
         }
     }
@@ -72,7 +73,6 @@ public class FmodManager : StudioBankLoader
     {
         _genericEvent.fmodEvent = RuntimeManager.CreateInstance(_genericEvent.eventPath);
     }
-
     /// <summary>
     /// Use to instance Generic event with parameter
     /// </summary>
@@ -91,13 +91,21 @@ public class FmodManager : StudioBankLoader
     {
         _genericEventInstance.fmodEvent = RuntimeManager.CreateInstance(_genericEventInstance.eventPath);
         //Set number of parameter
-        _genericEventInstance.eventParameter = new ParameterInstance[_genericEventInstance.parameterName.Length];
+        int _parameterCount;
+        _genericEventInstance.fmodEvent.getParameterCount(out _parameterCount);
 
-        for (int i = 0; i < _genericEventInstance.parameterName.Length; i++)
+        if(_parameterCount != 0)
         {
-            GetParameterByCount(ref _genericEventInstance, i);
+            for (int i = 0; i < _parameterCount; i++)
+            {
+                GetParameterByCount(ref _genericEventInstance, i);
+            }
         }
+        else
+            UnityEngine.Debug.LogWarning(_genericEventInstance.eventPath + " has not parameter");
     }
+
+
 
     /// <summary>
     /// Trigger a cue of event
@@ -133,16 +141,18 @@ public class FmodManager : StudioBankLoader
     /// <param name="_genericEvent"></param>
     public void StartEvent(GenericEvent _genericEvent)
     {
-        if (_genericEvent.eventPath != "")
+        if (_genericEvent.fmodEvent.handle != null)
         {
             _genericEvent.fmodEvent.start();
         }
+        else
+            Debug.LogError(_genericEvent.eventPath + "FmodEvent not exist");
     }
 
     /// <summary>
     /// Stop the current event bank with the fade
     /// </summary>
-    /// <param name="bank"></param>
+    /// <param name="_eventInstance"></param>
     public void StopEventFade(EventInstance _eventInstance)
     {
         _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
@@ -151,7 +161,7 @@ public class FmodManager : StudioBankLoader
     /// <summary>
     /// Stop the current event without the fade
     /// </summary>
-    /// <param name="bank"></param>
+    /// <param name="_eventInstance"></param>
     public void StopEvent(EventInstance _eventInstance)
     {
         _eventInstance.stop(STOP_MODE.IMMEDIATE);
@@ -221,7 +231,7 @@ public class FmodManager : StudioBankLoader
     /// Lerp the event audio volume from 0 to 1 with a speed parameter
     /// </summary>
     /// <param name="_eventInstance"></param>
-    /// <param name="_step"></param>
+    /// <param name="_step">increesing time from 0 to 1</param>
     /// <returns></returns>
     private IEnumerator C_LerpOverTime(EventInstance _eventInstance, float _step)
     {
@@ -231,17 +241,17 @@ public class FmodManager : StudioBankLoader
         const float targetVolume = 1;
         while (elapsedTime < _step)
         {
-            //UnityEngine.Debug.LogError(currentVolume);
             currentVolume = (Mathf.Lerp(startVolume, targetVolume, (elapsedTime / _step)));
             _eventInstance.setVolume(currentVolume);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
     }
-
     /// <summary>
-    /// Set Bus Value
+    /// 
     /// </summary>
+    /// <param name="_bus">Variable instance</param>
+    /// <param name="_path">Channel path</param>
     public void SetBus(Bus _bus, string _path)
     {
         _bus = RuntimeManager.GetBus("bus:/" + _path);

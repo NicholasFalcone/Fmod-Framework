@@ -5,8 +5,6 @@ namespace NetworkingExample
 {
     public class BulletComponent : NetworkBehaviour
     {
-
-
         void OnCollisionEnter(Collision collision)
         {
             var hit = collision.gameObject;
@@ -15,7 +13,6 @@ namespace NetworkingExample
             {
                 health.TakeDamage(10);
             }
-
             Destroy(gameObject);
         }
     }
