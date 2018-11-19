@@ -10,7 +10,8 @@ public class AmbientChanger : MonoBehaviour
     private MovementComponent m_movementComponent;
     [SerializeField]
     private SurfaceType m_ambientType;
-
+    [SerializeField]
+    private SurfaceType m_exitType = SurfaceType.Grass;
     void Awake()
     {
         m_AmbientComponent = FindObjectOfType<AmbientComponent>();
@@ -32,8 +33,8 @@ public class AmbientChanger : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
-            Debug.Log("adawdadadw");
-            m_movementComponent.CheckSurface(m_ambientType);
+            Debug.Log("exit wather collider");
+            m_movementComponent.CheckSurface(m_exitType);
             m_AmbientComponent.ChangeAmbientParameter((int)m_ambientType, 0);
         }
     }

@@ -95,7 +95,21 @@ public class MovementComponent : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, 0.8f, m_walkableLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.8f, m_walkableLayer);
+
+        if (hit.transform == null)
+            return false;
+        else
+        {
+            if (hit.transform.gameObject.tag == "Grass")
+                m_surfaceType = SurfaceType.Grass;
+            else if(hit.transform.gameObject.tag == "Cave")
+                m_surfaceType = SurfaceType.Cave;
+            else
+                m_surfaceType = SurfaceType.Wather;
+            return true;
+
+        }
     }
 
     float _delta = 0;
@@ -111,7 +125,6 @@ public class MovementComponent : MonoBehaviour
         {
             m_onAir = false;
             _delta = 0;
-            Debug.Log("Landing");
             FmodManager.instance.StartEvent(m_jumpEnd);
         }
     }

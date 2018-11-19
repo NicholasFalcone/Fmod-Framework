@@ -8,6 +8,8 @@ TagManager:
   - Ground
   - Stone
   - Metal
+  - Grass
+  - Water
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Water
   - Ground
   - Glass
   - 

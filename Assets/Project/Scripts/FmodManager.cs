@@ -93,19 +93,17 @@ public class FmodManager : StudioBankLoader
         //Set number of parameter
         int _parameterCount;
         _genericEventInstance.fmodEvent.getParameterCount(out _parameterCount);
+        ///Riassigne the lenght of parameter
+        _genericEventInstance.eventParameter = new ParameterInstance[_parameterCount];
+        _genericEventInstance.parameterName = new string[_parameterCount];
 
         if(_parameterCount != 0)
         {
-            for (int i = 0; i < _parameterCount; i++)
-            {
-                GetParameterByCount(ref _genericEventInstance, i);
-            }
+            GetParameterByCount(ref _genericEventInstance, _parameterCount);
         }
         else
             UnityEngine.Debug.LogWarning(_genericEventInstance.eventPath + " has not parameter");
     }
-
-
 
     /// <summary>
     /// Trigger a cue of event
@@ -122,9 +120,14 @@ public class FmodManager : StudioBankLoader
     /// </summary>
     /// <param name="_genericEvent">paramete</param>
     /// <param name="_index">index of paramete</param>
-    public void GetParameterByCount(ref GenericEventMultipleParameter _genericEvent, int _index )
+    public void GetParameterByCount(ref GenericEventMultipleParameter _genericEvent, int _parameterCount )
     {
-        _genericEvent.fmodEvent.getParameterByIndex(_index, out _genericEvent.eventParameter[_index]);
+        for (int i = 0; i < _parameterCount; i++)
+        {
+            _genericEvent.fmodEvent.getParameterByIndex(i, out _genericEvent.eventParameter[i]);
+            _genericEvent.parameterName[i] = _genericEvent.eventParameter[i].ToString();
+        }
+
     }
 
     public void StartEventFade(GenericEvent _genericEvent, float _speed)
