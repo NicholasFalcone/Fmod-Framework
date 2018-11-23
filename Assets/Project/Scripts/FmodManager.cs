@@ -79,6 +79,12 @@ public class FmodManager : StudioBankLoader
     /// <param name="_genericEventInstance"></param>
     public void CreateGenericMonoEventParameterInstance(ref GenericEventMonoParameter _genericEventInstance)
     {
+        if(_genericEventInstance.eventPath == "")
+        {
+            Debug.LogWarning("event path null");
+            return;
+        }
+
         _genericEventInstance.fmodEvent = RuntimeManager.CreateInstance(_genericEventInstance.eventPath);
         _genericEventInstance.fmodEvent.getParameter(_genericEventInstance.parameterName, out _genericEventInstance.eventParameter);
     }
@@ -132,8 +138,11 @@ public class FmodManager : StudioBankLoader
 
     public void StartEventFade(GenericEvent _genericEvent, float _speed)
     {
-        if (_genericEvent == null)
+        if (_genericEvent.fmodEvent.handle == null)
+        {
+            Debug.LogWarning("Fmod event doesent exist");
             return;
+        }
         StartEvent(_genericEvent);
         StartCoroutine(C_LerpOverTime(_genericEvent.fmodEvent, _speed));
     }
@@ -227,6 +236,27 @@ public class FmodManager : StudioBankLoader
     /// <param name="value"></param>
     public void ChangeParameter(ref ParameterInstance _eventParameter, float value)
     {
+        if(_eventParameter.handle == null)
+        {
+            Debug.LogWarning("parament doesen't exist");
+            return;
+        }
+
+        _eventParameter.setValue(value);
+    }
+    /// <summary>
+    /// Chang event parameter with a new value (Integer)
+    /// </summary>
+    /// <param name="_eventParameter"></param>
+    /// <param name="value"></param>
+    public void ChangeParameter(ref ParameterInstance _eventParameter, int value)
+    {
+        if (_eventParameter.handle == null)
+        {
+            Debug.LogWarning("parament doesen't exist");
+            return;
+        }
+
         _eventParameter.setValue(value);
     }
 
