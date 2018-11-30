@@ -7,9 +7,11 @@ namespace FMODUnity
     [AddComponentMenu("FMOD Studio/FMOD Studio Bank Loader")]
     public class StudioBankLoader : MonoBehaviour
     {
-
+        [Header("When you wanna load all event")]
         public LoaderGameEvent LoadEvent;
+        [Header("When you wanna unload all event")]
         public LoaderGameEvent UnloadEvent;
+        [Header("Banks path")]
         [BankRef]
         public List<string> Banks;
         public String CollisionTag;

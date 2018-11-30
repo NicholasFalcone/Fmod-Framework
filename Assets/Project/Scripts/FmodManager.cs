@@ -37,8 +37,13 @@ public class GenericEventMultipleParameter : GenericEvent
 
 public class FmodManager : StudioBankLoader
 {
+    /// <summary>
+    /// singleton
+    /// </summary>
     public static FmodManager instance;
-    
+
+    private string m_busPrefix = "bus:/";
+
     #region Unity Method
     void Awake()
     {
@@ -61,7 +66,6 @@ public class FmodManager : StudioBankLoader
             Debug.LogWarning("[FMOD Manager] All bank was Unloaded");
         }
     }
-
     #endregion
 
     #region SoundMethod
@@ -138,12 +142,15 @@ public class FmodManager : StudioBankLoader
 
     public void StartEventFade(GenericEvent _genericEvent, float _speed)
     {
+        ///check if event is null
         if (_genericEvent.fmodEvent.handle == null)
         {
             Debug.LogWarning("Fmod event doesent exist");
             return;
         }
+        ///Start the current event
         StartEvent(_genericEvent);
+        ///Lerp the event volume from 0 to 1 with a custom speed 
         StartCoroutine(C_LerpOverTime(_genericEvent.fmodEvent, _speed));
     }
 
@@ -155,6 +162,7 @@ public class FmodManager : StudioBankLoader
     {
         if (_genericEvent.fmodEvent.handle != null)
         {
+            ///Start event
             _genericEvent.fmodEvent.start();
         }
         else
@@ -211,6 +219,11 @@ public class FmodManager : StudioBankLoader
             Debug.LogWarning("Path dosen't found");
     }
 
+    /// <summary>
+    /// Play a sound one shot and attach to gameobject
+    /// </summary>
+    /// <param name="_path">event path</param>
+    /// <param name="_gameObject">gameobject to attach</param>
     public void PlaySoundOneShot(string _path, GameObject _gameObject)
     {
         if (_path != "")
@@ -222,8 +235,8 @@ public class FmodManager : StudioBankLoader
     /// <summary>
     /// Attach an event to current transform
     /// </summary>
-    /// <param name="_eventInstance"></param>
-    /// <param name="emitterTransform"></param>
+    /// <param name="_eventInstance">fmod event instance</param>
+    /// <param name="emitterTransform">transform to attach event</param>
     public void AttachSfx(EventInstance _eventInstance, Transform emitterTransform)
     {
         RuntimeManager.AttachInstanceToGameObject(_eventInstance, emitterTransform, GetComponent<Rigidbody2D>());
@@ -287,7 +300,10 @@ public class FmodManager : StudioBankLoader
     /// <param name="_path">Channel path</param>
     public void SetBus(Bus _bus, string _path)
     {
-        _bus = RuntimeManager.GetBus("bus:/" + _path);
+        _bus = RuntimeManager.GetBus(m_busPrefix + _path);
+
+
+
     }
     #endregion
 }
