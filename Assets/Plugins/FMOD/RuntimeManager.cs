@@ -25,7 +25,7 @@ namespace FMODUnity
                 {
                     throw initException;
                 }
-                if (isQuitting)
+                if (isQuitting && Application.isPlaying)
                 {
                     throw new Exception("FMOD Studio attempted access by script to RuntimeManager while application is quitting");
                 }
@@ -50,7 +50,8 @@ namespace FMODUnity
 
                     var gameObject = new GameObject("FMOD.UnityIntegration.RuntimeManager");
                     instance = gameObject.AddComponent<RuntimeManager>();
-                    DontDestroyOnLoad(gameObject);
+                    if(Application.isPlaying)
+                        DontDestroyOnLoad(gameObject);
                     gameObject.hideFlags = HideFlags.HideInHierarchy;
 
                     try

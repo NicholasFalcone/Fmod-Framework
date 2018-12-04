@@ -1,13 +1,20 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(GenericEvent))]
+[CustomEditor(typeof(FmodEvent))]
 [CanEditMultipleObjects]
 public class FmodEventEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        base.OnInspectorGUI();
+        FmodEvent fmodEVent = (FmodEvent)target;
+
+        if (GUILayout.Button("Build Object"))
+        {
+            fmodEVent.InitFmodEvent();
+        }
+
+
     }
 }
