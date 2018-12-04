@@ -10,7 +10,7 @@ public class FmodEventEditor : Editor
         DrawDefaultInspector();
         FmodEvent fmodEVent = (FmodEvent)target;
 
-        if (GUILayout.Button("Build Object"))
+        if (GUILayout.Button("Build Event"))
         {
             fmodEVent.InitFmodEvent();
         }
