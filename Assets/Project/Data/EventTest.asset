@@ -14,5 +14,7 @@ MonoBehaviour:
   m_eventPath: event:/Platform/Player/player_footsteps
   m_hasCue: 0
   m_soundType: 0
-  m_parameterName:
-  - surface
+  m_parameterInfo:
+  - m_parameterName: surface
+    m_minIndex: 1
+    m_maxIndex: 2

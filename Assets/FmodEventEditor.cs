@@ -5,16 +5,24 @@ using UnityEditor;
 [CanEditMultipleObjects]
 public class FmodEventEditor : Editor
 {
+    float scale;
+    FmodEvent fmodEVent;
+    public void OnEnable()
+    {
+        fmodEVent = (FmodEvent)target;
+        scale = fmodEVent.ParameterInfourn[0].Value;
+    }
+
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        FmodEvent fmodEVent = (FmodEvent)target;
 
+        scale = EditorGUILayout.Slider(scale, fmodEVent.ParameterInfourn[0].MinIndex, fmodEVent.ParameterInfourn[0].MaxIndex);
+        
         if (GUILayout.Button("Build Event"))
         {
             fmodEVent.InitFmodEvent();
         }
-
 
     }
 }
