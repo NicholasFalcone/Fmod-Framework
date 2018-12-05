@@ -11,10 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0f02e211787ee4fa74d84cdc8083fe, type: 3}
   m_Name: EventTest
   m_EditorClassIdentifier: 
-  m_eventPath: event:/Platform/Player/player_footsteps
+  m_eventPath: event:/Platform/Enviorment/env_master
   m_hasCue: 0
   m_soundType: 0
   m_parameterInfo:
-  - m_parameterName: surface
-    m_minIndex: 1
-    m_maxIndex: 2
+  - m_parameterName: ambience
+  - m_parameterName: underwater

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using FMOD.Studio;
 using FMODUnity;
-using FMOD;
 using System;
 
 public enum SoundType
@@ -15,9 +14,9 @@ public struct ParameterInfo
 {
     [SerializeField]
     private string m_parameterName;
-    [SerializeField]
+    //[SerializeField]
     private float m_minIndex;
-    [SerializeField]
+    //[SerializeField]
     private float m_maxIndex;
 
     private float m_value;
@@ -45,13 +44,16 @@ public class FmodEvent : ScriptableObject
 
     [SerializeField]
     private EventInstance m_fmodEventInstance;
+
     [SerializeField]
     private ParameterInstance[] m_parameterInstance;
+
     [SerializeField]
     private bool m_hasCue = false;
+
     [SerializeField]
     private SoundType m_soundType;
-    [SerializeField]
+
     private ParameterInfo[] m_parameterInfo;
 
     public bool HasCue { get { return m_hasCue; } set { m_hasCue = false; } }
@@ -60,15 +62,15 @@ public class FmodEvent : ScriptableObject
     public ParameterInstance[] ParamenterInstance { get { return m_parameterInstance; } set { m_parameterInstance = value; } }
     public ParameterInfo[] ParameterInfourn{ get { return m_parameterInfo; } }
 
+    #region Public-Method
     /// <summary>
-    /// Called to initialize the fmod event
+    /// Called to initialize the fmod event amd parameters
     /// </summary>
     public void InitFmodEvent()
     {
         ///Check if event path is different of null
         if (m_eventPath == null)
             UnityEngine.Debug.LogError("Event path not available");
-        
         ///Create the event
         m_fmodEventInstance = RuntimeManager.CreateInstance(m_eventPath);
         ///Get event info: is3D, hasCue, exc...
@@ -83,8 +85,8 @@ public class FmodEvent : ScriptableObject
         m_parameterInfo = new ParameterInfo[_parameterCount];
         if (m_parameterInstance.Length == 0)
             return;
-
-        ///Set parameter
+        
+        ///foreach parameters Set parameter names and instances
         for (int i = 0; i < _parameterCount; i++)
         {
             m_fmodEventInstance.getParameterByIndex(i, out m_parameterInstance[i]);
@@ -92,11 +94,26 @@ public class FmodEvent : ScriptableObject
         }
     }
 
+    /// <summary>
+    /// Used to play a test audio
+    /// </summary>
     public void PlayAudio()
     {
+        Debug.Log("event has handle = " +m_fmodEventInstance.hasHandle());
+
+        if (m_fmodEventInstance.hasHandle())
+        {
+            RuntimeManager.CreateInstance(m_eventPath);
+            RuntimeManager.PlayOneShot(m_eventPath,Vector2.zero);
+            m_fmodEventInstance.start();
+        }
+        else
+        {
+            Debug.LogWarning("Build this event befor play!");
+        }
 
     }
-
+    #endregion
 
     #region Private-Method
     /// <summary>
