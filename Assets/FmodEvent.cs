@@ -92,6 +92,11 @@ public class FmodEvent : ScriptableObject
         }
     }
 
+    public void PlayAudio()
+    {
+
+    }
+
 
     #region Private-Method
     /// <summary>

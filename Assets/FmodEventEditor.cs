@@ -24,5 +24,10 @@ public class FmodEventEditor : Editor
             fmodEVent.InitFmodEvent();
         }
 
+        if (GUILayout.Button("PlayAudio"))
+        {
+
+        }
+
     }
 }
