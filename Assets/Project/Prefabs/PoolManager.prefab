@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1802428548859112}
+  m_IsPrefabAsset: 1
+--- !u!1 &1802428548859112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4821417195096266}
+  - component: {fileID: 114580271909931482}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4821417195096266
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1802428548859112}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.400115, y: 2.102344, z: -32.196114}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114580271909931482
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1802428548859112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7805750497563734bbd5dadb06981b23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool:
+  - poolName: VFXSand
+    quantity: 50
+    prf_Object: {fileID: 1000012142692022, guid: a475880e7da0e9548aa05cb7933752cd,
+      type: 2}
+    connection: {fileID: 0}
+  - poolName: VFXStone
+    quantity: 50
+    prf_Object: {fileID: 1000010844420130, guid: 4edabb1c0dde62743b137378c7d22980,
+      type: 2}
+    connection: {fileID: 0}
+  - poolName: VFXMetal
+    quantity: 50
+    prf_Object: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d,
+      type: 2}
+    connection: {fileID: 0}
+  - poolName: VFXMuzzle
+    quantity: 50
+    prf_Object: {fileID: 1000010254994808, guid: 9defeac88977c0d448aa4541073ee9e4,
+      type: 2}
+    connection: {fileID: 0}
+  - poolName: VFXEjection
+    quantity: 50
+    prf_Object: {fileID: 1000013947318026, guid: 7ca96822084510147adb2aea03d45e3b,
+      type: 2}
+    connection: {fileID: 0}
+  - poolName: Bullet
+    quantity: 50
+    prf_Object: {fileID: 1373084919334650, guid: 696899426eba8d043b082791dfc14e9c,
+      type: 2}
+    connection: {fileID: 0}
+  items: []

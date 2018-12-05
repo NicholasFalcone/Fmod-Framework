@@ -14,6 +14,3 @@ MonoBehaviour:
   m_eventPath: event:/Platform/Enviorment/env_master
   m_hasCue: 0
   m_soundType: 0
-  m_parameterInfo:
-  - m_parameterName: ambience
-  - m_parameterName: underwater

@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 
 namespace FMODUnity
 {
+    [ExecuteInEditMode]
     [AddComponentMenu("")]
     public class RuntimeManager : MonoBehaviour
     {
@@ -25,7 +26,7 @@ namespace FMODUnity
                 {
                     throw initException;
                 }
-                if (isQuitting && Application.isPlaying)
+                if (isQuitting && !Application.isEditor)
                 {
                     throw new Exception("FMOD Studio attempted access by script to RuntimeManager while application is quitting");
                 }

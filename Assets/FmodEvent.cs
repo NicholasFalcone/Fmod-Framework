@@ -12,11 +12,9 @@ public enum SoundType
 [System.Serializable]
 public struct ParameterInfo
 {
-    [SerializeField]
+    //[SerializeField]
     private string m_parameterName;
-    //[SerializeField]
     private float m_minIndex;
-    //[SerializeField]
     private float m_maxIndex;
 
     private float m_value;
@@ -60,7 +58,7 @@ public class FmodEvent : ScriptableObject
     public string EventPath { get { return m_eventPath; } set { m_eventPath = value; } }
     public EventInstance FmodEventInstance { get { return m_fmodEventInstance; } set { m_fmodEventInstance = value; } }
     public ParameterInstance[] ParamenterInstance { get { return m_parameterInstance; } set { m_parameterInstance = value; } }
-    public ParameterInfo[] ParameterInfourn{ get { return m_parameterInfo; } }
+    public ParameterInfo[] ParameterInfo{ get { return m_parameterInfo; } }
 
     #region Public-Method
     /// <summary>
@@ -99,20 +97,35 @@ public class FmodEvent : ScriptableObject
     /// </summary>
     public void PlayAudio()
     {
-        Debug.Log("event has handle = " +m_fmodEventInstance.hasHandle());
+        //Debug.Log("event has handle = " +m_fmodEventInstance.hasHandle());
 
         if (m_fmodEventInstance.hasHandle())
-        {
-            RuntimeManager.CreateInstance(m_eventPath);
-            RuntimeManager.PlayOneShot(m_eventPath,Vector2.zero);
             m_fmodEventInstance.start();
-        }
         else
-        {
             Debug.LogWarning("Build this event befor play!");
-        }
 
     }
+
+    public void ChangeParameter(int _parameterIndex, float _value)
+    {
+        if(_parameterIndex <= m_parameterInstance.Length)
+            m_parameterInstance[_parameterIndex].setValue(_value);
+    }
+
+    public void StopAudio()
+    {
+        if (m_fmodEventInstance.hasHandle())
+        {
+            m_fmodEventInstance.stop(STOP_MODE.IMMEDIATE);
+        }
+    }
+
+    public bool SliderValueChanged()
+    {
+
+        return false;
+    }
+
     #endregion
 
     #region Private-Method
