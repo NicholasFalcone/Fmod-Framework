@@ -10,55 +10,74 @@ public enum SoundType
 }
 
 [System.Serializable]
-public struct ParameterInfo
+public struct ParameterData
 {
-    //[SerializeField]
+    //Instance of parameter
+    private ParameterInstance m_parameterInstance;
     private string m_parameterName;
     private float m_minIndex;
     private float m_maxIndex;
-
     private float m_value;
 
     public string ParameterName   { get { return m_parameterName; } }
     public float MinIndex         { get { return m_minIndex; } }
     public float MaxIndex         { get { return m_maxIndex; } }
-    public float Value            { get { return m_value; } }
+    public float Value            { get { return m_value; }
+                                    set { m_value = value;
+                                        m_parameterInstance.setValue(Value); }
+                                    }
 
-    public ParameterInfo(string _parameterName, float _minParameter, float _maxParameter, float _currentVale)
+    public ParameterData(ParameterInstance _parameterInstance, string _parameterName, float _minParameter, float _maxParameter, float _currentVale)
     {
-        m_parameterName =   _parameterName;
-        m_minIndex      =   _minParameter;
-        m_maxIndex      =   _maxParameter;
-        m_value         =   _currentVale;
+        m_parameterInstance =   _parameterInstance;
+        m_parameterName     =   _parameterName;
+        m_minIndex          =   _minParameter;
+        m_maxIndex          =   _maxParameter;
+        m_value             =   _currentVale;
     }
 }
 
 [CreateAssetMenu(menuName ="FmodEvent/NewEvent")]
 public class FmodEvent : ScriptableObject
 {
+    #region Private-Field
+    
+    //Event Path
     [EventRef]
     [SerializeField]
     private String m_eventPath;
-
+    //FMOD event Instance
     [SerializeField]
     private EventInstance m_fmodEventInstance;
-
+    //Check if has cue
     [SerializeField]
-    private ParameterInstance[] m_parameterInstance;
+    private bool m_hasCue;
 
-    [SerializeField]
-    private bool m_hasCue = false;
-
+    //check if is 2D or 3D event
     [SerializeField]
     private SoundType m_soundType;
+    //Minimum distance to hear this event
+    [SerializeField]
+    private float m_minumDistance;
+    //Maximum distance to hear this event
+    [SerializeField]
+    private float m_maxDistance;
+    //Number of instance of this event 
+    [SerializeField]
+    private int m_instanceCount;
 
-    private ParameterInfo[] m_parameterInfo;
 
+    //Collection of all parameter on this event
+    private ParameterData[] m_parameterInfo;
+    #endregion
+
+
+    #region Public-Field
     public bool HasCue { get { return m_hasCue; } set { m_hasCue = false; } }
     public string EventPath { get { return m_eventPath; } set { m_eventPath = value; } }
     public EventInstance FmodEventInstance { get { return m_fmodEventInstance; } set { m_fmodEventInstance = value; } }
-    public ParameterInstance[] ParamenterInstance { get { return m_parameterInstance; } set { m_parameterInstance = value; } }
-    public ParameterInfo[] ParameterInfo{ get { return m_parameterInfo; } }
+    public ParameterData[] ParameterInfo{ get { return m_parameterInfo; } }
+    #endregion
 
     #region Public-Method
     /// <summary>
@@ -66,39 +85,43 @@ public class FmodEvent : ScriptableObject
     /// </summary>
     public void InitFmodEvent()
     {
+        if (m_fmodEventInstance.hasHandle())
+            m_fmodEventInstance.release();
+
         ///Check if event path is different of null
         if (m_eventPath == null)
             UnityEngine.Debug.LogError("Event path not available");
+
         ///Create the event
         m_fmodEventInstance = RuntimeManager.CreateInstance(m_eventPath);
+        
         ///Get event info: is3D, hasCue, exc...
         GetEventInfo(m_fmodEventInstance);
+        
         ///Create all parameters
         ///and Set number of parameter
         int _parameterCount;
         m_fmodEventInstance.getParameterCount(out _parameterCount);
-        ///Riassigne the lenght of parameter
-        m_parameterInstance = new ParameterInstance[_parameterCount];
-        ///Set Lenght of parameter name on inspector
-        m_parameterInfo = new ParameterInfo[_parameterCount];
-        if (m_parameterInstance.Length == 0)
+
+        ///Set Lenght of ParameterInfo on inspector
+        m_parameterInfo = new ParameterData[_parameterCount];
+        if (_parameterCount == 0)
             return;
         
-        ///foreach parameters Set parameter names and instances
+        ///foreach parameters Set ParameterInfo and ParameterInstances
         for (int i = 0; i < _parameterCount; i++)
         {
-            m_fmodEventInstance.getParameterByIndex(i, out m_parameterInstance[i]);
-            m_parameterInfo[i] = GetParameterName(m_parameterInstance[i]);
+            ParameterInstance _currentParameter;
+            m_fmodEventInstance.getParameterByIndex(i, out _currentParameter);
+            m_parameterInfo[i] = GetParameterName(_currentParameter);
         }
     }
 
     /// <summary>
-    /// Used to play a test audio
+    /// Used to play a Event
     /// </summary>
     public void PlayAudio()
     {
-        //Debug.Log("event has handle = " +m_fmodEventInstance.hasHandle());
-
         if (m_fmodEventInstance.hasHandle())
             m_fmodEventInstance.start();
         else
@@ -106,12 +129,9 @@ public class FmodEvent : ScriptableObject
 
     }
 
-    public void ChangeParameter(int _parameterIndex, float _value)
-    {
-        if(_parameterIndex <= m_parameterInstance.Length)
-            m_parameterInstance[_parameterIndex].setValue(_value);
-    }
-
+    /// <summary>
+    /// Used to stop a played Event
+    /// </summary>
     public void StopAudio()
     {
         if (m_fmodEventInstance.hasHandle())
@@ -120,12 +140,30 @@ public class FmodEvent : ScriptableObject
         }
     }
 
-    public bool SliderValueChanged()
+    /// <summary>
+    /// Used to change parameter
+    /// </summary>
+    /// <param name="_parameterName">parameter name</param>
+    /// <param name="_value">next value</param>
+    public void ChangeParameter(string _parameterName, float _value)
     {
-
-        return false;
+        int parameterIndex = 0;
+        if (HasParameter(_parameterName, out parameterIndex))
+            ParameterInfo[parameterIndex].Value = _value;
     }
 
+    /// <summary>
+    /// Used to change parameter
+    /// </summary>
+    /// <param name="_parameterIndex">parameter index on array</param>
+    /// <param name="_value">next value</param>
+    public void ChangeParameter(int _parameterIndex, float _value)
+    {
+        if (_parameterIndex < ParameterInfo.Length)
+            ParameterInfo[_parameterIndex].Value = _value;
+        else
+            Debug.LogError("Parameter index out of range");
+    }
     #endregion
 
     #region Private-Method
@@ -135,9 +173,21 @@ public class FmodEvent : ScriptableObject
     /// <param name="eventInstance">current EvnentInstance</param>
     private void GetEventInfo(EventInstance eventInstance)
     {
+        ///Create EventDescription
         EventDescription eventDescription = new EventDescription();
         eventInstance.getDescription(out eventDescription);
+
+        ///Get min and max distance
+        eventDescription.getMaximumDistance(out m_maxDistance);
+        eventDescription.getMinimumDistance(out m_minumDistance);
+
+        ///Get number of instance enabled
+        eventDescription.getInstanceCount(out m_instanceCount);
+        
+        ///Check if has cue
         eventDescription.hasCue(out m_hasCue);
+        
+        ///Check if is 3D or 2D
         bool _is3D = false;
         eventDescription.is3D(out _is3D);
         if (_is3D)
@@ -154,15 +204,29 @@ public class FmodEvent : ScriptableObject
     /// </summary>
     /// <param name="instance">current ParameterInstance</param>
     /// <returns></returns>
-    private ParameterInfo GetParameterName(ParameterInstance instance) 
+    private ParameterData GetParameterName(ParameterInstance instance) 
     {
         ///Create the parameter description
         ///useflue to get all information
         PARAMETER_DESCRIPTION desc = new PARAMETER_DESCRIPTION();
         instance.getDescription(out desc);
-        ParameterInfo parameterInfo = new ParameterInfo(desc.name, desc.minimum, desc.maximum, desc.defaultvalue);
+        ParameterData parameterInfo = new ParameterData(instance, desc.name, desc.minimum, desc.maximum, desc.defaultvalue);
         return parameterInfo;
     }
-    #endregion
 
+    private bool HasParameter(string _name, out int index)
+    {
+        for (int i = 0; i < m_parameterInfo.Length; i++)
+        {
+            if (m_parameterInfo[i].ParameterName == _name)
+            {
+                index = i;
+                return true;
+            }
+        }
+        Debug.LogError("Parameter dosen't exist");
+        index = -1;
+        return false;
+    }
+    #endregion
 }

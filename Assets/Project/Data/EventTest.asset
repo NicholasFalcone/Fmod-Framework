@@ -14,3 +14,6 @@ MonoBehaviour:
   m_eventPath: event:/Platform/Enviorment/env_master
   m_hasCue: 0
   m_soundType: 0
+  m_minumDistance: 0
+  m_maxDistance: 0
+  m_instanceCount: 4

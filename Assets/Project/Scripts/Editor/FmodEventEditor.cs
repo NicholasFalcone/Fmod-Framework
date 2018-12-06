@@ -15,6 +15,7 @@ public class FmodEventEditor : Editor
     public void OnEnable()
     {
         m_fmodEVent = (FmodEvent)target;
+        m_oldEventPath = m_fmodEVent.EventPath;
         InitVariable();
     }
 
