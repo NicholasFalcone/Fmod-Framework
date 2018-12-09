@@ -25,7 +25,7 @@ public struct ParameterData
     public float Value            { get { return m_value; }
                                     set { m_value = value;
                                         m_parameterInstance.setValue(Value); }
-                                    }
+                                 }
 
     public ParameterData(ParameterInstance _parameterInstance, string _parameterName, float _minParameter, float _maxParameter, float _currentVale)
     {
@@ -52,7 +52,6 @@ public class FmodEvent : ScriptableObject
     //Check if has cue
     [SerializeField]
     private bool m_hasCue;
-
     //check if is 2D or 3D event
     [SerializeField]
     private SoundType m_soundType;
@@ -66,11 +65,9 @@ public class FmodEvent : ScriptableObject
     [SerializeField]
     private int m_instanceCount;
 
-
     //Collection of all parameter on this event
     private ParameterData[] m_parameterInfo;
     #endregion
-
 
     #region Public-Field
     public bool HasCue { get { return m_hasCue; } set { m_hasCue = false; } }
@@ -80,6 +77,7 @@ public class FmodEvent : ScriptableObject
     #endregion
 
     #region Public-Method
+
     /// <summary>
     /// Called to initialize the fmod event amd parameters
     /// </summary>
@@ -183,7 +181,7 @@ public class FmodEvent : ScriptableObject
 
         ///Get number of instance enabled
         eventDescription.getInstanceCount(out m_instanceCount);
-        
+
         ///Check if has cue
         eventDescription.hasCue(out m_hasCue);
         

@@ -16,4 +16,4 @@ MonoBehaviour:
   m_soundType: 0
   m_minumDistance: 0
   m_maxDistance: 0
-  m_instanceCount: 4
+  m_instanceCount: 3
