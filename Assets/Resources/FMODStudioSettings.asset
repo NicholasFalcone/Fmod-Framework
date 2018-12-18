@@ -15,7 +15,7 @@ MonoBehaviour:
   HasPlatforms: 0
   sourceProjectPath: 
   SourceProjectPathUnformatted: 
-  SourceBankPathUnformatted: Assets/Sound/Desktop
+  SourceBankPathUnformatted: C:\Users\nicho\Desktop\TEST\Desktop
   AutomaticEventLoading: 1
   AutomaticSampleLoading: 0
   ImportType: 0
@@ -55,5 +55,11 @@ MonoBehaviour:
   Plugins: []
   MasterBank: Master Bank
   Banks:
-  - Shooter
-  - Platform
+  - Character
+  - Weapons
+  - Music
+  - Vehicles
+  - VO_Menu_English
+  - Object Panning
+  - Surround_Ambience
+  - UI_Menu

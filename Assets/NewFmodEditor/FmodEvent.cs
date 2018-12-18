@@ -49,6 +49,9 @@ public class FmodEvent : ScriptableObject
     //FMOD event Instance
     [SerializeField]
     private EventInstance m_fmodEventInstance;
+    [SerializeField]
+    private string[] eventNote;
+
     //Check if has cue
     [SerializeField]
     private bool m_hasCue;
@@ -184,7 +187,21 @@ public class FmodEvent : ScriptableObject
 
         ///Check if has cue
         eventDescription.hasCue(out m_hasCue);
-        
+
+        int count;
+        eventDescription.getUserPropertyCount(out count);
+        Debug.Log(count);
+
+        USER_PROPERTY[] userProperty = new USER_PROPERTY[count];
+        eventNote = new string[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            eventDescription.getUserPropertyByIndex(i , out userProperty[i]);
+            eventNote[i] = (string)userProperty[i].name;
+
+        }
+
         ///Check if is 3D or 2D
         bool _is3D = false;
         eventDescription.is3D(out _is3D);

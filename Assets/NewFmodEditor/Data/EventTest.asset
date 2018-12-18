@@ -11,9 +11,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0f02e211787ee4fa74d84cdc8083fe, type: 3}
   m_Name: EventTest
   m_EditorClassIdentifier: 
-  m_eventPath: event:/Platform/Enviorment/env_master
+  m_eventPath: event:/Character/Hand Foley/Doorknob
+  eventNote:
+  - Direction=0
+  - Direction=1
   m_hasCue: 0
-  m_soundType: 0
-  m_minumDistance: 0
-  m_maxDistance: 0
-  m_instanceCount: 3
+  m_soundType: 1
+  m_minumDistance: 1
+  m_maxDistance: 20
+  m_instanceCount: 6
