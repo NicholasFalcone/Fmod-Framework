@@ -41,7 +41,6 @@ public struct ParameterData
 public class FmodEvent : ScriptableObject
 {
     #region Private-Field
-    
     //Event Path
     [EventRef]
     [SerializeField]
@@ -49,12 +48,15 @@ public class FmodEvent : ScriptableObject
     //FMOD event Instance
     [SerializeField]
     private EventInstance m_fmodEventInstance;
+    //User propery name
     [SerializeField]
-    private string[] eventNote;
+    private string[] m_userProperty;
 
     //Check if has cue
     [SerializeField]
     private bool m_hasCue;
+    //Check this flag if you wanna rename your scriptableObject like the FmodEvent
+    private bool m_rename = true;
     //check if is 2D or 3D event
     [SerializeField]
     private SoundType m_soundType;
@@ -77,6 +79,8 @@ public class FmodEvent : ScriptableObject
     public string EventPath { get { return m_eventPath; } set { m_eventPath = value; } }
     public EventInstance FmodEventInstance { get { return m_fmodEventInstance; } set { m_fmodEventInstance = value; } }
     public ParameterData[] ParameterInfo{ get { return m_parameterInfo; } }
+    public float MaxDistance { get { return m_maxDistance; } }
+    public bool RenameFile { get { return m_rename; } set { m_rename = value; } }
     #endregion
 
     #region Public-Method
@@ -86,6 +90,7 @@ public class FmodEvent : ScriptableObject
     /// </summary>
     public void InitFmodEvent()
     {
+
         if (m_fmodEventInstance.hasHandle())
             m_fmodEventInstance.release();
 
@@ -109,6 +114,8 @@ public class FmodEvent : ScriptableObject
         if (_parameterCount == 0)
             return;
         
+        
+
         ///foreach parameters Set ParameterInfo and ParameterInstances
         for (int i = 0; i < _parameterCount; i++)
         {
@@ -160,6 +167,8 @@ public class FmodEvent : ScriptableObject
     /// <param name="_value">next value</param>
     public void ChangeParameter(int _parameterIndex, float _value)
     {
+        Debug.Log("Changeing + " + _parameterIndex + " to " + _value);  
+
         if (_parameterIndex < ParameterInfo.Length)
             ParameterInfo[_parameterIndex].Value = _value;
         else
@@ -188,18 +197,17 @@ public class FmodEvent : ScriptableObject
         ///Check if has cue
         eventDescription.hasCue(out m_hasCue);
 
-        int count;
-        eventDescription.getUserPropertyCount(out count);
-        Debug.Log(count);
+        ///Get all userPropery
+        int _count;
+        eventDescription.getUserPropertyCount(out _count);
 
-        USER_PROPERTY[] userProperty = new USER_PROPERTY[count];
-        eventNote = new string[count];
+        USER_PROPERTY[] userProperty = new USER_PROPERTY[_count];
+        m_userProperty = new string[_count];
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < _count; i++)
         {
             eventDescription.getUserPropertyByIndex(i , out userProperty[i]);
-            eventNote[i] = (string)userProperty[i].name;
-
+            m_userProperty[i] = (string)userProperty[i].name;
         }
 
         ///Check if is 3D or 2D
@@ -229,6 +237,12 @@ public class FmodEvent : ScriptableObject
         return parameterInfo;
     }
 
+    /// <summary>
+    /// Check if has parameter and return the index
+    /// </summary>
+    /// <param name="_name"></param>
+    /// <param name="index"></param>
+    /// <returns></returns>
     private bool HasParameter(string _name, out int index)
     {
         for (int i = 0; i < m_parameterInfo.Length; i++)

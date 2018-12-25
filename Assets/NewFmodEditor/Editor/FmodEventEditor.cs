@@ -16,7 +16,9 @@ public class FmodEventEditor : Editor
     {
         m_fmodEVent = (FmodEvent)target;
         m_oldEventPath = m_fmodEVent.EventPath;
-        InitVariable();
+
+        if(!Application.isPlaying)
+            InitVariable();
     }
 
     public override void OnInspectorGUI()
@@ -24,6 +26,9 @@ public class FmodEventEditor : Editor
         DrawDefaultInspector();
 
         /*0*/EditorGUILayout.BeginVertical();
+
+        GUILayout.Label("Do you wanna rename your FmodEvent?");
+        m_fmodEVent.RenameFile = EditorGUILayout.Toggle("Rename?" ,m_fmodEVent.RenameFile);
 
         ///Check if event path is changed
         if (m_oldEventPath != m_fmodEVent.EventPath)
@@ -38,6 +43,7 @@ public class FmodEventEditor : Editor
         /*1*/EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Build Event"))
         {
+
             m_fmodEVent.InitFmodEvent();
             InitVariable();
             m_fmodEVent.StopAudio();
@@ -58,6 +64,20 @@ public class FmodEventEditor : Editor
         /*0*/EditorGUILayout.EndVertical();
     }
 
+    private void RenameFile()
+    {
+        string[] path = m_fmodEVent.EventPath.Split('/');
+
+        if (m_fmodEVent.name == path[path.Length - 1])
+            return;
+
+        string assetPath = AssetDatabase.GetAssetPath(m_fmodEVent);
+        Debug.Log(assetPath);
+        AssetDatabase.RenameAsset(assetPath, path[path.Length-1]);
+        AssetDatabase.SaveAssets();
+    }
+
+
     private void ShowParameterSlider()
     {
         if (m_sliderValue.Length == 0)
@@ -70,15 +90,21 @@ public class FmodEventEditor : Editor
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(m_fmodEVent.ParameterInfo[i].ParameterName);
-            m_sliderValue[i] = EditorGUILayout.Slider(m_sliderValue[i], m_fmodEVent.ParameterInfo[i].MinIndex, m_fmodEVent.ParameterInfo[i].MaxIndex);
+            m_sliderValue[i] = EditorGUILayout.Slider(m_fmodEVent.ParameterInfo[i].Value, m_fmodEVent.ParameterInfo[i].MinIndex, m_fmodEVent.ParameterInfo[i].MaxIndex);
             EditorGUILayout.EndHorizontal();
-            m_fmodEVent.ChangeParameter(i, m_sliderValue[i]);
+            if(!Application.isPlaying)
+            {
+                m_fmodEVent.ChangeParameter(i, m_sliderValue[i]);
+            }
             EditorUtility.SetDirty(m_fmodEVent);
         }
     }
 
     private void InitVariable()
     {
+        if (m_fmodEVent.RenameFile)
+            RenameFile();
+
         m_fmodEVent.StopAudio();
 
         m_fmodEVent.InitFmodEvent();
@@ -90,6 +116,7 @@ public class FmodEventEditor : Editor
         {
             m_sliderValue[i] = m_fmodEVent.ParameterInfo[i].Value;
         }
+
     }
 
 }
