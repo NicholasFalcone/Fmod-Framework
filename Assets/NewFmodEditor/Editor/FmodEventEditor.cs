@@ -15,10 +15,11 @@ public class FmodEventEditor : Editor
     public void OnEnable()
     {
         m_fmodEVent = (FmodEvent)target;
+        if (m_fmodEVent.EventPath == "")
+            return;
         m_oldEventPath = m_fmodEVent.EventPath;
 
-        if(!Application.isPlaying)
-            InitVariable();
+        InitVariable();
     }
 
     public override void OnInspectorGUI()
@@ -27,15 +28,21 @@ public class FmodEventEditor : Editor
 
         /*0*/EditorGUILayout.BeginVertical();
 
-        GUILayout.Label("Do you wanna rename your FmodEvent?");
-        m_fmodEVent.RenameFile = EditorGUILayout.Toggle("Rename?" ,m_fmodEVent.RenameFile);
+        m_fmodEVent.RenameFile = EditorGUILayout.Toggle("Do you wanna rename your FmodEvent?", m_fmodEVent.RenameFile);
+
+
+
+        EditorGUILayout.Toggle("Has Cue", m_fmodEVent.HasCue);
 
         ///Check if event path is changed
         if (m_oldEventPath != m_fmodEVent.EventPath)
             InitVariable();
         EditorGUILayout.Space();
-        ///Create a slider for all parameter
-        ShowParameterSlider();
+        if (m_fmodEVent.EventPath != "")
+        {
+            ///Create a slider for all parameter
+            ShowParameterSlider();
+        }
 
 
         EditorGUILayout.Space();
@@ -59,8 +66,18 @@ public class FmodEventEditor : Editor
         {
             m_fmodEVent.StopAudio();
         }
+        /*1*/
+        EditorGUILayout.EndHorizontal();
 
-        /*1*/EditorGUILayout.EndHorizontal();
+        if (m_fmodEVent.HasCue)
+        {
+            if(GUILayout.Button("TriggerCue", GUILayout.Width(80), GUILayout.Height(80)))
+            {
+                m_fmodEVent.TriggerCue();
+            }
+        }
+
+
         /*0*/EditorGUILayout.EndVertical();
     }
 
@@ -104,8 +121,8 @@ public class FmodEventEditor : Editor
     {
         if (m_fmodEVent.RenameFile)
             RenameFile();
-
-        m_fmodEVent.StopAudio();
+        if(!Application.isPlaying)
+            m_fmodEVent.StopAudio();
 
         m_fmodEVent.InitFmodEvent();
 

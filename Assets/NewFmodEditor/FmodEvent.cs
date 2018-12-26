@@ -53,7 +53,6 @@ public class FmodEvent : ScriptableObject
     private string[] m_userProperty;
 
     //Check if has cue
-    [SerializeField]
     private bool m_hasCue;
     //Check this flag if you wanna rename your scriptableObject like the FmodEvent
     private bool m_rename = true;
@@ -137,6 +136,14 @@ public class FmodEvent : ScriptableObject
 
     }
 
+    public void TriggerCue()
+    {
+        if (HasCue)
+            m_fmodEventInstance.triggerCue();
+        else
+            Debug.LogWarning("This fmod_Event doesn't has cue");
+    }
+
     /// <summary>
     /// Used to stop a played Event
     /// </summary>
@@ -164,13 +171,16 @@ public class FmodEvent : ScriptableObject
     /// Used to change parameter
     /// </summary>
     /// <param name="_parameterIndex">parameter index on array</param>
-    /// <param name="_value">next value</param>
-    public void ChangeParameter(int _parameterIndex, float _value)
+    /// <param name="_nextValue">next value</param>
+    public void ChangeParameter(int _parameterIndex, float _nextValue)
     {
-        Debug.Log("Changeing + " + _parameterIndex + " to " + _value);  
+        //Debug.Log("Changeing + " + _parameterIndex + " to " + _nextValue);  
 
         if (_parameterIndex < ParameterInfo.Length)
-            ParameterInfo[_parameterIndex].Value = _value;
+        {
+            if(ParameterInfo[_parameterIndex].Value != _nextValue)
+                ParameterInfo[_parameterIndex].Value = _nextValue;
+        }
         else
             Debug.LogError("Parameter index out of range");
     }
