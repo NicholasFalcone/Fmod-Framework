@@ -124,6 +124,11 @@ public class FmodEvent : ScriptableObject
         }
     }
 
+    public void AttachToGameObject(Transform _transform = null, Rigidbody _rigidBody = null)
+    {
+        RuntimeManager.AttachInstanceToGameObject(m_fmodEventInstance, _transform, _rigidBody);
+    }
+
     /// <summary>
     /// Used to play a Event
     /// </summary>
