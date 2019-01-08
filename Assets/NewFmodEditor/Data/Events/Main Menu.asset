@@ -13,8 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_eventPath: event:/VO/English/Main Menu
   m_userProperty: []
-  m_hasCue: 0
-  m_rename: 1
   m_soundType: 0
   m_minumDistance: 0
   m_maxDistance: 0
