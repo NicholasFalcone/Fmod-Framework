@@ -11,7 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0f02e211787ee4fa74d84cdc8083fe, type: 3}
   m_Name: Radio Station
   m_EditorClassIdentifier: 
-  m_eventPath: event:/Music/Radio Station
+  m_eventPath: event:/Music/Music
   m_userProperty: []
-  m_soundType: 0
-  m_instanceCount: 1

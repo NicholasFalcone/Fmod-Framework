@@ -29,6 +29,12 @@ public class FmodEmitter : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        fmodEvent.ReleaseEvent();
+    }
+
+
     private void OnDrawGizmos()
     {
         if(fmodEvent != null && fmodEvent.MaxDistance > 0)

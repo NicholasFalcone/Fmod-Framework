@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 
 namespace FmodEditor
 {
@@ -11,6 +10,7 @@ namespace FmodEditor
         private void OnEnable()
         {
             m_fmodBus = (FmodBus)target;
+            BuildingBus();
         }
 
         public override void OnInspectorGUI()
@@ -19,13 +19,13 @@ namespace FmodEditor
             Init();
         }
 
-
         private void Init()
         {
             foreach (BusData data in m_fmodBus.busData)
             {
                 EditorGUILayout.TextArea(data.BusName);
                 ShowBusInfo(data);
+                EditorUtility.SetDirty(target);
             }
         }
 

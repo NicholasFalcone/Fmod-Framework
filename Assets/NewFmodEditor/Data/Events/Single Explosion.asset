@@ -13,5 +13,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_eventPath: event:/Explosions/Single Explosion
   m_userProperty: []
-  m_volume: 0
-  m_maxVolume: 0

@@ -3,7 +3,6 @@ using UnityEngine;
 using FMOD.Studio;
 using System.Collections.Generic;
 
-
 namespace FmodEditor
 {
     /// <summary>
@@ -28,8 +27,8 @@ namespace FmodEditor
         #region Public-Field
         public string BusName { get { return m_busPath; } }
         public Bus Bus { get { return m_bus; } }
-        public float BusVolume { get { return m_busVolume; } set { m_busVolume = value; } }
-        public bool Muted { get { return m_isMuted; } set { m_isMuted = value; } }
+        public float BusVolume { get { return m_busVolume; } set { m_busVolume = value; m_bus.setVolume(value); } }
+        public bool Muted { get { return m_isMuted; } set { m_isMuted = value; m_bus.setMute(value);} }
 
         public BusData(string _busPath, Bus _currentBus, FMOD.ChannelGroup _channelGroup, float _volume, bool _muted)
         {
@@ -48,7 +47,6 @@ namespace FmodEditor
         [HideInInspector]
         public List<BusData> busData;
         
-        #if UNITY_EDITOR
         /// <summary>
         /// Initialize all Data
         /// </summary>
@@ -84,12 +82,6 @@ namespace FmodEditor
                     busData.Add(new BusData(busPath, busses[currentBus], channelGroup, 1, false));
                 }
             }
-        }
-        #endif
-
-        public void ChangeBusVolume(Bus _bus, float _nextVolume)
-        {
-            _bus.setVolume(_nextVolume);
         }
     }
 }

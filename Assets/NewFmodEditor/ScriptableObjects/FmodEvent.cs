@@ -122,8 +122,6 @@ namespace FmodEditor
             if (_parameterCount == 0)
                 return;
 
-
-
             ///foreach parameters Set ParameterInfo and ParameterInstances
             for (int i = 0; i < _parameterCount; i++)
             {
@@ -147,7 +145,28 @@ namespace FmodEditor
                 m_fmodEventInstance.start();
             else
                 Debug.LogWarning("Build this event befor play!");
+        }
 
+        /// <summary>
+        /// Check if this event is playing
+        /// </summary>
+        /// <returns></returns>
+        public bool IsPlaying()
+        {
+            FMOD.Studio.PLAYBACK_STATE playbackState;
+            m_fmodEventInstance.getPlaybackState(out playbackState);
+            return playbackState != FMOD.Studio.PLAYBACK_STATE.STOPPED;
+        }
+
+        /// <summary>
+        /// Used to destroy the memory reference of this event
+        /// </summary>
+        public void ReleaseEvent()
+        {
+            if (m_fmodEventInstance.hasHandle())
+            {
+                m_fmodEventInstance.release();
+            }
         }
 
         public void TriggerCue()
