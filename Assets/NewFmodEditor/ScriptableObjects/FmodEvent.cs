@@ -28,7 +28,7 @@ namespace FmodEditor
             get { return m_value; }
             set {
                 m_value = value;
-                m_parameterInstance.setValue(Value);
+                m_parameterInstance.setValue(value);
             }
         }
 
@@ -77,18 +77,18 @@ namespace FmodEditor
         #endregion
 
         #region Public-Field
-        public bool HasCue { get { return m_hasCue; } set { m_hasCue = false; } }
-        public bool Is3d { get { return m_soundType != SoundType.is2D; } }
-        public string EventPath { get { return m_eventPath; } set { m_eventPath = value; } }
-        public EventInstance FmodEventInstance { get { return m_fmodEventInstance; } set { m_fmodEventInstance = value; } }
-        public ParameterData[] ParameterInfo { get { return m_parameterInfo; } }
-        public float MinDistance { get { return m_minumDistance; } }
-        public float MaxDistance { get { return m_maxDistance; } }
-        public bool RenameFile { get { return m_rename; } set { m_rename = value; } }
-        public int NumberOfInstance { get { return m_instanceCount; } }
-        public SoundType SoundType { get { return m_soundType; } }
-        public float Volume { get { return m_volume; } }
-        public float MaxVolume { get { return m_maxVolume; } }
+        public bool HasCue                      { get { return m_hasCue; }                          set { m_hasCue = false; } }
+        public bool Is3d                        { get { return m_soundType != SoundType.is2D; } }
+        public bool RenameFile                  { get { return m_rename; }                          set { m_rename = value; } }
+        public string EventPath                 { get { return m_eventPath; }                       set { m_eventPath = value; } }
+        public float MinDistance                { get { return m_minumDistance; } }
+        public float MaxDistance                { get { return m_maxDistance; } }
+        public float Volume                     { get { return m_volume; }                          set { m_volume = value; m_fmodEventInstance.setVolume(value);} }
+        public float MaxVolume                  { get { return m_maxVolume; } }
+        public int NumberOfInstance             { get { return m_instanceCount; } }
+        public SoundType SoundType              { get { return m_soundType; } }
+        public EventInstance FmodEventInstance  { get { return m_fmodEventInstance; }               set { m_fmodEventInstance = value; } }
+        public ParameterData[] ParameterInfo    { get { return m_parameterInfo; } }
         #endregion
 
         #region Public-Method

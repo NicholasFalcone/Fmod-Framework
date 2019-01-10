@@ -25,7 +25,6 @@ namespace FmodEditor
             {
                 EditorGUILayout.TextArea(data.BusName);
                 ShowBusInfo(data);
-                EditorUtility.SetDirty(target);
             }
         }
 
@@ -33,6 +32,7 @@ namespace FmodEditor
         {
             data.Muted = EditorGUILayout.Toggle("Muted", data.Muted);
             data.BusVolume = EditorGUILayout.Slider("Volume:", data.BusVolume, 0, 1);
+            EditorUtility.SetDirty(m_fmodBus);
         }
 
         [MenuItem("FmodEditor/BuildBus")]
