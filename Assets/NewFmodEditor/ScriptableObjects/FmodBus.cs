@@ -41,6 +41,7 @@ namespace FmodEditor
     {
         private string m_busPrefix = "bus:/";
         public List<BusData> busData;
+
         /// <summary>
         /// Initialize all Data
         /// </summary>
@@ -50,13 +51,18 @@ namespace FmodEditor
 
             int numBanks = 0;
             FMOD.Studio.Bank[] banks = null;
+            ///take bank count
             RuntimeManager.StudioSystem.getBankCount(out numBanks);
+            //get all bank
             RuntimeManager.StudioSystem.getBankList(out banks);
+            ///Scroll bank to get the relative bus
             for (int currentBank = 0; currentBank < numBanks; ++currentBank)
             {
                 int numBusses = 0;
                 Bus[] busses = null;
+                //get bus count 
                 banks[currentBank].getBusCount(out numBusses);
+                //get bus
                 banks[currentBank].getBusList(out busses);
                 for (int currentBus = 0; currentBus < numBusses; ++currentBus)
                 {
@@ -65,6 +71,7 @@ namespace FmodEditor
                     busses[currentBus].getPath(out busPath);
                     RuntimeManager.StudioSystem.getBus(busPath, out busses[currentBus]);
                     RuntimeManager.StudioSystem.flushCommands();
+                    ///Check if has groupChannel
                     FMOD.ChannelGroup channelGroup;
                     busses[currentBus].getChannelGroup(out channelGroup);
                     busData.Add(new BusData(busPath, busses[currentBus], channelGroup, 1, false));
