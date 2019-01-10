@@ -6,7 +6,7 @@ namespace FmodEditor
     [CustomEditor(typeof(FmodBus))]
     public class FmodBusEditor : Editor
     {
-        private FmodBus m_fmodBus;
+        private static FmodBus m_fmodBus;
 
         private void OnEnable()
         {
@@ -18,8 +18,14 @@ namespace FmodEditor
             DrawDefaultInspector();
             if (GUILayout.Button("Init Bus"))
             {
-                m_fmodBus.Init();
+                BuildingBus();
             }
+        }
+
+        [MenuItem("FmodEditor/BuildBus")]
+        public static void BuildingBus()
+        {
+            m_fmodBus.Init();
         }
 
     }

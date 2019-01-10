@@ -65,13 +65,10 @@ namespace FmodEditor
         [SerializeField]
         private SoundType m_soundType;
         //Minimum distance to hear this event
-        [SerializeField]
         private float m_minumDistance;
         //Maximum distance to hear this event
-        [SerializeField]
         private float m_maxDistance;
         //Number of instance of this event 
-        [SerializeField]
         private int m_instanceCount;
 
         //Collection of all parameter on this event
@@ -80,11 +77,14 @@ namespace FmodEditor
 
         #region Public-Field
         public bool HasCue { get { return m_hasCue; } set { m_hasCue = false; } }
+        public bool Is3d { get { return m_soundType != SoundType.is2D; } }
         public string EventPath { get { return m_eventPath; } set { m_eventPath = value; } }
         public EventInstance FmodEventInstance { get { return m_fmodEventInstance; } set { m_fmodEventInstance = value; } }
         public ParameterData[] ParameterInfo { get { return m_parameterInfo; } }
+        public float MinDistance { get { return m_minumDistance; } }
         public float MaxDistance { get { return m_maxDistance; } }
         public bool RenameFile { get { return m_rename; } set { m_rename = value; } }
+        public int NumberOfInstance { get { return m_instanceCount; } }
         #endregion
 
         #region Public-Method

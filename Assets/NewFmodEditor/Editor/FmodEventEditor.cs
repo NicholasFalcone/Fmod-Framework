@@ -31,9 +31,20 @@ namespace FmodEditor
             /*0*/
             EditorGUILayout.BeginVertical();
 
-            m_fmodEVent.RenameFile = EditorGUILayout.Toggle("Do you wanna rename your FmodEvent?", m_fmodEVent.RenameFile);
+            if (m_fmodEVent.Is3d)
+            {
+                EditorGUILayout.FloatField("Max Distance:", m_fmodEVent.MaxDistance);
+                EditorGUILayout.FloatField("Min Distance:", m_fmodEVent.MinDistance);
+            }
+
+            EditorGUILayout.FloatField("Current Number of instance:", m_fmodEVent.NumberOfInstance);
+
+
+            m_fmodEVent.RenameFile = EditorGUILayout.Toggle("Rename your FmodEvent?", m_fmodEVent.RenameFile);
 
             EditorGUILayout.Toggle("Has Cue", m_fmodEVent.HasCue);
+
+
 
             ///Check if event path is changed
             if (m_oldEventPath != m_fmodEVent.EventPath)
@@ -44,7 +55,6 @@ namespace FmodEditor
                 ///Create a slider for all parameter
                 ShowParameterSlider();
             }
-
 
             EditorGUILayout.Space();
 
@@ -130,6 +140,7 @@ namespace FmodEditor
             m_fmodEVent.InitFmodEvent();
 
             m_oldEventPath = m_fmodEVent.EventPath;
+
 
             m_sliderValue = new float[m_fmodEVent.ParameterInfo.Length];
             for (int i = 0; i < m_sliderValue.Length; i++)

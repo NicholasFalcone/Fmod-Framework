@@ -11,9 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0f02e211787ee4fa74d84cdc8083fe, type: 3}
   m_Name: Main Menu
   m_EditorClassIdentifier: 
-  m_eventPath: event:/VO/English/Main Menu
+  m_eventPath: event:/Music/Level 01
   m_userProperty: []
   m_soundType: 0
-  m_minumDistance: 0
-  m_maxDistance: 0
-  m_instanceCount: 4
+  m_instanceCount: 1

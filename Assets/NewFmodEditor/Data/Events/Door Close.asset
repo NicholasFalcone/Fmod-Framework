@@ -9,16 +9,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db0f02e211787ee4fa74d84cdc8083fe, type: 3}
-  m_Name: Footsteps
+  m_Name: Door Close
   m_EditorClassIdentifier: 
-  m_eventPath: event:/Character/Footsteps/Footsteps
-  m_userProperty:
-  - LUFS
-  - Surface=0
-  - Surface=1
-  - Surface=2
-  - Surface=3
+  m_eventPath: event:/Character/Door Close
+  m_userProperty: []
   m_soundType: 1
-  m_minumDistance: 1
-  m_maxDistance: 20
-  m_instanceCount: 1
