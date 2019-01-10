@@ -62,7 +62,6 @@ namespace FmodEditor
         //Check this flag if you wanna rename your scriptableObject like the FmodEvent
         private bool m_rename = true;
         //check if is 2D or 3D event
-        [SerializeField]
         private SoundType m_soundType;
         //Minimum distance to hear this event
         private float m_minumDistance;
@@ -70,6 +69,8 @@ namespace FmodEditor
         private float m_maxDistance;
         //Number of instance of this event 
         private int m_instanceCount;
+        private float m_volume;
+        private float m_maxVolume;
 
         //Collection of all parameter on this event
         private ParameterData[] m_parameterInfo;
@@ -85,6 +86,9 @@ namespace FmodEditor
         public float MaxDistance { get { return m_maxDistance; } }
         public bool RenameFile { get { return m_rename; } set { m_rename = value; } }
         public int NumberOfInstance { get { return m_instanceCount; } }
+        public SoundType SoundType { get { return m_soundType; } }
+        public float Volume { get { return m_volume; } }
+        public float MaxVolume { get { return m_maxVolume; } }
         #endregion
 
         #region Public-Method
@@ -217,10 +221,11 @@ namespace FmodEditor
             ///Check if has cue
             eventDescription.hasCue(out m_hasCue);
 
+            eventInstance.getVolume(out m_volume, out m_maxVolume);
+
             ///Get all userPropery
             int _count;
             eventDescription.getUserPropertyCount(out _count);
-
             USER_PROPERTY[] userProperty = new USER_PROPERTY[_count];
             m_userProperty = new string[_count];
 

@@ -16,10 +16,23 @@ namespace FmodEditor
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
-            if (GUILayout.Button("Init Bus"))
+            Init();
+        }
+
+
+        private void Init()
+        {
+            foreach (BusData data in m_fmodBus.busData)
             {
-                BuildingBus();
+                EditorGUILayout.TextArea(data.BusName);
+                ShowBusInfo(data);
             }
+        }
+
+        private void ShowBusInfo(BusData data)
+        {
+            data.Muted = EditorGUILayout.Toggle("Muted", data.Muted);
+            data.BusVolume = EditorGUILayout.Slider("Volume:", data.BusVolume, 0, 1);
         }
 
         [MenuItem("FmodEditor/BuildBus")]

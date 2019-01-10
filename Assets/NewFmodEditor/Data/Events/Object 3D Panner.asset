@@ -9,9 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db0f02e211787ee4fa74d84cdc8083fe, type: 3}
-  m_Name: Main Menu
+  m_Name: Object 3D Panner
   m_EditorClassIdentifier: 
-  m_eventPath: event:/Music/Level 01
+  m_eventPath: event:/Object Panning/Object 3D Panner
   m_userProperty: []
-  m_soundType: 0
-  m_instanceCount: 1

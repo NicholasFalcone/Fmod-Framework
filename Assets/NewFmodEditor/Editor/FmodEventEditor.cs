@@ -31,11 +31,14 @@ namespace FmodEditor
             /*0*/
             EditorGUILayout.BeginVertical();
 
+            EditorGUILayout.EnumPopup("Sound Type:" ,m_fmodEVent.SoundType);
             if (m_fmodEVent.Is3d)
             {
                 EditorGUILayout.FloatField("Max Distance:", m_fmodEVent.MaxDistance);
                 EditorGUILayout.FloatField("Min Distance:", m_fmodEVent.MinDistance);
             }
+
+            EditorGUILayout.Slider("Volume: ", m_fmodEVent.Volume, 0, m_fmodEVent.MaxVolume);
 
             EditorGUILayout.FloatField("Current Number of instance:", m_fmodEVent.NumberOfInstance);
 

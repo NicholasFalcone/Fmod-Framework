@@ -6,24 +6,30 @@ using System.Collections.Generic;
 
 namespace FmodEditor
 {
+    /// <summary>
+    /// Struct to collect all data for bus
+    /// </summary>
     [System.Serializable]
     public struct BusData
     {
+        #region Private-Field
         //Bus Path
-        [SerializeField]
-        public string m_busPath;
+        private string m_busPath;
         //Bus Data
-        [SerializeField]
-        public Bus m_bus;
+        private Bus m_bus;
         //Channel Group
-        [SerializeField]
         private FMOD.ChannelGroup m_channelGruop;
         //Bus Volume
-        [SerializeField]
         private float m_busVolume;
         //Bus is Muted
-        [SerializeField]
         private bool m_isMuted;
+        #endregion
+
+        #region Public-Field
+        public string BusName { get { return m_busPath; } }
+        public Bus Bus { get { return m_bus; } }
+        public float BusVolume { get { return m_busVolume; } set { m_busVolume = value; } }
+        public bool Muted { get { return m_isMuted; } set { m_isMuted = value; } }
 
         public BusData(string _busPath, Bus _currentBus, FMOD.ChannelGroup _channelGroup, float _volume, bool _muted)
         {
@@ -33,15 +39,16 @@ namespace FmodEditor
             m_busVolume = _volume;
             m_isMuted = _muted;
         }
-
+        #endregion
     }
 
     [CreateAssetMenu(menuName = "FmodData/BusData")]
     public class FmodBus : ScriptableObject
     {
-        private string m_busPrefix = "bus:/";
+        [HideInInspector]
         public List<BusData> busData;
-
+        
+        #if UNITY_EDITOR
         /// <summary>
         /// Initialize all Data
         /// </summary>
@@ -78,6 +85,7 @@ namespace FmodEditor
                 }
             }
         }
+        #endif
 
         public void ChangeBusVolume(Bus _bus, float _nextVolume)
         {
