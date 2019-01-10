@@ -13,9 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: C:\Users\nicho\OneDrive\Documenti\FMOD Studio\examples\Examples.fspro
-  SourceProjectPathUnformatted: C:\Users\nicho\OneDrive\Documenti\FMOD Studio\examples\Examples.fspro
-  SourceBankPathUnformatted: C:\Users\nicho\OneDrive\Documenti\FMOD Studio\examples\Build
+  sourceProjectPath: C:\Users\nicho\Documents\FMOD Studio\examples\Examples.fspro
+  SourceProjectPathUnformatted: C:\Users\nicho\Documents\FMOD Studio\examples\Examples.fspro
+  SourceBankPathUnformatted: C:\Users\nicho\Documents\FMOD Studio\examples\Build
   AutomaticEventLoading: 1
   AutomaticSampleLoading: 0
   ImportType: 0
@@ -57,17 +57,11 @@ MonoBehaviour:
   Plugins: []
   MasterBank: Master Bank
   Banks:
-  - Music.assets
-  - VO.streams
-  - Vehicles
-  - Master Bank.assets
-  - SFX
-  - Music.streams
-  - VO.assets
-  - Master Bank.streams
-  - Vehicles.assets
+  - Character
+  - Weapons
   - Music
-  - SFX.streams
-  - Vehicles.streams
-  - VO
-  - SFX.assets
+  - Vehicles
+  - VO_Menu_English
+  - Object Panning
+  - Surround_Ambience
+  - UI_Menu

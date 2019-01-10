@@ -10,18 +10,30 @@ namespace FmodEditor
     public struct BusData
     {
         //Bus Path
-        public string busPath;
+        [SerializeField]
+        public string m_busPath;
         //Bus Data
-        public Bus bus;
+        [SerializeField]
+        public Bus m_bus;
         //Channel Group
-        FMOD.ChannelGroup channelGruop;
+        [SerializeField]
+        private FMOD.ChannelGroup m_channelGruop;
+        //Bus Volume
+        [SerializeField]
+        private float m_busVolume;
+        //Bus is Muted
+        [SerializeField]
+        private bool m_isMuted;
 
-        public BusData(string _busPath, Bus _currentBus, FMOD.ChannelGroup _channelGroup)
+        public BusData(string _busPath, Bus _currentBus, FMOD.ChannelGroup _channelGroup, float _volume, bool _muted)
         {
-            busPath = _busPath;
-            bus = _currentBus;
-            channelGruop = _channelGroup;
+            m_busPath = _busPath;
+            m_bus = _currentBus;
+            m_channelGruop = _channelGroup;
+            m_busVolume = _volume;
+            m_isMuted = _muted;
         }
+
     }
 
     [CreateAssetMenu(menuName = "FmodData/BusData")]
@@ -55,21 +67,14 @@ namespace FmodEditor
                     RuntimeManager.StudioSystem.flushCommands();
                     FMOD.ChannelGroup channelGroup;
                     busses[currentBus].getChannelGroup(out channelGroup);
-                    busData.Add(new BusData(busPath, busses[currentBus], channelGroup));
+                    busData.Add(new BusData(busPath, busses[currentBus], channelGroup, 1, false));
                 }
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="_bus">Variable instance</param>
-        /// <param name="_path">Channel path</param>
-        public void SetBus(Bus _bus, string _path)
+        public void ChangeBusVolume(Bus _bus, float _nextVolume)
         {
-            _bus = RuntimeManager.GetBus(m_busPrefix + _path);
+            _bus.setVolume(_nextVolume);
         }
-
     }
 }
