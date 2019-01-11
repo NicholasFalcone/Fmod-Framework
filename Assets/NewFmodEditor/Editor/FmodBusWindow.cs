@@ -52,7 +52,6 @@ namespace FmodEditor
             using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(400), GUILayout.Height(500)))
             {
                 scrollPos = scrollView.scrollPosition;
-
                 foreach (BusData data in m_fmodBus.busData)
                 {
                     EditorGUILayout.TextArea(data.BusName);
@@ -120,7 +119,7 @@ namespace FmodEditor
         {
             data.BusVolume = EditorGUILayout.Slider("Volume:", data.BusVolume, 0, 1);
             data.Muted = EditorGUILayout.Toggle("Muted", data.Muted);
-            EditorUtility.SetDirty(m_fmodBus);
+            // EditorUtility.SetDirty(m_fmodBus);   
         }
 
         ///Called to open explorer folder
