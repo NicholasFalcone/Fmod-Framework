@@ -8,8 +8,8 @@ namespace FmodEditor
     /// <summary>
     /// Struct to collect all data for bus
     /// </summary>
-    [System.Serializable]
-    public struct BusData
+    // [System.Serializable]
+    public class BusData
     {
         #region Private-Field
         //Bus Path
@@ -41,7 +41,6 @@ namespace FmodEditor
         #endregion
     }
 
-    [CreateAssetMenu(menuName = "FmodData/BusData")]
     public class FmodBus : ScriptableObject
     {
         [HideInInspector]

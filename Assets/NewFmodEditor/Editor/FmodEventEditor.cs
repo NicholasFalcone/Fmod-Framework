@@ -12,6 +12,8 @@ namespace FmodEditor
         /// Used to chack if the eventpath is changed
         private string m_oldEventPath;
 
+        private bool canEdit;
+
         public void OnEnable()
         {
             m_fmodEVent = (FmodEvent)target;
@@ -24,12 +26,17 @@ namespace FmodEditor
 
         public override void OnInspectorGUI()
         {
+
+            if(Application.isPlaying)
+                canEdit = false;
+
+            canEdit = EditorGUILayout.BeginToggleGroup("Can Edit",canEdit);
+
             ///Check if event path is changed
             if (m_oldEventPath != m_fmodEVent.EventPath)
                 InitVariable();
 
             DrawDefaultInspector();
-
             /*0*/
             EditorGUILayout.BeginVertical();
 
@@ -97,6 +104,7 @@ namespace FmodEditor
             
             /*0*/
             EditorGUILayout.EndVertical();
+            EditorGUILayout.EndToggleGroup();
         }
 
         private void RenameFile()
