@@ -141,6 +141,12 @@ namespace FmodEditor
         /// </summary>
         public void PlayAudio()
         {
+            if(Is3d && Application.isEditor)
+            {
+                var view = UnityEditor.SceneView.lastActiveSceneView.camera;
+                AttachToGameObject(view.transform);
+            }
+
             if (m_fmodEventInstance.hasHandle())
                 m_fmodEventInstance.start();
             else
