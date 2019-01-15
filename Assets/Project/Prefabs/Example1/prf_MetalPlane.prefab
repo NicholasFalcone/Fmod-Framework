@@ -139,7 +139,7 @@ MonoBehaviour:
   m_hitSound:
     eventPath: event:/Shooter/Weapon/Bullet
     parameterName: material
-  m_targetMaterial: 3
+  m_targetMaterial: 4
 --- !u!1 &1691331058998664
 GameObject:
   m_ObjectHideFlags: 0

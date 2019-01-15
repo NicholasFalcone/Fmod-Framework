@@ -10,6 +10,7 @@ TagManager:
   - Metal
   - Grass
   - Water
+  - Bullet
   layers:
   - Default
   - TransparentFX

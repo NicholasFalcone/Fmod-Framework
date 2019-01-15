@@ -241,7 +241,7 @@ public class FmodManager : StudioBankLoader
     {
         RuntimeManager.AttachInstanceToGameObject(_eventInstance, emitterTransform, GetComponent<Rigidbody2D>());
     }
-    
+
     /// <summary>
     /// Change the event parameter with a new value
     /// </summary>

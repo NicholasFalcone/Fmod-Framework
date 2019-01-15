@@ -2,7 +2,7 @@
 
 public enum TargetMaterial
 {
-    Stone = 0,
+    Stone = 1,
     Glass,
     Sand,
     Metal,
@@ -23,7 +23,10 @@ public class ImpactSoundComponent : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Add new position by contactPoint
-        FmodManager.instance.StartEvent(m_hitSound);
+        if (collision.transform.CompareTag("Bullet"))
+        {
+            FmodManager.instance.AttachSfx(m_hitSound.fmodEvent, collision.gameObject.transform);
+            FmodManager.instance.StartEvent(m_hitSound);
+        }
     }
 }

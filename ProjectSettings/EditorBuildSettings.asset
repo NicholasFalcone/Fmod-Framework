@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Project/Scenes/Example2/scn_Example_2_Game.unity
     guid: 3d9ccd724e5333b4f90a1dfed2ee4b90
   - enabled: 1
-    path: Assets/Project/Scenes/scn_Example_3.unity
+    path: Assets/NewFmodEditor/Scenes/scn_Example_3.unity
     guid: 2821be8e2c0b35b48b424847bcb86e12
   m_configObjects: {}
