@@ -27,10 +27,10 @@ namespace FmodEditor
         public override void OnInspectorGUI()
         {
 
-            if(Application.isPlaying)
+            if (Application.isPlaying)
                 canEdit = false;
 
-            canEdit = EditorGUILayout.BeginToggleGroup("Can Edit",canEdit);
+            canEdit = EditorGUILayout.BeginToggleGroup("Can Edit", canEdit);
 
             ///Check if event path is changed
             if (m_oldEventPath != m_fmodEVent.EventPath)
@@ -40,7 +40,7 @@ namespace FmodEditor
             /*0*/
             EditorGUILayout.BeginVertical();
 
-            EditorGUILayout.EnumPopup("Sound Type:" ,m_fmodEVent.SoundType);
+            EditorGUILayout.EnumPopup("Sound Type:", m_fmodEVent.SoundType);
             if (m_fmodEVent.Is3d)
             {
                 EditorGUILayout.FloatField("Max Distance:", m_fmodEVent.MaxDistance);
@@ -58,7 +58,7 @@ namespace FmodEditor
 
 
 
-            
+
 
             EditorGUILayout.Space();
             if (m_fmodEVent.EventPath != "")
@@ -100,8 +100,8 @@ namespace FmodEditor
                 }
             }
             #endregion
-            
-            
+
+
             /*0*/
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndToggleGroup();

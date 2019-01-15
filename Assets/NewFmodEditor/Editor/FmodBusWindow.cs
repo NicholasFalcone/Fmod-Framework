@@ -20,7 +20,7 @@ namespace FmodEditor
             ///Check if a bus data exist and take her data
             string[] currentFile = AssetDatabase.FindAssets("t:" + typeof(FmodBus).FullName);
 
-            if(currentFile.Length != 0)
+            if (currentFile.Length != 0)
             {
                 ///Take the first element path found
                 string currentPath = AssetDatabase.GUIDToAssetPath(currentFile[0]);
@@ -41,16 +41,16 @@ namespace FmodEditor
 
         private void OnGUI()
         {
-            if(Application.isPlaying)
+            if (Application.isPlaying)
                 canEdit = false;
-            canEdit = EditorGUILayout.BeginToggleGroup("Can Edit",canEdit);
+            canEdit = EditorGUILayout.BeginToggleGroup("Can Edit", canEdit);
 
             //Create BusData and print on window
             if (m_fmodBus == null)
                 return;
-
             using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(400), GUILayout.Height(500)))
             {
+                GUILayout.FlexibleSpace();
                 scrollPos = scrollView.scrollPosition;
                 foreach (BusData data in m_fmodBus.busData)
                 {
@@ -86,7 +86,7 @@ namespace FmodEditor
 
             EditorGUILayout.EndToggleGroup();
         }
-        
+
         ///Called to create and show bus data
         private void Init()
         {
@@ -96,7 +96,7 @@ namespace FmodEditor
                 if (AssetDatabase.IsValidFolder(m_datapath))
                 {
                     m_fmodBus = ScriptableObject.CreateInstance<FmodBus>();
-                    string _uniquePath = AssetDatabase.GenerateUniqueAssetPath (m_datapath + "/" + m_fileName);
+                    string _uniquePath = AssetDatabase.GenerateUniqueAssetPath(m_datapath + "/" + m_fileName);
                     AssetDatabase.CreateAsset(m_fmodBus, _uniquePath);
                     AssetDatabase.SaveAssets();
                     AssetDatabase.Refresh();

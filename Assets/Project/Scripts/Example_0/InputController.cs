@@ -4,29 +4,21 @@ public class InputController : MonoBehaviour
 {
     private MovementComponent m_movement;
 
-    private Weapon m_weapon;
-
     private void Awake()
     {
         m_movement = GetComponent<MovementComponent>();
-        m_weapon = GetComponent<Weapon>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         float h = Input.GetAxisRaw("Horizontal");
-
+        Debug.Log(h);
         m_movement.Movement(h);
 
         if (Input.GetKeyDown(KeyCode.Space))
+        {
             m_movement.Jump();
-
-
-        if (Input.GetKeyDown(KeyCode.C) && m_weapon != null)
-            m_weapon.Fire();
+        }
 
     }
-
-
-
 }
