@@ -7,8 +7,10 @@ namespace FmodEditor
 {
     public class FmodBusWindow : EditorWindow
     {
+        [SerializeField]
         private FmodBus m_fmodBus;
         private bool canEdit = true;
+        [SerializeField]
         private String m_datapath;
         private Vector2 scrollPos;
         private const string dataPathPref = "DataPath";
@@ -21,7 +23,7 @@ namespace FmodEditor
             ///Check if a bus data exist and take her data
             string[] currentFile = AssetDatabase.FindAssets("t:" + typeof(FmodBus).FullName);
 
-            if (currentFile.Length != 0)
+            if (currentFile.Length > 0)
             {
                 ///Take the first element path found
                 string currentPath = AssetDatabase.GUIDToAssetPath(currentFile[0]);
@@ -37,7 +39,10 @@ namespace FmodEditor
                 EditorUtility.SetDirty(m_fmodBus);
             }
             else
+            {
                 m_datapath = PlayerPrefs.GetString(dataPathPref, "");
+                m_fmodBus = null;
+            }
         }
 
         private void OnGUI()
@@ -47,18 +52,6 @@ namespace FmodEditor
             canEdit = EditorGUILayout.BeginToggleGroup("Can Edit", canEdit);
 
             //Create BusData and print on window
-            if (m_fmodBus == null)
-                return;
-            using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(400), GUILayout.Height(500)))
-            {
-                GUILayout.FlexibleSpace();
-                scrollPos = scrollView.scrollPosition;
-                foreach (BusData data in m_fmodBus.busData)
-                {
-                    EditorGUILayout.TextArea(data.BusName);
-                    ShowBusInfo(data);
-                }
-            }
 
             ///If data path is null set enable the create path button
             if (m_datapath == null || m_datapath == "")
@@ -83,6 +76,19 @@ namespace FmodEditor
                     Init();
                 }
                 EditorGUILayout.EndHorizontal();
+            }
+            
+            if (m_fmodBus == null)
+                return;
+            using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(400), GUILayout.Height(500)))
+            {
+                GUILayout.FlexibleSpace();
+                scrollPos = scrollView.scrollPosition;
+                foreach (BusData data in m_fmodBus.busData)
+                {
+                    EditorGUILayout.TextArea(data.BusName);
+                    ShowBusInfo(data);
+                }
             }
 
             EditorGUILayout.EndToggleGroup();
