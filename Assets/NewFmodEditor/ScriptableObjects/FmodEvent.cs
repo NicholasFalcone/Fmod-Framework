@@ -141,16 +141,19 @@ namespace FmodEditor
         /// </summary>
         public void PlayAudio()
         {
-            if(Is3d && Application.isEditor)
+            if(Is3d && !Application.isPlaying)
             {
-                var view = UnityEditor.SceneView.lastActiveSceneView.camera;
+                Camera view = UnityEditor.SceneView.lastActiveSceneView.camera;
                 AttachToGameObject(view.transform);
             }
 
             if (m_fmodEventInstance.hasHandle())
                 m_fmodEventInstance.start();
             else
-                Debug.LogWarning("Build this event befor play!");
+            {
+                m_fmodEventInstance = RuntimeManager.CreateInstance(m_eventPath);
+                m_fmodEventInstance.start();
+            }
         }
 
         /// <summary>

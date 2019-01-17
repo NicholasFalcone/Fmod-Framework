@@ -17,6 +17,7 @@ namespace FmodEditor
 
         private void OnEnable()
         {
+
             ///Check if a bus data exist and take her data
             string[] currentFile = AssetDatabase.FindAssets("t:" + typeof(FmodBus).FullName);
 
@@ -106,7 +107,6 @@ namespace FmodEditor
                     Debug.LogError("Path dosen't exist");
                 }
                 m_fmodBus.Init();
-
             }
             else
             {
@@ -119,7 +119,6 @@ namespace FmodEditor
         {
             data.BusVolume = EditorGUILayout.Slider("Volume:", data.BusVolume, 0, 1);
             data.Muted = EditorGUILayout.Toggle("Muted", data.Muted);
-            // EditorUtility.SetDirty(m_fmodBus);   
         }
 
         ///Called to open explorer folder

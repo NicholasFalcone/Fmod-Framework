@@ -13,9 +13,6 @@ public class AmbientComponent : MonoBehaviour {
 		FmodManager.instance.StartEvent(m_SoundAmbience);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	}
 	public void ChangeAmbientParameter(int index, float nextValue)
 	{
 		FmodManager.instance.ChangeParameter(ref m_SoundAmbience.eventParameter[index],nextValue);	

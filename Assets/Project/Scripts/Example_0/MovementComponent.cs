@@ -2,9 +2,15 @@
 
 public enum SurfaceType
 {
-    Grass,
-    Wather,
+    Grass = 0,
+    Water,
     Cave
+}
+
+public enum EventName
+{
+    ambience,
+    underwater
 }
 
 public class MovementComponent : MonoBehaviour
@@ -33,8 +39,11 @@ public class MovementComponent : MonoBehaviour
     private bool m_onAir = false;
     [SerializeField]
     private SurfaceType m_surfaceType;
-    public SurfaceType SurfaceType { get; set; }
+    private EventName m_eventName;
 
+    public SurfaceType SurfaceType { get; set; }
+    public EventName EventName{get{return m_eventName;} set{m_eventName = value;}}
+    
     private void Awake()
     {
         //Get all component
@@ -106,7 +115,7 @@ public class MovementComponent : MonoBehaviour
             else if(hit.transform.gameObject.tag == "Cave")
                 m_surfaceType = SurfaceType.Cave;
             else
-                m_surfaceType = SurfaceType.Wather;
+                m_surfaceType = SurfaceType.Water;
             return true;
 
         }
@@ -132,7 +141,7 @@ public class MovementComponent : MonoBehaviour
     public void CheckSurface(SurfaceType _surfaceType)
     {
         m_surfaceType = _surfaceType;
-        if (m_surfaceType != SurfaceType.Wather)
+        if (m_surfaceType != SurfaceType.Water)
         {
             FmodManager.instance.ChangeParameter(ref m_footsteps.eventParameter, (float)m_surfaceType++);
             FmodManager.instance.ChangeParameter(ref m_jumpStart.eventParameter, (float)m_surfaceType++);
