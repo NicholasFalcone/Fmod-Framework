@@ -67,7 +67,6 @@ public class FPSController : MonoBehaviour
     private void ChangeWeapon(int index)
     {
         m_canUseWeapon = false;
-        Debug.Log("ChangingWeapon " + index);
         if(m_equippedWeapon != null)
             m_equippedWeapon.OnUnEquip();
         m_weaponIndex += index;

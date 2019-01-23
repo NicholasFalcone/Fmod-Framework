@@ -5,52 +5,17 @@ using System.Collections.Generic;
 
 namespace FmodEditor
 {
-    /// <summary>
-    /// Struct to collect all data for bus
-    /// </summary>
-    // [System.Serializable]
-    public class BusData
-    {
-        #region Private-Field
-        //Bus Path
-        private string m_busPath;
-        //Bus Data
-        private Bus m_bus;
-        //Channel Group
-        private FMOD.ChannelGroup m_channelGruop;
-        //Bus Volume
-        private float m_busVolume;
-        //Bus is Muted
-        private bool m_isMuted;
-        #endregion
-
-        #region Public-Field
-        public string BusName { get { return m_busPath; } }
-        public Bus Bus { get { return m_bus; } }
-        public float BusVolume { get { return m_busVolume; } set { m_busVolume = value; m_bus.setVolume(value); } }
-        public bool Muted { get { return m_isMuted; } set { m_isMuted = value; m_bus.setMute(value);} }
-
-        public BusData(string _busPath, Bus _currentBus, FMOD.ChannelGroup _channelGroup, float _volume, bool _muted)
-        {
-            m_busPath = _busPath;
-            m_bus = _currentBus;
-            m_channelGruop = _channelGroup;
-            m_busVolume = _volume;
-            m_isMuted = _muted;
-        }
-        #endregion
-    }
-
     public class FmodBus : ScriptableObject
     {
         [HideInInspector]
         public List<BusData> busData;
-        
+
         /// <summary>
         /// Initialize all Data
         /// </summary>
-        public void Init()
+        public void Init(string _path = null)
         {
+
             busData = new List<BusData>();
 
             int numBanks = 0;
@@ -74,13 +39,39 @@ namespace FmodEditor
                     string busPath = null;
                     busses[currentBus].getPath(out busPath);
                     RuntimeManager.StudioSystem.getBus(busPath, out busses[currentBus]);
+                    busses[currentBus] = RuntimeManager.GetBus(busPath);
                     RuntimeManager.StudioSystem.flushCommands();
                     ///Check if has groupChannel
                     FMOD.ChannelGroup channelGroup;
                     busses[currentBus].getChannelGroup(out channelGroup);
-                    busData.Add(new BusData(busPath, busses[currentBus], channelGroup, 1, false));
+                    ///Create instance of BusData
+                    BusData currentBusData = ScriptableObject.CreateInstance<BusData>();
+                    ///Initialize varialbe
+                    currentBusData.Init(busPath, busses[currentBus], channelGroup, 1, false);
+                    if (_path != null)
+                    {
+                        ///Create uniquepath
+                        string _uniquePath = UnityEditor.AssetDatabase.GenerateUniqueAssetPath(_path + "/" + SetBusName(busPath) + ".asset");
+                        ///Create data
+                        UnityEditor.AssetDatabase.CreateAsset(currentBusData, _uniquePath);
+                        UnityEditor.AssetDatabase.SaveAssets();
+                        UnityEditor.AssetDatabase.Refresh();
+                    }
+                    ///Add on list
+                    busData.Add(currentBusData);
                 }
             }
         }
+
+        public string SetBusName(string _busPath)
+        {
+            string[] asd = _busPath.Split(':', '/');
+            Debug.Log(asd[asd.Length - 1]);
+            if (asd[asd.Length - 1] == "")
+                return "Master";
+            else
+                return asd[asd.Length - 1];
+        }
+
     }
 }

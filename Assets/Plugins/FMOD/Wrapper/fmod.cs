@@ -196,12 +196,19 @@ namespace FMOD
         FMOD_INITFLAGS
     ]
     */
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential),Serializable]
     public struct VECTOR
     {
         public float x;        /* X co-ordinate in 3D space. */
         public float y;        /* Y co-ordinate in 3D space. */
         public float z;        /* Z co-ordinate in 3D space. */
+
+        public VECTOR(float _x, float _y, float _z)
+        {
+            x = _x;
+            y = _y;
+            z = _z;
+        }
     }
 
     /*

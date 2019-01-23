@@ -7,11 +7,9 @@ namespace FmodEditor
 {
     public class FmodBusWindow : EditorWindow
     {
-        [SerializeField]
         private FmodBus m_fmodBus;
         private bool canEdit = true;
-        [SerializeField]
-        private String m_datapath;
+        public static String m_datapath;
         private Vector2 scrollPos;
         private const string dataPathPref = "DataPath";
 
@@ -19,7 +17,6 @@ namespace FmodEditor
 
         private void OnEnable()
         {
-
             ///Check if a bus data exist and take her data
             string[] currentFile = AssetDatabase.FindAssets("t:" + typeof(FmodBus).FullName);
 
@@ -30,13 +27,14 @@ namespace FmodEditor
                 ///take the data reference
                 m_fmodBus = AssetDatabase.LoadAssetAtPath<FmodBus>(currentPath);
                 ///Update path with current
-                m_datapath = currentPath;
+                m_datapath = currentPath.Replace(m_fileName, "");
                 ///update and Save playerpref
                 PlayerPrefs.SetString(dataPathPref, m_datapath);
                 PlayerPrefs.Save();
                 ///Initialize BusData
-                m_fmodBus.Init();
+                // m_fmodBus.Init(m_datapath);
                 EditorUtility.SetDirty(m_fmodBus);
+
             }
             else
             {
@@ -49,6 +47,7 @@ namespace FmodEditor
         {
             if (Application.isPlaying)
                 canEdit = false;
+
             canEdit = EditorGUILayout.BeginToggleGroup("Can Edit", canEdit);
 
             //Create BusData and print on window
@@ -77,7 +76,7 @@ namespace FmodEditor
                 }
                 EditorGUILayout.EndHorizontal();
             }
-            
+
             if (m_fmodBus == null)
                 return;
             using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.Width(400), GUILayout.Height(500)))
@@ -112,11 +111,11 @@ namespace FmodEditor
                 {
                     Debug.LogError("Path dosen't exist");
                 }
-                m_fmodBus.Init();
+                m_fmodBus.Init(m_datapath);
             }
             else
             {
-                m_fmodBus.Init();
+                m_fmodBus.Init(m_datapath);
             }
         }
 

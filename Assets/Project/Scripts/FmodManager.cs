@@ -163,7 +163,9 @@ public class FmodManager : StudioBankLoader
         if (_genericEvent.fmodEvent.handle != null)
         {
             ///Start event
-            _genericEvent.fmodEvent.start();
+            FMOD.RESULT res;
+            res = _genericEvent.fmodEvent.start();
+            Debug.Log(res);
         }
         else
             Debug.LogError(_genericEvent.eventPath + "FmodEvent not exist");
@@ -269,8 +271,7 @@ public class FmodManager : StudioBankLoader
             Debug.LogWarning("parament doesen't exist");
             return;
         }
-
-        _eventParameter.setValue(value);
+         _eventParameter.setValue(value);
     }
 
     /// <summary>
