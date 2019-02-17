@@ -42,6 +42,8 @@ public class FmodManager : StudioBankLoader
     /// </summary>
     public static FmodManager instance;
 
+    private FMOD.System mySystem;
+
     private string m_busPrefix = "bus:/";
 
     #region Unity Method
@@ -83,7 +85,7 @@ public class FmodManager : StudioBankLoader
     /// <param name="_genericEventInstance"></param>
     public void CreateGenericMonoEventParameterInstance(ref GenericEventMonoParameter _genericEventInstance)
     {
-        if(_genericEventInstance.eventPath == "")
+        if (_genericEventInstance.eventPath == "")
         {
             Debug.LogWarning("event path null");
             return;
@@ -107,7 +109,7 @@ public class FmodManager : StudioBankLoader
         _genericEventInstance.eventParameter = new ParameterInstance[_parameterCount];
         _genericEventInstance.parameterName = new string[_parameterCount];
 
-        if(_parameterCount != 0)
+        if (_parameterCount != 0)
         {
             GetParameterByCount(ref _genericEventInstance, _parameterCount);
         }
@@ -130,14 +132,13 @@ public class FmodManager : StudioBankLoader
     /// </summary>
     /// <param name="_genericEvent">paramete</param>
     /// <param name="_index">index of paramete</param>
-    public void GetParameterByCount(ref GenericEventMultipleParameter _genericEvent, int _parameterCount )
+    public void GetParameterByCount(ref GenericEventMultipleParameter _genericEvent, int _parameterCount)
     {
         for (int i = 0; i < _parameterCount; i++)
         {
             _genericEvent.fmodEvent.getParameterByIndex(i, out _genericEvent.eventParameter[i]);
             _genericEvent.parameterName[i] = _genericEvent.eventParameter[i].ToString();
         }
-
     }
 
     public void StartEventFade(GenericEvent _genericEvent, float _speed)
@@ -188,7 +189,7 @@ public class FmodManager : StudioBankLoader
     {
         _eventInstance.stop(STOP_MODE.IMMEDIATE);
     }
-   
+
     /// <summary>
     /// Stop all event on the master bus
     /// </summary>
@@ -251,7 +252,7 @@ public class FmodManager : StudioBankLoader
     /// <param name="value"></param>
     public void ChangeParameter(ref ParameterInstance _eventParameter, float value)
     {
-        if(_eventParameter.handle == null)
+        if (_eventParameter.handle == null)
         {
             Debug.LogWarning("parament doesen't exist");
             return;
@@ -271,7 +272,18 @@ public class FmodManager : StudioBankLoader
             Debug.LogWarning("parament doesen't exist");
             return;
         }
-         _eventParameter.setValue(value);
+        _eventParameter.setValue(value);
+    }
+
+    /// <summary>
+    /// Check if this event is playing
+    /// </summary>
+    /// <returns></returns>
+    public bool IsPlaying(EventInstance _eventInstance)
+    {
+        FMOD.Studio.PLAYBACK_STATE playbackState;
+        _eventInstance.getPlaybackState(out playbackState);
+        return playbackState != FMOD.Studio.PLAYBACK_STATE.STOPPED;
     }
 
     /// <summary>
@@ -286,6 +298,7 @@ public class FmodManager : StudioBankLoader
         const float startVolume = 0;
         float currentVolume = 0;
         const float targetVolume = 1;
+
         while (elapsedTime < _step)
         {
             currentVolume = (Mathf.Lerp(startVolume, targetVolume, (elapsedTime / _step)));
