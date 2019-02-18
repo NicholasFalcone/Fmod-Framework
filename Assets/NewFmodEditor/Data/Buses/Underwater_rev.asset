@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af38637c02e09e4d914962e74786659, type: 3}
   m_Name: Underwater_rev
   m_EditorClassIdentifier: 
+  m_busPath: bus:/Sound/Underwater_rev

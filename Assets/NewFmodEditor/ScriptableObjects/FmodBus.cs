@@ -7,7 +7,6 @@ namespace FmodEditor
 {
     public class FmodBus : ScriptableObject
     {
-        [HideInInspector]
         public List<BusData> busData;
 
         /// <summary>
@@ -15,6 +14,7 @@ namespace FmodEditor
         /// </summary>
         public void Init(string _path = null)
         {
+            Debug.Log("DIO");
             #if UNITY_EDITOR
             if(!Application.isEditor)
                 return;

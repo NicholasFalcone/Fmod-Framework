@@ -10,5 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5af38637c02e09e4d914962e74786659, type: 3}
-  m_Name: Outdoor_rev
+  m_Name: Master
   m_EditorClassIdentifier: 
+  m_busPath: bus:/

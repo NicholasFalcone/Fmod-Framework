@@ -17,6 +17,7 @@ namespace FmodEditor
 
         private void OnEnable()
         {
+            Debug.Log("adadadada");
             ///Check if a bus data exist and take her data
             string[] currentFile = AssetDatabase.FindAssets("t:" + typeof(FmodBus).FullName);
 
@@ -89,7 +90,7 @@ namespace FmodEditor
                     ShowBusInfo(data);
                 }
             }
-
+            EditorUtility.SetDirty(m_fmodBus);
             EditorGUILayout.EndToggleGroup();
         }
 
@@ -117,6 +118,7 @@ namespace FmodEditor
             {
                 m_fmodBus.Init(m_datapath);
             }
+            EditorUtility.SetDirty(m_fmodBus);
         }
 
         ///Called to show on editor all bus data

@@ -9,6 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5af38637c02e09e4d914962e74786659, type: 3}
-  m_Name: Cave_rev
+  m_Script: {fileID: 11500000, guid: db0f02e211787ee4fa74d84cdc8083fe, type: 3}
+  m_Name: Pistol
   m_EditorClassIdentifier: 
+  m_eventPath: event:/Shooter/Weapon/Pistol
+  m_userProperty: []
