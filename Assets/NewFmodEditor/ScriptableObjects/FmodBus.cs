@@ -15,6 +15,9 @@ namespace FmodEditor
         /// </summary>
         public void Init(string _path = null)
         {
+            #if UNITY_EDITOR
+            if(!Application.isEditor)
+                return;
 
             busData = new List<BusData>();
 
@@ -48,7 +51,7 @@ namespace FmodEditor
                     BusData currentBusData = ScriptableObject.CreateInstance<BusData>();
                     ///Initialize varialbe
                     currentBusData.Init(busPath, busses[currentBus], channelGroup, 1, false);
-                    if (_path != null)
+                    if (Application.isEditor && _path != null)
                     {
                         ///Create uniquepath
                         string _uniquePath = UnityEditor.AssetDatabase.GenerateUniqueAssetPath(_path + "/" + SetBusName(busPath) + ".asset");
@@ -61,6 +64,8 @@ namespace FmodEditor
                     busData.Add(currentBusData);
                 }
             }
+            #endif
+
         }
 
         public string SetBusName(string _busPath)

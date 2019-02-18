@@ -140,13 +140,15 @@ namespace FmodEditor
         /// Used to play a Event
         /// </summary>
         public void PlayAudio()
-        {
-            if(Is3d && !Application.isPlaying)
+        { 
+            #if UNITY_EDITOR
+            if(Application.isEditor && Is3d)
             {
                 Camera view = UnityEditor.SceneView.lastActiveSceneView.camera;
                 AttachToGameObject(view.transform);
             }
-
+            #endif
+            
             if (m_fmodEventInstance.hasHandle())
                 m_fmodEventInstance.start();
             else
