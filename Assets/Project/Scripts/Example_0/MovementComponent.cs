@@ -13,6 +13,15 @@ public enum EventName
     underwater
 }
 
+public enum ParameterValue
+{
+    Zero = 0,
+    One,
+    Two,
+    Three
+}
+
+
 public class MovementComponent : MonoBehaviour
 {
     [SerializeField]

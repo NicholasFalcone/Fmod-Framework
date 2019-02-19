@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 public class AmbientChanger : MonoBehaviour
@@ -14,6 +13,10 @@ public class AmbientChanger : MonoBehaviour
     private SurfaceType m_ambientType;
     [SerializeField]
     private SurfaceType m_exitType = SurfaceType.Grass;
+    [SerializeField]
+    private ParameterValue m_EnterparameterValue;
+    [SerializeField]
+    private ParameterValue m_ExitparameterValue;
     void Awake()
     {
         m_AmbientComponent = FindObjectOfType<AmbientComponent>();
@@ -28,7 +31,7 @@ public class AmbientChanger : MonoBehaviour
         if (collider.CompareTag("Player"))
         {
             m_movementComponent.CheckSurface(m_ambientType);
-            m_AmbientComponent.ChangeAmbientParameter((int)m_eventNameToChange, 1);
+            m_AmbientComponent.ChangeAmbientParameter((int)m_eventNameToChange, (int)m_EnterparameterValue);
         }
     }
     void OnTriggerExit2D(Collider2D collider)
@@ -36,7 +39,7 @@ public class AmbientChanger : MonoBehaviour
         if (collider.CompareTag("Player"))
         {
             m_movementComponent.CheckSurface(m_exitType);
-            m_AmbientComponent.ChangeAmbientParameter((int)m_eventNameToChange, 0);
+            m_AmbientComponent.ChangeAmbientParameter((int)m_eventNameToChange, (int)m_ExitparameterValue);
 
         }
     }
