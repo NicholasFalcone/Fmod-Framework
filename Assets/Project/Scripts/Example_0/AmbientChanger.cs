@@ -35,7 +35,6 @@ public class AmbientChanger : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
-            Debug.Log("exit wather collider");
             m_movementComponent.CheckSurface(m_exitType);
             m_AmbientComponent.ChangeAmbientParameter((int)m_eventNameToChange, 0);
 

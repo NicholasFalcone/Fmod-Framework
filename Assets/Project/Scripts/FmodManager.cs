@@ -42,8 +42,6 @@ public class FmodManager : StudioBankLoader
     /// </summary>
     public static FmodManager instance;
 
-    private FMOD.System mySystem;
-
     private string m_busPrefix = "bus:/";
 
     #region Unity Method
@@ -77,22 +75,16 @@ public class FmodManager : StudioBankLoader
     /// <param name="_genericEvent"></param>
     public void CreateGenericEnventInstance(ref GenericEvent _genericEvent)
     {
-        _genericEvent.fmodEvent = RuntimeManager.CreateInstance(_genericEvent.eventPath);
+         _genericEvent.fmodEvent = RuntimeManager.CreateInstance(_genericEvent.eventPath);
     }
     /// <summary>
     /// Use to instance Generic event with parameter
     /// </summary>
     /// <param name="_genericEventInstance"></param>
-    public void CreateGenericMonoEventParameterInstance(ref GenericEventMonoParameter _genericEventInstance)
+    public FMOD.RESULT CreateGenericMonoEventParameterInstance(ref GenericEventMonoParameter _genericEventInstance)
     {
-        if (_genericEventInstance.eventPath == "")
-        {
-            Debug.LogWarning("event path null");
-            return;
-        }
-
         _genericEventInstance.fmodEvent = RuntimeManager.CreateInstance(_genericEventInstance.eventPath);
-        _genericEventInstance.fmodEvent.getParameter(_genericEventInstance.parameterName, out _genericEventInstance.eventParameter);
+        return _genericEventInstance.fmodEvent.getParameter(_genericEventInstance.parameterName, out _genericEventInstance.eventParameter);
     }
 
     /// <summary>
@@ -121,9 +113,9 @@ public class FmodManager : StudioBankLoader
     /// Trigger a cue of event
     /// </summary>
     /// <param name="_genericEvent"></param>
-    public void TriggerCue(GenericEvent _genericEvent)
+    public FMOD.RESULT TriggerCue(GenericEvent _genericEvent)
     {
-        _genericEvent.fmodEvent.triggerCue();
+        return _genericEvent.fmodEvent.triggerCue();
     }
 
     /// <summary>
@@ -159,44 +151,27 @@ public class FmodManager : StudioBankLoader
     /// Start the current event bank
     /// </summary>
     /// <param name="_genericEvent"></param>
-    public void StartEvent(GenericEvent _genericEvent)
+    public FMOD.RESULT StartEvent(GenericEvent _genericEvent)
     {
-        if (_genericEvent.fmodEvent.handle != null)
-        {
-            ///Start event
-            FMOD.RESULT res;
-            res = _genericEvent.fmodEvent.start();
-            Debug.Log(res);
-        }
-        else
-            Debug.LogError(_genericEvent.eventPath + "FmodEvent not exist");
+        return _genericEvent.fmodEvent.start();
     }
 
     /// <summary>
     /// Stop the current event bank with the fade
     /// </summary>
     /// <param name="_eventInstance"></param>
-    public void StopEventFade(EventInstance _eventInstance)
+    public FMOD.RESULT StopEvent(EventInstance _eventInstance, STOP_MODE _mode)
     {
-        _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
-    }
-
-    /// <summary>
-    /// Stop the current event without the fade
-    /// </summary>
-    /// <param name="_eventInstance"></param>
-    public void StopEvent(EventInstance _eventInstance)
-    {
-        _eventInstance.stop(STOP_MODE.IMMEDIATE);
+        return _eventInstance.stop(_mode);
     }
 
     /// <summary>
     /// Stop all event on the master bus
     /// </summary>
     /// <param name="_masterBus">master bus</param>
-    public void StopAllEvents(Bus _masterBus)
+    public FMOD.RESULT StopAllEvents(Bus _masterBus)
     {
-        _masterBus.stopAllEvents(STOP_MODE.IMMEDIATE);
+        return _masterBus.stopAllEvents(STOP_MODE.IMMEDIATE);
     }
 
     /// <summary>
@@ -204,10 +179,16 @@ public class FmodManager : StudioBankLoader
     /// </summary>
     /// <param name="_eventInstance"></param>
     /// <param name="_volume"></param>
-    public void SetEventVolume(EventInstance _eventInstance, float _volume)
+    public FMOD.RESULT SetEventVolume(EventInstance _eventInstance, float _volume)
     {
-        _eventInstance.setVolume(_volume);
+        return _eventInstance.setVolume(_volume);
     }
+
+    public void DebugResult(FMOD.RESULT _result)
+    {
+        Debug.Log(_result);
+    }
+
 
     /// <summary>
     /// Play a sound one shot on a current position
@@ -239,40 +220,29 @@ public class FmodManager : StudioBankLoader
     /// Attach an event to current transform
     /// </summary>
     /// <param name="_eventInstance">fmod event instance</param>
-    /// <param name="emitterTransform">transform to attach event</param>
-    public void AttachSfx(EventInstance _eventInstance, Transform emitterTransform)
+    /// <param name="_emitterTransform">transform to attach event</param>
+    public void AttachSfx(EventInstance _eventInstance, Transform _emitterTransform)
     {
-        RuntimeManager.AttachInstanceToGameObject(_eventInstance, emitterTransform, GetComponent<Rigidbody2D>());
+        RuntimeManager.AttachInstanceToGameObject(_eventInstance, _emitterTransform, GetComponent<Rigidbody2D>());
     }
 
     /// <summary>
     /// Change the event parameter with a new value
     /// </summary>
     /// <param name="_eventParameter"></param>
-    /// <param name="value"></param>
-    public void ChangeParameter(ref ParameterInstance _eventParameter, float value)
+    /// <param name="_value"></param>
+    public FMOD.RESULT ChangeParameter(ref ParameterInstance _eventParameter, float _value)
     {
-        if (_eventParameter.handle == null)
-        {
-            Debug.LogWarning("parament doesen't exist");
-            return;
-        }
-
-        _eventParameter.setValue(value);
+        return _eventParameter.setValue(_value);
     }
     /// <summary>
     /// Chang event parameter with a new value (Integer)
     /// </summary>
     /// <param name="_eventParameter"></param>
-    /// <param name="value"></param>
-    public void ChangeParameter(ref ParameterInstance _eventParameter, int value)
+    /// <param name="_value"></param>
+    public FMOD.RESULT ChangeParameter(ref ParameterInstance _eventParameter, int _value)
     {
-        if (_eventParameter.handle == null)
-        {
-            Debug.LogWarning("parament doesen't exist");
-            return;
-        }
-        _eventParameter.setValue(value);
+        return  _eventParameter.setValue(_value);
     }
 
     /// <summary>
@@ -307,6 +277,7 @@ public class FmodManager : StudioBankLoader
             yield return null;
         }
     }
+
     /// <summary>
     /// 
     /// </summary>
