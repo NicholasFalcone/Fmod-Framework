@@ -262,7 +262,7 @@ namespace FmodEditor
             for (int i = 0; i < _count; i++)
             {
                 eventDescription.getUserPropertyByIndex(i, out userProperty[i]);
-                m_userProperty[i] = (string)userProperty[i].name;
+                m_userProperty[i] = userProperty[i].name + " | " + userProperty[i].stringValue();
             }
 
             ///Check if is 3D or 2D

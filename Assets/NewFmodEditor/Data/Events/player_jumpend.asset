@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: player_jumpend
   m_EditorClassIdentifier: 
   m_eventPath: event:/Platform/Player/player_jumpend
-  m_userProperty: []
+  m_userProperty:
+  - 1 | dirt
+  - 2 | grass
