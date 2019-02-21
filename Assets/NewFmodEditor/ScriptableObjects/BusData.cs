@@ -36,11 +36,9 @@ namespace FmodEditor
                 if(!m_bus.isValid())
                 {
                     m_bus =  RuntimeManager.GetBus(m_busPath);
-                    Debug.Log("Handler reasgined");
                 }
            
                FMOD.RESULT r =  m_bus.setVolume(value);
-                Debug.Log(r);
             }
         }
         public bool Muted { get { return m_isMuted; } set { m_isMuted = value; m_bus.setMute(value); } }
