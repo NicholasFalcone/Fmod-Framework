@@ -170,7 +170,6 @@ public class MovementComponent : MonoBehaviour
             }
             else
             {
-                Debug.Log("Play Wather");
                 FmodManager.instance.PlaySoundOneShot(m_watherMovementSound.eventPath, transform.position);
             }
 

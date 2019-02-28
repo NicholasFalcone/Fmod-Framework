@@ -224,6 +224,7 @@ public class FmodManager : StudioBankLoader
     public void AttachSfx(EventInstance _eventInstance, Transform _emitterTransform)
     {
         RuntimeManager.AttachInstanceToGameObject(_eventInstance, _emitterTransform, GetComponent<Rigidbody2D>());
+        _eventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(_emitterTransform.position));
     }
 
     /// <summary>
