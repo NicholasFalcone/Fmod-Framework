@@ -166,6 +166,15 @@ public class FmodManager : StudioBankLoader
     }
 
     /// <summary>
+    /// Release the current event instance
+    /// </summary>
+    /// <param name="_eventInstance"></param>
+    public FMOD.RESULT ReleaseEvent(EventInstance _eventInstance)
+    {
+        return _eventInstance.release();
+    }
+
+    /// <summary>
     /// Stop all event on the master bus
     /// </summary>
     /// <param name="_masterBus">master bus</param>
@@ -284,7 +293,7 @@ public class FmodManager : StudioBankLoader
     /// </summary>
     /// <param name="_bus">Variable instance</param>
     /// <param name="_path">Channel path</param>
-    public void SetBus(Bus _bus, string _path)
+    public void SetBus(ref Bus _bus, string _path)
     {
         _bus = RuntimeManager.GetBus(m_busPrefix + _path);
     }
