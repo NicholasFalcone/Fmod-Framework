@@ -2,16 +2,21 @@
 
 public class InputController : MonoBehaviour
 {
-    private MovementComponent m_movement;
+    private MovementComponent m_movement = null;
 
     private void Awake()
     {
         m_movement = GetComponent<MovementComponent>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        float h = Input.GetAxisRaw("Horizontal");
+        GetInput();
+    }
+
+    private void GetInput()
+    {
+        float h = Input.GetAxisRaw(Globals.InputName.Horizontal);
 
         m_movement.Movement(h);
 
@@ -19,6 +24,6 @@ public class InputController : MonoBehaviour
         {
             m_movement.Jump();
         }
-
     }
+
 }

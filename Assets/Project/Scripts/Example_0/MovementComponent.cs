@@ -8,13 +8,11 @@ public enum SurfaceType
     Water,
     Cave
 }
-
 public enum EventName
 {
     ambience,
     underwater
 }
-
 public enum ParameterValue
 {
     Zero = 0,
@@ -32,29 +30,31 @@ public class MovementComponent : MonoBehaviour
     private float m_jumpForce = 10;
     [SerializeField]
     private LayerMask m_walkableLayer;
+    private float landingDelta = 0;
+    private const float landingThreshold = 0.1f;
     #region Sfx
     [Header("Sound")]
     [SerializeField]
     private FMODEventInstance m_footsteps;
     [SerializeField]
-    private FMODEventInstance m_watherMovementSound;
+    private FMODEventInstance m_waterMovementSound;
     [SerializeField]
     private FMODEventInstance m_jumpStart;
     [SerializeField]
     private FMODEventInstance m_jumpEnd;
     #endregion
-    private Collider2D[] m_colliders;
-    private Animator m_animator;
-    private Rigidbody2D m_rigidbody;
-    private SpriteRenderer m_render;
+    private Collider2D[] m_colliders = null;
+    private Animator m_animator = null;
+    private Rigidbody2D m_rigidbody = null;
+    private SpriteRenderer m_render = null;
     private bool m_onAir = false;
     [SerializeField]
     private SurfaceType m_surfaceType;
     private EventName m_eventName;
 
     public SurfaceType SurfaceType { get; set; }
-    public EventName EventName{get{return m_eventName;} set{m_eventName = value;}}
-    
+    public EventName EventName { get { return m_eventName; } set { m_eventName = value; } }
+
     private void Awake()
     {
         //Get all component
@@ -62,31 +62,29 @@ public class MovementComponent : MonoBehaviour
         m_render = GetComponent<SpriteRenderer>();
         m_rigidbody = GetComponent<Rigidbody2D>();
     }
-    
+
     private void Start()
     {
         GenerateFmodEvents();
         m_surfaceType = SurfaceType.Grass;
-    } 
-    
+    }
+
     private void GenerateFmodEvents()
     {
         FMODDatabase.Instance.GetFmodEvent(m_footsteps);
         FMODDatabase.Instance.GetFmodEvent(m_jumpStart);
         FMODDatabase.Instance.GetFmodEvent(m_jumpEnd);
-        FMODDatabase.Instance.GetFmodEvent(m_watherMovementSound, ()=>
+        FMODDatabase.Instance.GetFmodEvent(m_waterMovementSound, () =>
         {
-            m_watherMovementSound.AttachTo(transform);
+            m_waterMovementSound.AttachTo(transform);
         });
-        //    FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_footsteps);
-        //    FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_jumpStart);
-        //    FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_jumpEnd);
     }
 
 
     private void Update()
     {
-        Landing();
+        if (m_onAir)
+            Landing();
     }
 
     //Called on InputController
@@ -117,7 +115,7 @@ public class MovementComponent : MonoBehaviour
         if (IsGrounded())
         {
             float magintude = m_rigidbody.velocity.magnitude;
-            m_animator.SetFloat("Speed", magintude);
+            m_animator.SetFloat(Globals.AnimationParameters.PlayerSpeed, magintude);
         }
     }
 
@@ -129,9 +127,9 @@ public class MovementComponent : MonoBehaviour
             return false;
         else
         {
-            if (hit.transform.gameObject.tag == "Grass")
+            if (hit.transform.gameObject.tag == Globals.Tags.Grass)
                 m_surfaceType = SurfaceType.Grass;
-            else if(hit.transform.gameObject.tag == "Cave")
+            else if (hit.transform.gameObject.tag == Globals.Tags.Grass)
                 m_surfaceType = SurfaceType.Cave;
             else
                 m_surfaceType = SurfaceType.Water;
@@ -140,21 +138,14 @@ public class MovementComponent : MonoBehaviour
         }
     }
 
-    float _delta = 0;
     private void Landing()
     {
-       
-        if (m_onAir)
-        {
-            _delta += Time.deltaTime;
-        }
-
-        if ((IsGrounded() && m_onAir) && _delta > 0.1f)
+        landingDelta += Time.deltaTime;
+        if ((IsGrounded() && m_onAir) && landingDelta > landingThreshold)
         {
             m_onAir = false;
-            _delta = 0;
+            landingDelta = 0;
             m_jumpEnd.Play();
-            //FmodManager.instance.StartEvent(m_jumpEnd);
         }
     }
 
@@ -163,11 +154,9 @@ public class MovementComponent : MonoBehaviour
         m_surfaceType = _surfaceType;
         if (m_surfaceType != SurfaceType.Water)
         {
-            //FmodManager.instance.ChangeParameter(ref m_footsteps.eventParameter, (float)m_surfaceType++);
-            //FmodManager.instance.ChangeParameter(ref m_jumpStart.eventParameter, (float)m_surfaceType++);
-            //FmodManager.instance.ChangeParameter(ref m_jumpEnd.eventParameter, (float)m_surfaceType++);
-
-
+            m_footsteps.ChangeParameter(m_footsteps.Parameters[0], (float)m_surfaceType++);
+            m_jumpStart.ChangeParameter(m_footsteps.Parameters[0], (float)m_surfaceType++);
+            m_jumpEnd.ChangeParameter(m_footsteps.Parameters[0], (float)m_surfaceType++);
         }
     }
 
@@ -175,19 +164,16 @@ public class MovementComponent : MonoBehaviour
     public void PlayFootStep()
     {
         //Check if is grounded
-        if(IsGrounded())
+        if (IsGrounded())
         {
             if (m_surfaceType == SurfaceType.Grass || m_surfaceType == SurfaceType.Cave)
             {
                 m_footsteps.Play();
-                //FmodManager.instance.StartEvent(m_footsteps);
             }
             else
             {
-                m_watherMovementSound.Play();
-                //FmodManager.instance.PlaySoundOneShot(m_watherMovementSound.eventPath, transform.position);
+                m_waterMovementSound.Play();
             }
-
         }
     }
 }

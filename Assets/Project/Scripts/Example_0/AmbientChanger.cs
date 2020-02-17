@@ -38,7 +38,7 @@ public class AmbientChanger : MonoBehaviour
             m_hitSurfaceSound.AttachTo(collider.transform);
         }
 
-        if (collider.CompareTag("Player"))
+        if (collider.CompareTag(Globals.Tags.Player))
         {
             m_movementComponent.CheckSurface(m_ambientType);
             m_AmbientComponent.ChangeAmbientParameter((int)m_eventNameToChange, (int)m_EnterparameterValue);
@@ -46,7 +46,7 @@ public class AmbientChanger : MonoBehaviour
     }
     void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.CompareTag("Player"))
+        if (collider.CompareTag(Globals.Tags.Player))
         {
             m_movementComponent.CheckSurface(m_exitType);
             m_AmbientComponent.ChangeAmbientParameter((int)m_eventNameToChange, (int)m_ExitparameterValue);
