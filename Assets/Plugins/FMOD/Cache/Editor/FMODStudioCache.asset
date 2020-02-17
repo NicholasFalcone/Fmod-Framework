@@ -56,12 +56,12 @@ MonoBehaviour:
   Path: event:/Multiplayer/Weapon/Bullet
   guid: 3542dab4aad919438cfb3fd5117ff44d
   Banks:
-  - {fileID: 3870528575308894957}
+  - {fileID: 6016329264848233921}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 5335696953735368085}
+  - {fileID: 6056568233997342798}
   MinDistance: 1
   MaxDistance: 55
   Length: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
   Path: event:/Multiplayer/Weapon/Pistol
   guid: d876d51b6403184c9a64a34bca64866b
   Banks:
-  - {fileID: 3870528575308894957}
+  - {fileID: 6016329264848233921}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -103,13 +103,13 @@ MonoBehaviour:
   Path: event:/Platform/Player/player_footsteps
   guid: adc8753d1365094bbcb78cb8b73a1834
   Banks:
-  - {fileID: -7476530196661593789}
-  - {fileID: -1609561971228592476}
+  - {fileID: -2535629008662219676}
+  - {fileID: -5131933219218850024}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: 6060539690336850803}
+  - {fileID: 684177496516457605}
   MinDistance: 0
   MaxDistance: 0
   Length: 316
@@ -147,7 +147,7 @@ MonoBehaviour:
   lastModified: 637175396363120760
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &-7354769384851143387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,14 +314,14 @@ MonoBehaviour:
   Path: event:/Platform/Enviorment/env_master
   guid: 205695638ff5bb4eb2c1d47867b58166
   Banks:
-  - {fileID: -7476530196661593789}
-  - {fileID: -1609561971228592476}
+  - {fileID: -2535629008662219676}
+  - {fileID: -5131933219218850024}
   IsStream: 1
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: -2903674474196650288}
-  - {fileID: 7198746774533009389}
+  - {fileID: 4723842688989787258}
+  - {fileID: -3081421860011412014}
   MinDistance: 0
   MaxDistance: 0
   Length: 15000
@@ -359,7 +359,7 @@ MonoBehaviour:
   lastModified: 637175396370695412
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &-6149841546342282554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,7 +392,7 @@ MonoBehaviour:
   Path: event:/Multiplayer/Footsteps
   guid: d2fb4dac81d46c438055aa9d2e9b7688
   Banks:
-  - {fileID: 3870528575308894957}
+  - {fileID: 6016329264848233921}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -440,8 +440,8 @@ MonoBehaviour:
   Path: event:/Platform/Player/player_water_collision
   guid: f5c5ae25ad1dc04f947134f85155f572
   Banks:
-  - {fileID: -7476530196661593789}
-  - {fileID: -1609561971228592476}
+  - {fileID: -2535629008662219676}
+  - {fileID: -5131933219218850024}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -449,6 +449,24 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 1380
+--- !u!114 &-5131933219218850024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Platform.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/Desktop/Platform.bank
+  SubDir: 
+  lastModified: 637175441454372372
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &-5112675141402780976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,7 +508,7 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 0
---- !u!114 &-4779108873643883992
+--- !u!114 &-4797782754261159982
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -507,7 +525,41 @@ MonoBehaviour:
   Max: 2
   Default: 1
   Exists: 1
+--- !u!114 &-4779108873643883992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/player_jumpstart/surface
+  m_EditorClassIdentifier: 
+  Name: surface
+  Min: 1
+  Max: 2
+  Default: 1
+  Exists: 0
 --- !u!114 &-4662251173148888908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/env_master/underwater
+  m_EditorClassIdentifier: 
+  Name: underwater
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
+--- !u!114 &-4600751598563832213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -574,8 +626,8 @@ MonoBehaviour:
   Path: snapshot:/outdoor
   guid: cc58e3617612714abe3605162692140d
   Banks:
-  - {fileID: -7476530196661593789}
-  - {fileID: -1609561971228592476}
+  - {fileID: -2535629008662219676}
+  - {fileID: -5131933219218850024}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -583,6 +635,23 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 0
+--- !u!114 &-4115630069829960250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/player_jumpstart/surface
+  m_EditorClassIdentifier: 
+  Name: surface
+  Min: 1
+  Max: 2
+  Default: 1
+  Exists: 0
 --- !u!114 &-4069301449077544559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -626,6 +695,23 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 360
+--- !u!114 &-3081421860011412014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/env_master/underwater
+  m_EditorClassIdentifier: 
+  Name: underwater
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &-3023413377724124878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,13 +727,13 @@ MonoBehaviour:
   Path: event:/Platform/Player/player_jumpend
   guid: 4da3610f9788c3488d1ecc98c981ea61
   Banks:
-  - {fileID: -7476530196661593789}
-  - {fileID: -1609561971228592476}
+  - {fileID: -2535629008662219676}
+  - {fileID: -5131933219218850024}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -1803917430097170545}
+  - {fileID: 5525237337192064446}
   MinDistance: 0
   MaxDistance: 0
   Length: 556
@@ -667,6 +753,24 @@ MonoBehaviour:
   Min: 1
   Max: 2
   Default: 1
+  Exists: 0
+--- !u!114 &-2535629008662219676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master Bank.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/Desktop/Master Bank.bank
+  SubDir: 
+  lastModified: 637175441454072590
+  LoadResult: 0
+  FileSizes: []
   Exists: 1
 --- !u!114 &-2017232987428085269
 MonoBehaviour:
@@ -700,8 +804,8 @@ MonoBehaviour:
   Path: snapshot:/underwater
   guid: 7ae1925aeded4e468768e5547a7d3294
   Banks:
-  - {fileID: -7476530196661593789}
-  - {fileID: -1609561971228592476}
+  - {fileID: -2535629008662219676}
+  - {fileID: -5131933219218850024}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -725,7 +829,7 @@ MonoBehaviour:
   Min: 1
   Max: 2
   Default: 1
-  Exists: 1
+  Exists: 0
 --- !u!114 &-1785829032212961790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,7 +882,7 @@ MonoBehaviour:
   lastModified: 637175396369606185
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &-1422965140101536480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -854,8 +958,8 @@ MonoBehaviour:
   Path: event:/Platform/Player/player_water_mov
   guid: 1e90f59e3a683e488ea2848fa999f555
   Banks:
-  - {fileID: -7476530196661593789}
-  - {fileID: -1609561971228592476}
+  - {fileID: -2535629008662219676}
+  - {fileID: -5131933219218850024}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -902,7 +1006,7 @@ MonoBehaviour:
   Path: event:/Shooter/Weapon/Pistol
   guid: a4e5d27df89b024aa012c7405b1c5315
   Banks:
-  - {fileID: -6199543305711713563}
+  - {fileID: 8770121654284458248}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -985,10 +1089,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: 5770967740937162510}
-  - {fileID: -7476530196661593789}
-  - {fileID: 3870528575308894957}
-  - {fileID: -1609561971228592476}
-  - {fileID: -6199543305711713563}
+  - {fileID: -2535629008662219676}
+  - {fileID: 6016329264848233921}
+  - {fileID: -5131933219218850024}
+  - {fileID: 8770121654284458248}
   EditorEvents:
   - {fileID: -892894823400234399}
   - {fileID: 6354903899382427059}
@@ -1007,10 +1111,10 @@ MonoBehaviour:
   - {fileID: -787445897457987036}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -7476530196661593789}
+  - {fileID: -2535629008662219676}
   StringsBanks:
   - {fileID: 5770967740937162510}
-  stringsBankWriteTime: 637175396363190709
+  stringsBankWriteTime: 637175441454152550
   cacheVersion: 3
 --- !u!114 &2383532090264984
 MonoBehaviour:
@@ -1062,16 +1166,33 @@ MonoBehaviour:
   Path: event:/Platform/Player/player_jumpstart
   guid: bedb68fe4da9fa42a4be835a4b76aca3
   Banks:
-  - {fileID: -7476530196661593789}
-  - {fileID: -1609561971228592476}
+  - {fileID: -2535629008662219676}
+  - {fileID: -5131933219218850024}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters:
-  - {fileID: -4779108873643883992}
+  - {fileID: -4797782754261159982}
   MinDistance: 0
   MaxDistance: 0
   Length: 360
+--- !u!114 &684177496516457605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/player_footsteps/surface
+  m_EditorClassIdentifier: 
+  Name: surface
+  Min: 1
+  Max: 2
+  Default: 1
+  Exists: 1
 --- !u!114 &753694074516353291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1163,6 +1284,23 @@ MonoBehaviour:
   Max: 2
   Default: 1
   Exists: 0
+--- !u!114 &2805679781674406469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/player_jumpend/surface
+  m_EditorClassIdentifier: 
+  Name: surface
+  Min: 1
+  Max: 2
+  Default: 1
+  Exists: 0
 --- !u!114 &3063414551706727706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1181,6 +1319,23 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &3728611912912295987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/env_master/ambience
+  m_EditorClassIdentifier: 
+  Name: ambience
+  Min: 1
+  Max: 2
+  Default: 1
+  Exists: 0
 --- !u!114 &3870528575308894957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1198,6 +1353,23 @@ MonoBehaviour:
   lastModified: 637175396368347083
   LoadResult: 0
   FileSizes: []
+  Exists: 0
+--- !u!114 &4097317229590433098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Bullet/material
+  m_EditorClassIdentifier: 
+  Name: material
+  Min: 1
+  Max: 4
+  Default: 1
   Exists: 1
 --- !u!114 &4511373000460288176
 MonoBehaviour:
@@ -1254,12 +1426,12 @@ MonoBehaviour:
   Path: event:/Shooter/Weapon/Bullet
   guid: 1b371b2f1ef16d4e8011f34c9b61f6af
   Banks:
-  - {fileID: -6199543305711713563}
+  - {fileID: 8770121654284458248}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 4883719863010981186}
+  - {fileID: 4097317229590433098}
   MinDistance: 1
   MaxDistance: 55
   Length: 0
@@ -1286,6 +1458,23 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 1171
+--- !u!114 &4723842688989787258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/env_master/ambience
+  m_EditorClassIdentifier: 
+  Name: ambience
+  Min: 1
+  Max: 2
+  Default: 1
+  Exists: 1
 --- !u!114 &4851152845339059296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1327,7 +1516,7 @@ MonoBehaviour:
   Min: 1
   Max: 4
   Default: 1
-  Exists: 1
+  Exists: 0
 --- !u!114 &5299610212346162655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1362,6 +1551,23 @@ MonoBehaviour:
   Min: 1
   Max: 4
   Default: 1
+  Exists: 0
+--- !u!114 &5525237337192064446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/player_jumpend/surface
+  m_EditorClassIdentifier: 
+  Name: surface
+  Min: 1
+  Max: 2
+  Default: 1
   Exists: 1
 --- !u!114 &5770967740937162510
 MonoBehaviour:
@@ -1377,13 +1583,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: Assets/Audio/Desktop/Master Bank.strings.bank
   SubDir: 
-  lastModified: 637175396363190709
+  lastModified: 637175441454152550
   LoadResult: 0
   FileSizes:
   - Name: 
     Value: 2044
   Exists: 1
 --- !u!114 &5963592437697027988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Bullet/material
+  m_EditorClassIdentifier: 
+  Name: material
+  Min: 1
+  Max: 4
+  Default: 1
+  Exists: 1
+--- !u!114 &6016329264848233921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Multiplayer.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/Desktop/Multiplayer.bank
+  SubDir: 
+  lastModified: 637175441454192502
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
+--- !u!114 &6056568233997342798
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1416,7 +1657,24 @@ MonoBehaviour:
   Min: 1
   Max: 2
   Default: 1
-  Exists: 1
+  Exists: 0
+--- !u!114 &6063514506264106101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/player_footsteps/surface
+  m_EditorClassIdentifier: 
+  Name: surface
+  Min: 1
+  Max: 2
+  Default: 1
+  Exists: 0
 --- !u!114 &6065321280720301140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1473,8 +1731,8 @@ MonoBehaviour:
   Path: event:/Multiplayer/Campfire
   guid: 1ece0125a9b0034b981b0826ba1ca3c6
   Banks:
-  - {fileID: -7476530196661593789}
-  - {fileID: 3870528575308894957}
+  - {fileID: -2535629008662219676}
+  - {fileID: 6016329264848233921}
   IsStream: 1
   Is3D: 1
   IsOneShot: 0
@@ -1522,7 +1780,7 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &7411389625366551078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1590,8 +1848,8 @@ MonoBehaviour:
   Path: snapshot:/cave
   guid: bce4b2f02e84b240a5bd0ad1604aac16
   Banks:
-  - {fileID: -7476530196661593789}
-  - {fileID: -1609561971228592476}
+  - {fileID: -2535629008662219676}
+  - {fileID: -5131933219218850024}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -1616,6 +1874,24 @@ MonoBehaviour:
   Max: 2
   Default: 1
   Exists: 0
+--- !u!114 &8770121654284458248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Shooter.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/Desktop/Shooter.bank
+  SubDir: 
+  lastModified: 637175441454402357
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &9104383303789206889
 MonoBehaviour:
   m_ObjectHideFlags: 0

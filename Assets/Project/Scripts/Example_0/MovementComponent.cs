@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using CustomFMOD;
 
+#region Enums
 public enum SurfaceType
 {
     Grass = 0,
@@ -20,7 +22,7 @@ public enum ParameterValue
     Two,
     Three
 }
-
+#endregion
 
 public class MovementComponent : MonoBehaviour
 {
@@ -33,13 +35,13 @@ public class MovementComponent : MonoBehaviour
     #region Sfx
     [Header("Sound")]
     [SerializeField]
-    private GenericEvent m_footsteps;
+    private FMODEventInstance m_footsteps;
     [SerializeField]
-    private GenericEvent m_watherMovementSound;
+    private FMODEventInstance m_watherMovementSound;
     [SerializeField]
-    private GenericEvent m_jumpStart;
+    private FMODEventInstance m_jumpStart;
     [SerializeField]
-    private GenericEvent m_jumpEnd;
+    private FMODEventInstance m_jumpEnd;
     #endregion
     private Collider2D[] m_colliders;
     private Animator m_animator;
@@ -69,9 +71,13 @@ public class MovementComponent : MonoBehaviour
     
     private void GenerateFmodEvents()
     {
-        FmodManager.instance.CreateGenericEnventInstance(ref m_footsteps);
-        FmodManager.instance.CreateGenericEnventInstance(ref m_jumpStart);
-        FmodManager.instance.CreateGenericEnventInstance(ref m_jumpEnd);
+        FMODDatabase.Instance.GetFmodEvent(m_footsteps);
+        FMODDatabase.Instance.GetFmodEvent(m_jumpStart);
+        FMODDatabase.Instance.GetFmodEvent(m_jumpEnd);
+        FMODDatabase.Instance.GetFmodEvent(m_watherMovementSound, ()=>
+        {
+            m_watherMovementSound.AttachTo(transform);
+        });
         //    FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_footsteps);
         //    FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_jumpStart);
         //    FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_jumpEnd);
@@ -89,7 +95,8 @@ public class MovementComponent : MonoBehaviour
         //check if is grounded and add force
         if (IsGrounded())
         {
-            FmodManager.instance.StartEvent(m_jumpStart);
+            m_jumpStart.Play();
+            //FmodManager.instance.StartEvent(m_jumpStart);
             m_onAir = true;
             m_rigidbody.AddForce(Vector2.up * m_jumpForce, ForceMode2D.Impulse);
         }
@@ -146,7 +153,8 @@ public class MovementComponent : MonoBehaviour
         {
             m_onAir = false;
             _delta = 0;
-            FmodManager.instance.StartEvent(m_jumpEnd);
+            m_jumpEnd.Play();
+            //FmodManager.instance.StartEvent(m_jumpEnd);
         }
     }
 
@@ -171,11 +179,13 @@ public class MovementComponent : MonoBehaviour
         {
             if (m_surfaceType == SurfaceType.Grass || m_surfaceType == SurfaceType.Cave)
             {
-                FmodManager.instance.StartEvent(m_footsteps);
+                m_footsteps.Play();
+                //FmodManager.instance.StartEvent(m_footsteps);
             }
             else
             {
-                FmodManager.instance.PlaySoundOneShot(m_watherMovementSound.eventPath, transform.position);
+                m_watherMovementSound.Play();
+                //FmodManager.instance.PlaySoundOneShot(m_watherMovementSound.eventPath, transform.position);
             }
 
         }

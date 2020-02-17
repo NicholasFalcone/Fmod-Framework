@@ -1,11 +1,11 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
+using CustomFMOD;
 
 public class AmbientChanger : MonoBehaviour
 {
-    private AmbientComponent m_AmbientComponent;
     [SerializeField]
-    private GenericEvent m_hitSurfaceSound;
+    private FMODEventInstance m_hitSurfaceSound;
+    private AmbientComponent m_AmbientComponent;
     private MovementComponent m_movementComponent;
     [SerializeField]
     private EventName m_eventNameToChange;
@@ -23,10 +23,20 @@ public class AmbientChanger : MonoBehaviour
         m_movementComponent = FindObjectOfType<MovementComponent>();
     }
 
+    private void Start()
+    {
+        ///create a request to get fmod event
+        FMODDatabase.Instance.GetFmodEvent(m_hitSurfaceSound);
+    }
+
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (m_ambientType == SurfaceType.Water)
-            FmodManager.instance.PlaySoundOneShot(m_hitSurfaceSound.eventPath, collider.transform.position);
+        {
+            ///play event
+            m_hitSurfaceSound.Play();
+            m_hitSurfaceSound.AttachTo(collider.transform);
+        }
 
         if (collider.CompareTag("Player"))
         {
@@ -40,7 +50,6 @@ public class AmbientChanger : MonoBehaviour
         {
             m_movementComponent.CheckSurface(m_exitType);
             m_AmbientComponent.ChangeAmbientParameter((int)m_eventNameToChange, (int)m_ExitparameterValue);
-
         }
     }
 }
