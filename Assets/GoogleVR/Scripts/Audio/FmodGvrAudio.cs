@@ -54,7 +54,7 @@ public static class FmodGvrAudio {
   public static bool IsListenerInsideRoom(FmodGvrAudioRoom room) {
     // Compute the room position relative to the listener.
     FMOD.VECTOR unused;
-    RuntimeManager.LowlevelSystem.get3DListenerAttributes(0, out listenerPositionFmod, out unused,
+    RuntimeManager.CoreSystem.get3DListenerAttributes(0, out listenerPositionFmod, out unused,
                                                           out unused, out unused);
     Vector3 listenerPosition = new Vector3(listenerPositionFmod.x, listenerPositionFmod.y,
                                            listenerPositionFmod.z);

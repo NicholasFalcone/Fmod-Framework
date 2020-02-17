@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections.Generic;
 
 namespace FMODUnity
@@ -7,14 +6,11 @@ namespace FMODUnity
     [AddComponentMenu("FMOD Studio/FMOD Studio Bank Loader")]
     public class StudioBankLoader : MonoBehaviour
     {
-        [Header("When you wanna load all event")]
         public LoaderGameEvent LoadEvent;
-        [Header("When you wanna unload all event")]
         public LoaderGameEvent UnloadEvent;
-        [Header("Banks path")]
         [BankRef]
         public List<string> Banks;
-        public String CollisionTag;
+        public string CollisionTag;
         public bool PreloadSamples;
         private bool isQuitting;
         
@@ -51,7 +47,7 @@ namespace FMODUnity
 
         void OnTriggerEnter(Collider other)
         {
-            if (String.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
+            if (string.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
             {
                 HandleGameEvent(LoaderGameEvent.TriggerEnter);
             }
@@ -59,7 +55,7 @@ namespace FMODUnity
 
         void OnTriggerExit(Collider other)
         {
-            if (String.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
+            if (string.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
             {
                 HandleGameEvent(LoaderGameEvent.TriggerExit);
             }
@@ -67,7 +63,7 @@ namespace FMODUnity
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (String.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
+            if (string.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
             {
                 HandleGameEvent(LoaderGameEvent.TriggerEnter2D);
             }
@@ -75,7 +71,7 @@ namespace FMODUnity
 
         void OnTriggerExit2D(Collider2D other)
         {
-            if (String.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
+            if (string.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
             {
                 HandleGameEvent(LoaderGameEvent.TriggerExit2D);
             }
@@ -94,7 +90,7 @@ namespace FMODUnity
                     UnityEngine.Debug.LogException(e);
                 }
             }
-            RuntimeManager.WaitForAllLoads();     
+            RuntimeManager.WaitForAllLoads();
         }
 
         public void Unload()

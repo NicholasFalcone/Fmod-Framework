@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using CustomFMOD;
 
 public enum TargetMaterial
 {
@@ -11,22 +12,25 @@ public enum TargetMaterial
 public class ImpactSoundComponent : MonoBehaviour
 {
     [SerializeField]
-    private GenericEventMonoParameter m_hitSound;
+    private FMODEventInstance m_hitSound;
     [SerializeField]
     private TargetMaterial m_targetMaterial;
 
     private void Start()
     {
-        FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_hitSound);
-        FmodManager.instance.ChangeParameter(ref m_hitSound.eventParameter, (int)m_targetMaterial);
+        FMODDatabase.Instance.GetFmodEvent(m_hitSound, () =>
+        {
+            m_hitSound.AttachTo(transform);
+            m_hitSound.ChangeParameter(m_hitSound.Parameters[0], (int)m_targetMaterial);
+        });
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet"))
         {
-            FmodManager.instance.AttachSfx(m_hitSound.fmodEvent, collision.gameObject.transform);
-            FmodManager.instance.StartEvent(m_hitSound);
+            m_hitSound.Play();
         }
     }
 }

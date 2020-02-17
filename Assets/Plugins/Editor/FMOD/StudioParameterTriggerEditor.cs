@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -49,7 +46,7 @@ namespace FMODUnity
                 }
 
                 List<StudioEventEmitter> newEmitters = new List<StudioEventEmitter>();
-                targetEmitter.GetComponents<StudioEventEmitter>(newEmitters);
+                targetEmitter.GetComponents(newEmitters);
                 expanded = new bool[newEmitters.Count];
                 foreach (var emitter in newEmitters)
                 {
@@ -63,16 +60,15 @@ namespace FMODUnity
                 return;
             }
 
-
             EditorGUILayout.PropertyField(trigger, new GUIContent("Trigger"));
 
-            if (trigger.enumValueIndex >= 3 && trigger.enumValueIndex <= 6)
+            if (trigger.enumValueIndex >= (int)EmitterGameEvent.TriggerEnter && trigger.enumValueIndex <= (int)EmitterGameEvent.TriggerExit2D)
             {
                 tag.stringValue = EditorGUILayout.TagField("Collision Tag", tag.stringValue);
             }
 
             var localEmitters = new List<StudioEventEmitter>();
-            targetEmitter.GetComponents<StudioEventEmitter>(localEmitters);
+            targetEmitter.GetComponents(localEmitters);
 
             int emitterIndex = 0;
             foreach (var emitter in localEmitters)
@@ -95,13 +91,18 @@ namespace FMODUnity
                     emitterProperty.FindPropertyRelative("Target").objectReferenceValue = emitter;
                 }
 
-
-                if (!String.IsNullOrEmpty(emitter.Event))
+                if (!string.IsNullOrEmpty(emitter.Event))
                 {
                     expanded[emitterIndex] = EditorGUILayout.Foldout(expanded[emitterIndex], emitter.Event);
                     if (expanded[emitterIndex])
                     {
                         var eventRef = EventManager.EventFromPath(emitter.Event);
+                        if (emitter.Event.StartsWith("{"))
+                        {
+                            EditorGUI.BeginDisabledGroup(true);
+                            EditorGUILayout.TextField("Path:", eventRef.Path);
+                            EditorGUI.EndDisabledGroup();
+                        }
                         foreach (var paramRef in eventRef.Parameters)
                         {
                             bool set = false;
@@ -145,10 +146,8 @@ namespace FMODUnity
                         }
                     }
                 }
-
                 emitterIndex++;
-            }           
-
+            }
             serializedObject.ApplyModifiedProperties();
         }
     }

@@ -36,7 +36,7 @@ namespace FMODUnity
         {
             foreach (var instance in instances)
             {
-                instance.setParameterValue(name, value);
+                instance.setParameterByName(name, value);
             }
         }
 

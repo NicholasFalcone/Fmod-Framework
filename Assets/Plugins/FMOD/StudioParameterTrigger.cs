@@ -11,85 +11,32 @@ namespace FMODUnity
     }
 
     [AddComponentMenu("FMOD Studio/FMOD Studio Parameter Trigger")]
-    public class StudioParameterTrigger: MonoBehaviour
-    {                        
+    public class StudioParameterTrigger: EventHandler
+    {
         public EmitterRef[] Emitters;
         public EmitterGameEvent TriggerEvent;
-        public string CollisionTag;
-        
-        void Start()
-        {
-            HandleGameEvent(EmitterGameEvent.ObjectStart);
-        }
 
-        void OnDestroy()
+        void Awake()
         {
-            HandleGameEvent(EmitterGameEvent.ObjectDestroy);
-        }
-
-        void OnEnable()
-        {
-            HandleGameEvent(EmitterGameEvent.ObjectEnable);
-        }
-
-        void OnDisable()
-        {
-            HandleGameEvent(EmitterGameEvent.ObjectDisable);
-        }
-
-        void OnTriggerEnter(Collider other)
-        {
-            if (String.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
+            for (int i = 0; i < Emitters.Length; i++)
             {
-                HandleGameEvent(EmitterGameEvent.TriggerEnter);
+                var emitterRef = Emitters[i];
+                if (emitterRef.Target != null && !string.IsNullOrEmpty(emitterRef.Target.Event))
+                {
+                    FMOD.Studio.EventDescription eventDesc = FMODUnity.RuntimeManager.GetEventDescription(emitterRef.Target.Event);
+                    if (eventDesc.isValid())
+                    {
+                        for (int j = 0; j < Emitters[i].Params.Length; j++)
+                        {
+                            FMOD.Studio.PARAMETER_DESCRIPTION param;
+                            eventDesc.getParameterDescriptionByName(emitterRef.Params[j].Name, out param);
+                            emitterRef.Params[j].ID = param.id;
+                        }
+                    }
+                }
             }
         }
-
-        void OnTriggerExit(Collider other)
-        {
-            if (String.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
-            {
-                HandleGameEvent(EmitterGameEvent.TriggerExit);
-            }
-        }
-
-        void OnTriggerEnter2D(Collider2D other)
-        {
-            if (String.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
-            {
-                HandleGameEvent(EmitterGameEvent.TriggerEnter2D);
-            }
-        }
-
-        void OnTriggerExit2D(Collider2D other)
-        {
-            if (String.IsNullOrEmpty(CollisionTag) || other.CompareTag(CollisionTag))
-            {
-                HandleGameEvent(EmitterGameEvent.TriggerExit2D);
-            }
-        }
-
-        void OnCollisionEnter()
-        {
-            HandleGameEvent(EmitterGameEvent.CollisionEnter);
-        }
-
-        void OnCollisionExit()
-        {
-            HandleGameEvent(EmitterGameEvent.CollisionExit);
-        }
-
-        void OnCollisionEnter2D()
-        {
-            HandleGameEvent(EmitterGameEvent.CollisionEnter2D);
-        }
-
-        void OnCollisionExit2D()
-        {
-            HandleGameEvent(EmitterGameEvent.CollisionExit2D);
-        }
-
-        void HandleGameEvent(EmitterGameEvent gameEvent)
+        protected override void HandleGameEvent(EmitterGameEvent gameEvent)
         {
             if (TriggerEvent == gameEvent)
             {
@@ -102,11 +49,11 @@ namespace FMODUnity
             for (int i = 0; i < Emitters.Length; i++)
             {
                 var emitterRef = Emitters[i];
-                if (emitterRef.Target != null)
+                if (emitterRef.Target != null && emitterRef.Target.EventInstance.isValid())
                 {
                     for (int j = 0; j < Emitters[i].Params.Length; j++)
                     {
-                        emitterRef.Target.SetParameter(Emitters[i].Params[j].Name, Emitters[i].Params[j].Value);
+                        emitterRef.Target.EventInstance.setParameterByID(Emitters[i].Params[j].ID, Emitters[i].Params[j].Value);
                     }
                 }
             }

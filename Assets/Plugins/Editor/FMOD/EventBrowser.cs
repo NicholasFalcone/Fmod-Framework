@@ -9,10 +9,18 @@ namespace FMODUnity
 {
     class EventBrowser : EditorWindow, ISerializationCallbackReceiver
     {
+        public enum TreeType : int
+        {
+            Events,
+            Snapshots,
+            Banks,
+            GlobalParameters,
+        }
+
         [MenuItem("FMOD/Event Browser", priority = 1)]
         public static void ShowEventBrowser()
         {
-            EventBrowser eventBrowser = EditorWindow.GetWindow<EventBrowser>("FMOD Events");
+            EventBrowser eventBrowser = GetWindow<EventBrowser>("FMOD Events");
             eventBrowser.minSize = new Vector2(280, 600);
             eventBrowser.Show();
         }
@@ -42,6 +50,7 @@ namespace FMODUnity
             public bool Expanded = false;
             public EditorEventRef EventRef = null;
             public EditorBankRef BankRef = null;
+            public EditorParamRef ParamRef = null;
             public List<TreeItem> Children = new List<TreeItem>();
             public TreeItem Next = null;
             public TreeItem Prev = null;
@@ -75,6 +84,7 @@ namespace FMODUnity
         bool fromInspector = false;
         bool showEvents = true;
         bool showBanks = true;
+        bool showParameters = true;
 
         Vector2 treeScroll;
         Vector2 paramScroll;
@@ -136,7 +146,6 @@ namespace FMODUnity
         void ShowEventFolder(TreeItem item, Predicate<TreeItem> filter)
         {
             eventStyle.padding.left += 17;
-            
             {
                 // Highlight first found item
                 if (item.EventRef != null || item.BankRef != null)
@@ -189,14 +198,10 @@ namespace FMODUnity
 
                     SetSelectedItem(item);
                 }
-                #if UNITY_2017_3_OR_NEWER
                 if (e.type == EventType.MouseDrag && rect.Contains(e.mousePosition) && !fromInspector)
-                #else
-                if (e.type == EventType.mouseDrag && rect.Contains(e.mousePosition) && !fromInspector)
-                #endif
                 {
                     DragAndDrop.PrepareStartDrag();
-                    DragAndDrop.objectReferences = new UnityEngine.Object[] { ScriptableObject.Instantiate(item.EventRef) };
+                    DragAndDrop.objectReferences = new UnityEngine.Object[] { Instantiate(item.EventRef) };
                     DragAndDrop.StartDrag("New FMOD Studio Emitter");
                     e.Use();
                 }
@@ -231,15 +236,49 @@ namespace FMODUnity
 
                     SetSelectedItem(item);
                 }
-                #if UNITY_2017_3_OR_NEWER
                 if (e.type == EventType.MouseDrag && rect.Contains(e.mousePosition) && !fromInspector)
-                #else
-                if (e.type == EventType.mouseDrag && rect.Contains(e.mousePosition) && !fromInspector)
-                #endif
                 {
                     DragAndDrop.PrepareStartDrag();
-                    DragAndDrop.objectReferences = new UnityEngine.Object[] { ScriptableObject.Instantiate(item.BankRef) };
+                    DragAndDrop.objectReferences = new UnityEngine.Object[] { Instantiate(item.BankRef) };
                     DragAndDrop.StartDrag("New FMOD Studio Bank Loader");
+                    e.Use();
+                }
+                if (Event.current.type == EventType.Repaint)
+                {
+                    item.Rect = rect;
+                }
+            }
+            else if (item.ParamRef != null)
+            {
+                // Rendering and event handling for a bank
+                GUIContent content = new GUIContent(item.Name, eventIcon);
+
+                eventStyle.normal.background = selectedItem == item ? EditorGUIUtility.Load("FMOD/Selected.png") as Texture2D : null;
+                GUILayout.Label(content, eventStyle, GUILayout.ExpandWidth(true));
+
+                Event e = Event.current;
+
+                Rect rect = GUILayoutUtility.GetLastRect();
+                if (e.type == EventType.MouseDown &&
+                    e.button == 0 &&
+                    rect.Contains(e.mousePosition))
+                {
+                    e.Use();
+
+                    if (fromInspector && e.clickCount >= 2)
+                    {
+                        outputProperty.stringValue = item.ParamRef.Name;
+                        outputProperty.serializedObject.ApplyModifiedProperties();
+                        Close();
+                    }
+
+                    SetSelectedItem(item);
+                }
+                if (e.type == EventType.MouseDrag && rect.Contains(e.mousePosition) && !fromInspector)
+                {
+                    DragAndDrop.PrepareStartDrag();
+                    DragAndDrop.objectReferences = new UnityEngine.Object[] { Instantiate(item.ParamRef) };
+                    DragAndDrop.StartDrag("New FMOD Studio Global Parameter Trigger");
                     e.Use();
                 }
                 if (Event.current.type == EventType.Repaint)
@@ -264,7 +303,7 @@ namespace FMODUnity
                     item.Expanded = !item.Expanded;
                     SetSelectedItem(item);
                 }
-                
+
                 if (item.Expanded || !string.IsNullOrEmpty(searchString))
                 {
                     item.Children.Sort((a, b) => a.Name.CompareTo(b.Name));
@@ -300,13 +339,13 @@ namespace FMODUnity
             {
                 // Brute force hack to stop us calling DLL functions while Unity is starting up
                 // playing in editor mode and will cause us to leak system objects
-                this.ShowNotification(new GUIContent("Playing In Editor Starting"));
+                ShowNotification(new GUIContent("Playing In Editor Starting"));
                 return;
             }
 
             if (!EventManager.IsValid)
             {
-                this.ShowNotification(new GUIContent("No FMOD Studio banks loaded. Please check your settings."));
+                ShowNotification(new GUIContent("No FMOD Studio banks loaded. Please check your settings."));
                 return;
             }
 
@@ -353,11 +392,7 @@ namespace FMODUnity
 
             // Scroll the selected item in the tree view - put above the search box otherwise it will take
             // our key presses
-            #if UNITY_2017_3_OR_NEWER
             if (selectedItem != null && Event.current.type == EventType.KeyDown)
-            #else
-            if (selectedItem != null && Event.current.type == EventType.keyDown)
-            #endif
             {
                 if (Event.current.keyCode == KeyCode.UpArrow)
                 {
@@ -436,7 +471,6 @@ namespace FMODUnity
             }
 
             // Show the tree view
-
             Predicate<TreeItem> searchFilter = null;
             searchFilter = (x) => (x.Name.ToLower().Contains(searchString.ToLower()) || x.Children.Exists(searchFilter));
 
@@ -461,14 +495,19 @@ namespace FMODUnity
 
             if (showEvents)
             {
-                treeItems[0].Expanded = fromInspector ? true : treeItems[0].Expanded;
-                ShowEventFolder(treeItems[0], searchFilter);
-                ShowEventFolder(treeItems[1], searchFilter);
+                treeItems[(int)TreeType.Events].Expanded = fromInspector ? true : treeItems[(int)TreeType.Events].Expanded;
+                ShowEventFolder(treeItems[(int)TreeType.Events], searchFilter);
+                ShowEventFolder(treeItems[(int)TreeType.Snapshots], searchFilter);
             }
             if (showBanks)
             {
-                treeItems[2].Expanded = fromInspector ? true : treeItems[2].Expanded;
-                ShowEventFolder(treeItems[2], searchFilter);
+                treeItems[(int)TreeType.Banks].Expanded = fromInspector ? true : treeItems[(int)TreeType.Banks].Expanded;
+                ShowEventFolder(treeItems[(int)TreeType.Banks], searchFilter);
+            }
+            if (showParameters)
+            {
+                treeItems[(int)TreeType.GlobalParameters].Expanded = fromInspector ? true : treeItems[(int)TreeType.GlobalParameters].Expanded;
+                ShowEventFolder(treeItems[(int)TreeType.GlobalParameters], searchFilter);
             }
 
             GUILayout.EndScrollView();
@@ -477,7 +516,6 @@ namespace FMODUnity
             // If the standalone event browser show a preview of the selected item
             if (!fromInspector)
             {
-
                 GUI.Box(previewRect, GUIContent.none);
 
                 if (selectedItem != null && selectedItem.EventRef != null && selectedItem.EventRef.Path.StartsWith("event:"))
@@ -493,6 +531,11 @@ namespace FMODUnity
                 if (selectedItem != null && selectedItem.BankRef != null)
                 {
                     PreviewBank(previewRect, selectedItem.BankRef);
+                }
+
+                if (selectedItem != null && selectedItem.ParamRef != null)
+                {
+                    PreviewParameter(previewRect, selectedItem.ParamRef);
                 }
             }
         }
@@ -535,7 +578,7 @@ namespace FMODUnity
             EditorGUILayout.LabelField("Panning", selectedEvent.Is3D ? "3D" : "2D", style);
             EditorGUILayout.LabelField("Oneshot", selectedEvent.IsOneShot.ToString(), style);
 
-            TimeSpan t = System.TimeSpan.FromMilliseconds(selectedEvent.Length);
+            TimeSpan t = TimeSpan.FromMilliseconds(selectedEvent.Length);
             EditorGUILayout.LabelField("Length", selectedEvent.Length > 0 ? string.Format("{0:D2}:{1:D2}:{2:D3}", t.Minutes, t.Seconds, t.Milliseconds) : "N/A", style);
 
             if (!isNarrow) EditorGUILayout.LabelField("Streaming", selectedEvent.IsStream.ToString(), style);
@@ -597,7 +640,7 @@ namespace FMODUnity
             {
                 if (playing || stopped)
                 {
-                    EditorUtils.PreviewEvent(selectedEvent);
+                    EditorUtils.PreviewEvent(selectedEvent, previewParamValues);
                 }
                 else
                 {
@@ -610,7 +653,6 @@ namespace FMODUnity
                 string cmd = string.Format("studio.window.navigateTo(studio.project.lookup(\"{0}\"))", selectedEvent.Guid.ToString("b"));
                 EditorUtils.SendScriptCommand(cmd);
             }
-
 
             EditorGUILayout.EndHorizontal();
             if (!isNarrow) GUILayout.FlexibleSpace();
@@ -635,11 +677,7 @@ namespace FMODUnity
 
                 GUI.color = originalColour;
 
-                #if UNITY_2017_3_OR_NEWER
                 if (selectedEvent.Is3D && (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseDrag) && rect.Contains(Event.current.mousePosition))
-                #else
-                if (selectedEvent.Is3D && (Event.current.type == EventType.mouseDown || Event.current.type == EventType.mouseDrag) && rect.Contains(Event.current.mousePosition))
-                #endif
                 {
                     var newPosition = Event.current.mousePosition;
                     Vector2 delta = (newPosition - centre);
@@ -657,7 +695,6 @@ namespace FMODUnity
 
                 EditorUtils.PreviewUpdatePosition(previewDistance, previewOrientation);
             }
-
 
             float hoffset = isNarrow ? 15 : 300;
             float voffset = isNarrow ? 50 : 10;
@@ -703,7 +740,7 @@ namespace FMODUnity
                     previewParamValues[paramRef.Name] = paramRef.Default;
                 }
                 previewParamValues[paramRef.Name] = EditorGUILayout.Slider(paramRef.Name, previewParamValues[paramRef.Name], paramRef.Min, paramRef.Max);
-                EditorUtils.PreviewUpdateParameter(paramRef.Name, previewParamValues[paramRef.Name]);
+                EditorUtils.PreviewUpdateParameter(paramRef.ID, previewParamValues[paramRef.Name]);
             }
             GUILayout.EndScrollView();
 
@@ -729,8 +766,27 @@ namespace FMODUnity
                     order++;
                     len /= 1024;
                 }
-                EditorGUILayout.LabelField(sizeInfo.Name, String.Format("{0} {1}", len, SizeSuffix[order]));
+                EditorGUILayout.LabelField(sizeInfo.Name, string.Format("{0} {1}", len, SizeSuffix[order]));
             }
+            EditorGUI.indentLevel--;
+            EditorGUIUtility.labelWidth = 0;
+            GUILayout.EndArea();
+        }
+
+        private void PreviewParameter(Rect previewRect, EditorParamRef selectedParam)
+        {
+            GUILayout.BeginArea(previewRect);
+            var style = new GUIStyle(EditorStyles.label);
+            EditorStyles.label.fontStyle = FontStyle.Bold;
+            EditorGUIUtility.labelWidth = 75;
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Name", selectedParam.Name, style, GUILayout.ExpandWidth(true));
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.LabelField("Min", selectedParam.Min.ToString(), style, GUILayout.ExpandWidth(true));
+            EditorGUILayout.LabelField("Max", selectedParam.Max.ToString(), style, GUILayout.ExpandWidth(true));
+
             EditorGUI.indentLevel--;
             EditorGUIUtility.labelWidth = 0;
             GUILayout.EndArea();
@@ -762,13 +818,13 @@ namespace FMODUnity
             {
                 var editorEvents = EventManager.Events;
 
-                treeItems[0].Children.ForEach(nullEvents);
-                treeItems[1].Children.ForEach(nullEvents);
+                treeItems[(int)TreeType.Events].Children.ForEach(nullEvents);
+                treeItems[(int)TreeType.Snapshots].Children.ForEach(nullEvents);
 
                 foreach (var editorEvent in editorEvents)
                 {
                     string[] split = editorEvent.Path.Split('/');
-                    var level = split[0] == "snapshot:" ? treeItems[1].Children : treeItems[0].Children;
+                    var level = split[0] == "snapshot:" ? treeItems[(int)TreeType.Snapshots].Children : treeItems[(int)TreeType.Events].Children;
                     for (int i = 1; i < split.Length; i++)
                     {
                         TreeItem item = level.Find((x) => x.Name == split[i]);
@@ -799,25 +855,24 @@ namespace FMODUnity
                     }
                 }
 
-                removeStaleChildren(treeItems[0]);
-                removeStaleChildren(treeItems[1]);
+                removeStaleChildren(treeItems[(int)TreeType.Events]);
+                removeStaleChildren(treeItems[(int)TreeType.Snapshots]);
             }
 
             if (showBanks)
             {
                 var editorBanks = EventManager.Banks;
-                var children = treeItems[2].Children;
+                var children = treeItems[(int)TreeType.Banks].Children;
 
                 children.ForEach(nullEvents);
 
                 foreach (var editorBank in editorBanks)
                 {
-                    var name = Path.GetFileNameWithoutExtension(editorBank.Path);
-                    TreeItem item = children.Find((x) => x.Name == name);
+                    TreeItem item = children.Find((x) => x.Name == editorBank.Name);
                     if (item == null)
                     {
                         item = new TreeItem();
-                        item.Name = name;
+                        item.Name = editorBank.Name;
                         item.BankRef = editorBank;
                         children.Add(item);
                     }
@@ -825,7 +880,32 @@ namespace FMODUnity
                 }
                 children.Sort((a, b) => a.Name.CompareTo(b.Name));
 
-                removeStaleChildren(treeItems[2]);
+                removeStaleChildren(treeItems[(int)TreeType.Banks]);
+            }
+
+            if (showParameters)
+            {
+                var editorParams = EventManager.Parameters;
+                var children = treeItems[(int)TreeType.GlobalParameters].Children;
+
+                children.ForEach(nullEvents);
+
+                foreach (var editorParam in editorParams)
+                {
+                    var name = editorParam.Name;
+                    TreeItem item = children.Find((x) => x.Name == name);
+                    if (item == null)
+                    {
+                        item = new TreeItem();
+                        item.Name = name;
+                        item.ParamRef = editorParam;
+                        children.Add(item);
+                    }
+                    item.Exists = true;
+                }
+                children.Sort((a, b) => a.Name.CompareTo(b.Name));
+
+                removeStaleChildren(treeItems[(int)TreeType.GlobalParameters]);
             }
 
             if (expandedState != null && EventManager.IsLoaded)
@@ -858,6 +938,7 @@ namespace FMODUnity
         {
             fromInspector = true;
             showBanks = false;
+            showParameters = false;
             outputProperty = property;
             JumpToEvent(outputProperty.stringValue);
         }
@@ -866,25 +947,35 @@ namespace FMODUnity
         {
             fromInspector = true;
             showEvents = false;
+            showParameters = false;
             outputProperty = property;
             JumpToBank(outputProperty.stringValue);
         }
 
+        internal void SelectParameter(SerializedProperty property)
+        {
+            fromInspector = true;
+            showBanks = false;
+            showEvents = false;
+            outputProperty = property;
+            JumpToParameter(outputProperty.stringValue);
+        }
+
         public void JumpToEvent(string eventPath)
         {
-            if (!String.IsNullOrEmpty(eventPath))
+            if (!string.IsNullOrEmpty(eventPath))
             {
                 searchString = "";
                 RebuildDisplayFromCache();
                 TreeItem currentItem = null;
                 if (eventPath.StartsWith("event:/"))
                 {
-                    currentItem = treeItems[0];
+                    currentItem = treeItems[(int)TreeType.Events];
                     eventPath = eventPath.Replace("event:/", "");
                 }
                 else if (eventPath.StartsWith("snapshot:/"))
                 {
-                    currentItem = treeItems[1];
+                    currentItem = treeItems[(int)TreeType.Snapshots];
                     eventPath = eventPath.Replace("snapshot:/", "");
                 }
                 else
@@ -925,10 +1016,10 @@ namespace FMODUnity
 
         void JumpToBank(string bankName)
         {
-            if (!String.IsNullOrEmpty(bankName))
+            if (!string.IsNullOrEmpty(bankName))
             {
                 RebuildDisplayFromCache();
-                TreeItem currentItem = treeItems[2];
+                TreeItem currentItem = treeItems[(int)TreeType.Banks];
 
                 currentItem.Expanded = true;
                 var nextItem = currentItem.Children.Find(x => x.Name.Equals(bankName, StringComparison.CurrentCultureIgnoreCase));
@@ -944,15 +1035,38 @@ namespace FMODUnity
             }
         }
 
+        public void JumpToParameter(string parameterName)
+        {
+            if (!string.IsNullOrEmpty(parameterName))
+            {
+                RebuildDisplayFromCache();
+                TreeItem currentItem = treeItems[(int)TreeType.Banks];
+
+                currentItem.Expanded = true;
+                var nextItem = currentItem.Children.Find(x => x.Name.Equals(parameterName, StringComparison.CurrentCultureIgnoreCase));
+                if (nextItem == null)
+                {
+                    return;
+                }
+                if (nextItem.ParamRef)
+                {
+                    SetSelectedItem(nextItem);
+                    return;
+                }
+            }
+        }
+
         public EventBrowser()
         {
             treeItems = new List<TreeItem>();
             treeItems.Add(new TreeItem());
             treeItems.Add(new TreeItem());
             treeItems.Add(new TreeItem());
-            treeItems[0].Name = "Events";
-            treeItems[1].Name = "Snapshots";
-            treeItems[2].Name = "Banks";
+            treeItems.Add(new TreeItem());
+            treeItems[(int)TreeType.Events].Name            = "Events";
+            treeItems[(int)TreeType.Snapshots].Name         = "Snapshots";
+            treeItems[(int)TreeType.Banks].Name             = "Banks";
+            treeItems[(int)TreeType.GlobalParameters].Name  = "Global Parameters";
         }
 
         public static void RepaintEventBrowser()
@@ -967,7 +1081,11 @@ namespace FMODUnity
 
         public void OnEnable()
         {
+            #if UNITY_2019_1_OR_NEWER
+            SceneView.duringSceneGui += SceneUpdate;
+            #else
             SceneView.onSceneGUIDelegate += SceneUpdate;
+            #endif
             EditorApplication.hierarchyWindowItemOnGUI += HierachachyUpdate;
             instance = this;
         }
@@ -976,11 +1094,7 @@ namespace FMODUnity
         void HierachachyUpdate(int instance, Rect rect)
         {
             Event e = Event.current;
-            #if UNITY_2017_3_OR_NEWER
             if (e.type == EventType.DragPerform && rect.Contains(e.mousePosition))
-            #else
-            if (e.type == EventType.dragPerform && rect.Contains(e.mousePosition))
-            #endif
             {
                 if (DragAndDrop.objectReferences.Length > 0 &&
                     DragAndDrop.objectReferences[0] != null &&
@@ -1012,11 +1126,7 @@ namespace FMODUnity
         void SceneUpdate(SceneView sceneView)
         {
             Event e = Event.current;
-            #if UNITY_2017_3_OR_NEWER
             if (e.type == EventType.DragPerform)
-            #else
-            if (e.type == EventType.dragPerform)
-            #endif
             {
                 if (DragAndDrop.objectReferences.Length > 0 &&
                     DragAndDrop.objectReferences[0] != null &&

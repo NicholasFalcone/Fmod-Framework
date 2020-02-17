@@ -33,13 +33,13 @@ public class MovementComponent : MonoBehaviour
     #region Sfx
     [Header("Sound")]
     [SerializeField]
-    private GenericEventMonoParameter m_footsteps;
+    private GenericEvent m_footsteps;
     [SerializeField]
     private GenericEvent m_watherMovementSound;
     [SerializeField]
-    private GenericEventMonoParameter m_jumpStart;
+    private GenericEvent m_jumpStart;
     [SerializeField]
-    private GenericEventMonoParameter m_jumpEnd;
+    private GenericEvent m_jumpEnd;
     #endregion
     private Collider2D[] m_colliders;
     private Animator m_animator;
@@ -69,9 +69,12 @@ public class MovementComponent : MonoBehaviour
     
     private void GenerateFmodEvents()
     {
-        FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_footsteps);
-        FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_jumpStart);
-        FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_jumpEnd);
+        FmodManager.instance.CreateGenericEnventInstance(ref m_footsteps);
+        FmodManager.instance.CreateGenericEnventInstance(ref m_jumpStart);
+        FmodManager.instance.CreateGenericEnventInstance(ref m_jumpEnd);
+        //    FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_footsteps);
+        //    FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_jumpStart);
+        //    FmodManager.instance.CreateGenericMonoEventParameterInstance(ref m_jumpEnd);
     }
 
 
@@ -152,9 +155,11 @@ public class MovementComponent : MonoBehaviour
         m_surfaceType = _surfaceType;
         if (m_surfaceType != SurfaceType.Water)
         {
-            FmodManager.instance.ChangeParameter(ref m_footsteps.eventParameter, (float)m_surfaceType++);
-            FmodManager.instance.ChangeParameter(ref m_jumpStart.eventParameter, (float)m_surfaceType++);
-            FmodManager.instance.ChangeParameter(ref m_jumpEnd.eventParameter, (float)m_surfaceType++);
+            //FmodManager.instance.ChangeParameter(ref m_footsteps.eventParameter, (float)m_surfaceType++);
+            //FmodManager.instance.ChangeParameter(ref m_jumpStart.eventParameter, (float)m_surfaceType++);
+            //FmodManager.instance.ChangeParameter(ref m_jumpEnd.eventParameter, (float)m_surfaceType++);
+
+
         }
     }
 

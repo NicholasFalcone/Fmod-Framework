@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 
 namespace FMODUnity
 {
@@ -10,25 +8,27 @@ namespace FMODUnity
         Rigidbody rigidBody;
         Rigidbody2D rigidBody2D;
 
-        public int ListenerNumber = 0;
+        public int ListenerNumber = -1;
 
         void OnEnable()
         {
             RuntimeUtils.EnforceLibraryOrder();
             rigidBody = gameObject.GetComponent<Rigidbody>();
             rigidBody2D = gameObject.GetComponent<Rigidbody2D>();
-            RuntimeManager.HasListener[ListenerNumber] = true;
-            SetListenerLocation();
+            ListenerNumber = RuntimeManager.AddListener(this);
         }
 
         void OnDisable()
         {
-            RuntimeManager.HasListener[ListenerNumber] = false;
+            RuntimeManager.RemoveListener(this);
         }
 
         void Update()
         {
-            SetListenerLocation();
+            if (ListenerNumber >= 0 && ListenerNumber < FMOD.CONSTANTS.MAX_LISTENERS)
+            {
+                SetListenerLocation();
+            }
         }
 
         void SetListenerLocation()

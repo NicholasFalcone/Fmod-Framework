@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
-using UnityEditor;
 namespace FMODUnity
 {
     public class EditorBankRef : ScriptableObject
@@ -23,9 +20,12 @@ namespace FMODUnity
 
         [SerializeField]
         public string Path;
+
+        [SerializeField]
+        public string SubDir;
         public string Name
         {
-            get { return global::System.IO.Path.GetFileNameWithoutExtension(Path); }
+            get { return (string.IsNullOrEmpty(SubDir) ? "" : SubDir + '/') + global::System.IO.Path.GetFileNameWithoutExtension(Path); }
         }
 
         [SerializeField]

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using CustomFMOD;
 
 public class Weapon : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class Weapon : MonoBehaviour
 
     #region Sfx
     [SerializeField]
-    private GenericEvent m_weaponFireSound;
+    private FMODEventInstance m_weaponFireSound;
     #endregion
 
     private void Awake()
@@ -27,6 +28,7 @@ public class Weapon : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(Reload());
+        FMODDatabase.Instance.GetFmodEvent(m_weaponFireSound);
     }
 
     public void OnEquip()
@@ -76,7 +78,7 @@ public class Weapon : MonoBehaviour
     {
         //Play Fire Sound
         if (i == 1)
-            FmodManager.instance.PlaySoundOneShot(m_weaponFireSound.eventPath, transform.position);
+            m_weaponFireSound.Play();
     }
 
     private IEnumerator Reload()

@@ -17,5 +17,9 @@ namespace FMODUnity
         public float Max;
         [SerializeField]
         public float Default;
+        [SerializeField]
+        public FMOD.Studio.PARAMETER_ID ID;
+
+        public bool Exists;
     }
 }

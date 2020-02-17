@@ -13,25 +13,9 @@ public class GenericEvent
 {
     [EventRef]
     public string eventPath;
+    public EventDescription m_eventDescription;
     public EventInstance fmodEvent;
-}
-/// <summary>
-/// Generic event with reference at parameter of the event
-/// </summary>
-[System.Serializable]
-public class GenericEventMonoParameter : GenericEvent
-{
-    public ParameterInstance eventParameter;
-    public string parameterName;
-}
-/// <summary>
-/// Generic event with reference at parameter[] of the event
-/// </summary>
-[System.Serializable]
-public class GenericEventMultipleParameter : GenericEvent
-{
-    public ParameterInstance[] eventParameter;
-    public string[] parameterName;
+    public PARAMETER_ID[] parameterName;
 }
 #endregion
 
@@ -77,37 +61,6 @@ public class FmodManager : StudioBankLoader
     {
          _genericEvent.fmodEvent = RuntimeManager.CreateInstance(_genericEvent.eventPath);
     }
-    /// <summary>
-    /// Use to instance Generic event with parameter
-    /// </summary>
-    /// <param name="_genericEventInstance"></param>
-    public FMOD.RESULT CreateGenericMonoEventParameterInstance(ref GenericEventMonoParameter _genericEventInstance)
-    {
-        _genericEventInstance.fmodEvent = RuntimeManager.CreateInstance(_genericEventInstance.eventPath);
-        return _genericEventInstance.fmodEvent.getParameter(_genericEventInstance.parameterName, out _genericEventInstance.eventParameter);
-    }
-
-    /// <summary>
-    /// Use to instance Generic event with multiple parameter
-    /// </summary>
-    /// <param name="_genericEventInstance"></param>
-    public void CreateGenericEventMultipleParameter(ref GenericEventMultipleParameter _genericEventInstance)
-    {
-        _genericEventInstance.fmodEvent = RuntimeManager.CreateInstance(_genericEventInstance.eventPath);
-        //Set number of parameter
-        int _parameterCount;
-        _genericEventInstance.fmodEvent.getParameterCount(out _parameterCount);
-        ///Riassigne the lenght of parameter
-        _genericEventInstance.eventParameter = new ParameterInstance[_parameterCount];
-        _genericEventInstance.parameterName = new string[_parameterCount];
-
-        if (_parameterCount != 0)
-        {
-            GetParameterByCount(ref _genericEventInstance, _parameterCount);
-        }
-        else
-            UnityEngine.Debug.LogWarning(_genericEventInstance.eventPath + " has not parameter");
-    }
 
     /// <summary>
     /// Trigger a cue of event
@@ -116,21 +69,6 @@ public class FmodManager : StudioBankLoader
     public FMOD.RESULT TriggerCue(GenericEvent _genericEvent)
     {
         return _genericEvent.fmodEvent.triggerCue();
-    }
-
-    /// <summary>
-    /// Get a parameter by index
-    /// usefule for array of parameter
-    /// </summary>
-    /// <param name="_genericEvent">paramete</param>
-    /// <param name="_index">index of paramete</param>
-    public void GetParameterByCount(ref GenericEventMultipleParameter _genericEvent, int _parameterCount)
-    {
-        for (int i = 0; i < _parameterCount; i++)
-        {
-            _genericEvent.fmodEvent.getParameterByIndex(i, out _genericEvent.eventParameter[i]);
-            _genericEvent.parameterName[i] = _genericEvent.eventParameter[i].ToString();
-        }
     }
 
     public void StartEventFade(GenericEvent _genericEvent, float _speed)
@@ -160,7 +98,7 @@ public class FmodManager : StudioBankLoader
     /// Stop the current event bank with the fade
     /// </summary>
     /// <param name="_eventInstance"></param>
-    public FMOD.RESULT StopEvent(EventInstance _eventInstance, STOP_MODE _mode)
+    public FMOD.RESULT StopEvent(EventInstance _eventInstance, FMOD.Studio.STOP_MODE _mode)
     {
         return _eventInstance.stop(_mode);
     }
@@ -180,7 +118,7 @@ public class FmodManager : StudioBankLoader
     /// <param name="_masterBus">master bus</param>
     public FMOD.RESULT StopAllEvents(Bus _masterBus)
     {
-        return _masterBus.stopAllEvents(STOP_MODE.IMMEDIATE);
+        return _masterBus.stopAllEvents(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 
     /// <summary>
@@ -234,25 +172,6 @@ public class FmodManager : StudioBankLoader
     {
         RuntimeManager.AttachInstanceToGameObject(_eventInstance, _emitterTransform, GetComponent<Rigidbody2D>());
         _eventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(_emitterTransform.position));
-    }
-
-    /// <summary>
-    /// Change the event parameter with a new value
-    /// </summary>
-    /// <param name="_eventParameter"></param>
-    /// <param name="_value"></param>
-    public FMOD.RESULT ChangeParameter(ref ParameterInstance _eventParameter, float _value)
-    {
-        return _eventParameter.setValue(_value);
-    }
-    /// <summary>
-    /// Chang event parameter with a new value (Integer)
-    /// </summary>
-    /// <param name="_eventParameter"></param>
-    /// <param name="_value"></param>
-    public FMOD.RESULT ChangeParameter(ref ParameterInstance _eventParameter, int _value)
-    {
-        return  _eventParameter.setValue(_value);
     }
 
     /// <summary>
