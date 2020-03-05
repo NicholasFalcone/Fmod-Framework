@@ -76,9 +76,13 @@ MonoBehaviour:
   Plugins: []
   MasterBanks:
   - Master Bank
+  - Master Bank
   Banks:
   - Multiplayer
+  - Multiplayer
   - Platform
+  - Platform
+  - Shooter
   - Shooter
   BanksToLoad: []
   LiveUpdatePort: 9264
